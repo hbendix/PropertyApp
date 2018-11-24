@@ -10,7 +10,7 @@
   },
   "description": "NativeScript Application",
   "license": "SEE LICENSE IN <your-license-filename>",
-  "repository": "<fill-your-repository-here>",
+  "repository": "https://github.com/hbendix/PropertyApp",
   "scripts": {
     "lint": "tslint \"src/**/*.ts\""
   },
@@ -25,11 +25,12 @@
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
     "nativescript-angular": "~7.0.0",
+    "nativescript-mapbox": "4.4.0",
     "nativescript-theme-core": "~1.0.4",
     "nativescript-ui-sidedrawer": "~5.0.0",
-    "tns-core-modules": "~5.0.2",
     "reflect-metadata": "~0.1.10",
     "rxjs": "~6.3.0",
+    "tns-core-modules": "~5.0.2",
     "zone.js": "~0.8.18"
   },
   "devDependencies": {
