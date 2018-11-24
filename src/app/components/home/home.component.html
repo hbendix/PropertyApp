@@ -10,12 +10,27 @@
     because its function is to always navigate back in the application.
     -->
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
-        ios.position="left">
+        ios.position="right">
     </ActionItem>
     <Label class="action-bar-title" text="Home"></Label>
 </ActionBar>
 
 <GridLayout class="page page-content">
-    <Label class="page-icon fa" text="&#xf015;"></Label>
-    <Label class="page-placeholder" text="<!-- Page content goes here -->"></Label>
+    <ContentView height="100%" width="100%">
+        <Mapbox
+            #map
+            accessToken="{{ accessToken }}"
+            mapStyle="dark"
+            latitude="51.507351"
+            longitude="-0.127758"
+            hideCompass="false"
+            zoomLevel="10"
+            showUserLocation="true"
+            disableZoom="false"
+            disableRotation="false"
+            disableScroll="false"
+            disableTilt="false"
+            (mapReady)="onMapReady($event)">
+        </Mapbox>
+      </ContentView>
 </GridLayout>
