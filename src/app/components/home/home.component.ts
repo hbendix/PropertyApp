@@ -9,9 +9,11 @@ import {
     isEnabled,
     watchLocation
 } from "nativescript-geolocation";
+import { MapboxViewApi, Viewport as MapboxViewport } from "nativescript-mapbox";
 import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 import { environment } from "../../../environments/environment";
 import { IUserLocation } from "../../models/user";
+import { PropertyViewService } from "../../services/property-view.service";
 
 import * as app from "tns-core-modules/application";
 
@@ -19,7 +21,6 @@ registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView);
 
 @Component({
     selector: "Home",
-    moduleId: module.id,
     templateUrl: "./home.component.html"
 })
 export class HomeComponent implements OnInit {
@@ -28,14 +29,15 @@ export class HomeComponent implements OnInit {
 
     userLoc: IUserLocation;
     accessToken: string;
+    propertyLoad = false;
+    private map: MapboxViewApi;
 
-    constructor() {
+    constructor(public propertyViewService: PropertyViewService) {
         // Use the component constructor to inject providers.
         this.accessToken = environment.mapbox.accessToken;
     }
 
     ngOnInit(): void {
-        // Init your component properties here.
         if (!isEnabled()) {
             enableLocationRequest();
         }
@@ -47,17 +49,29 @@ export class HomeComponent implements OnInit {
     }
 
     onMapReady(args: any) {
-        const i = this.getUserLocation();
-        console.log(i);
-        this.mapbox.nativeElement.setViewport(
+        this.map = args.map;
+        console.log(this.map);
+        // const i = this.getUserLocation();
+        // console.log("i: ", i);
+        // this.mapbox.nativeElement.setViewport(
+        //     {
+        //         center: {
+        //             lat: i.latitude,
+        //             lng: i.longitude
+        //         },
+        //         animated: true // default true
+        //     }
+        // );
+        this.map.addMarkers([
             {
-                center: {
-                    lat: i.latitude,
-                    lng: i.longitude
-                },
-                animated: true // default true
+                id: 1,
+                lat: 53.369690,
+                lng: -1.491650,
+                onTap: () => {
+                    this.showPropertyView();
+                }
             }
-        );
+        ]);
     }
 
     getUserLocation(): IUserLocation {
@@ -77,5 +91,11 @@ export class HomeComponent implements OnInit {
             });
 
         return this.userLoc;
+    }
+
+    showPropertyView() {
+        this.propertyLoad = true;
+        const property = this.propertyViewService.getPropertyModel();
+        console.log(this);
     }
 }
