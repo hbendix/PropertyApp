@@ -24,15 +24,13 @@
             latitude="53.369690"
             longitude="-1.491650"
             hideCompass="false"
-            zoomLevel="10"
+            zoomLevel="13"
             showUserLocation="true"
-            disableZoom="false"
-            disableRotation="false"
+            disableZoom="true"
+            disableRotation="true"
             disableScroll="false"
-            disableTilt="false"
+            disableTilt="true"
             (mapReady)="onMapReady($event)">
         </Mapbox>
-      </ContentView>
+    </ContentView>
 </GridLayout>
-
-<ns-property-view *ngIf="propertyLoad"></ns-property-view>

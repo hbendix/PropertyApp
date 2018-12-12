@@ -7,6 +7,10 @@ export const environment = {
 
   mapbox: {
     accessToken: "pk.eyJ1IjoiZGVlY28zIiwiYSI6ImNqb3ZzZnVmNTFsNWYzd285OWdxMmlmY2kifQ.vssTYKTkI4exIRvFD65cBA"
+  },
+
+  server: {
+    url: 'https://property-app-backend.herokuapp.com'
   }
 };
 
