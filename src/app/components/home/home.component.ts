@@ -13,7 +13,7 @@ import {
 import { MapboxViewApi, Viewport as MapboxViewport } from "nativescript-mapbox";
 import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 import { environment } from "../../../environments/environment";
-import { IUserLocation } from "../../models/user";
+import { UserLocation } from "../../models/user";
 import { PropertyViewService } from "../../services/property-view.service";
 import { MapViewService } from "../../services/map-view.service";
 
@@ -29,15 +29,15 @@ registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView);
 export class HomeComponent implements OnInit {
 
     @ViewChild("map") mapbox: ElementRef;
-
-    userLoc: IUserLocation; // long and lat
+    
+    
+    userLoc = new UserLocation(0, 0); // long and lat
     accessToken: string; // MapBox Api key
     private map: MapboxViewApi;
 
     constructor(public propertyViewService: PropertyViewService, 
         private routerExtensions: RouterExtensions,
         private mapViewService: MapViewService) {
-        // Use the component constructor to inject providers.
         this.accessToken = environment.mapbox.accessToken;
     }
 
@@ -45,6 +45,7 @@ export class HomeComponent implements OnInit {
         if (!isEnabled()) {
             enableLocationRequest();
         }
+        this.getUserLocation();
     }
 
     onDrawerButtonTap(): void {
@@ -54,9 +55,17 @@ export class HomeComponent implements OnInit {
 
     onMapReady(args: any) {
         this.map = args.map;
-        this.mapViewService.getMapMarkers(-1.491650, 53.369690, 2000)
+        if (this.userLoc.latitude > 0) {
+            this.map.setCenter({
+                lat: this.userLoc.latitude,
+                lng: this.userLoc.longitude
+            })
+        } else {
+            this.userLoc.longitude = -1.491650;
+            this.userLoc.latitude = 53.369690;
+        }
+        this.mapViewService.getMapMarkers(this.userLoc.longitude, this.userLoc.latitude, 2000)
             .subscribe((res) => {
-                console.log(res);
                 this.displayMarkers(res);
             },
             (err) => {
@@ -82,7 +91,7 @@ export class HomeComponent implements OnInit {
         }
     }
 
-    getUserLocation(): IUserLocation {
+    getUserLocation(): UserLocation {
         getCurrentLocation({
                 desiredAccuracy: 3,
                 updateDistance: 10,
@@ -92,6 +101,8 @@ export class HomeComponent implements OnInit {
                 if (loc) {
                     this.userLoc.latitude = loc.latitude;
                     this.userLoc.longitude = loc.longitude;
+                    console.log(this.userLoc);
+
                 }
             }, (err) => {
                 console.log("Error: " + err);
