@@ -6,6 +6,7 @@ import { filter } from "rxjs/operators";
 import * as app from "tns-core-modules/application";
 
 @Component({
+    moduleId: module.id,
     selector: "ns-app",
     templateUrl: "app.component.html"
 })
@@ -22,8 +23,8 @@ export class AppComponent implements OnInit {
         this._sideDrawerTransition = new SlideInOnTopTransition();
 
         this.router.events
-        .pipe(filter((event: any) => event instanceof NavigationEnd))
-        .subscribe((event: NavigationEnd) => this._activatedUrl = event.urlAfterRedirects);
+            .pipe(filter((event: any) => event instanceof NavigationEnd))
+            .subscribe((event: NavigationEnd) => this._activatedUrl = event.urlAfterRedirects);
     }
 
     get sideDrawerTransition(): DrawerTransitionBase {

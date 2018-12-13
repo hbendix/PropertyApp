@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 // tslint:disable-next-line:ordered-imports
 import { registerElement } from "nativescript-angular/element-registry";
+import { RouterExtensions } from "nativescript-angular/router";
 import {
     clearWatch,
     distance,
@@ -12,30 +13,32 @@ import {
 import { MapboxViewApi, Viewport as MapboxViewport } from "nativescript-mapbox";
 import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 import { environment } from "../../../environments/environment";
-import { IUserLocation } from "../../models/user";
+import { UserLocation } from "../../models/user";
 import { PropertyViewService } from "../../services/property-view.service";
 import { BottomNavigation, BottomNavigationTab, OnTabPressedEventData, OnTabSelectedEventData } from 'nativescript-bottom-navigation';
+import { MapViewService } from "../../services/map-view.service";
 
 import * as app from "tns-core-modules/application";
 
 registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView);
 
 @Component({
-    selector: "Home",
     moduleId: module.id,
+    selector: "Home",
     templateUrl: "./home.component.html"
 })
 export class HomeComponent implements OnInit {
 
     @ViewChild("map") mapbox: ElementRef;
-
-    userLoc: IUserLocation;
-    accessToken: string;
-    propertyLoad = false;
+    
+    
+    userLoc = new UserLocation(0, 0); // long and lat
+    accessToken: string; // MapBox Api key
     private map: MapboxViewApi;
 
-    constructor(public propertyViewService: PropertyViewService) {
-        // Use the component constructor to inject providers.
+    constructor(public propertyViewService: PropertyViewService, 
+        private routerExtensions: RouterExtensions,
+        private mapViewService: MapViewService) {
         this.accessToken = environment.mapbox.accessToken;
     }
 
@@ -43,6 +46,7 @@ export class HomeComponent implements OnInit {
         if (!isEnabled()) {
             enableLocationRequest();
         }
+        this.getUserLocation();
     }
 
     onDrawerButtonTap(): void {
@@ -52,45 +56,43 @@ export class HomeComponent implements OnInit {
 
     onMapReady(args: any) {
         this.map = args.map;
-        console.log(this.map);
-
-        // const i = this.getUserLocation();
-        // console.log("i: ", i);
-        // this.mapbox.nativeElement.setViewport(
-        //     {
-        //         center: {
-        //             lat: i.latitude,
-        //             lng: i.longitude
-        //         },
-        //         animated: true // default true
-        //     }
-        // );
-        this.map.addMarkers([
-            {
-                id: 1,
-                lat: 53.369690,
-                lng: -1.491650,
-                onTap: () => {
-                    this.showPropertyView();
-                }
-            }
-        ]);
-    }
-
-    onCurrentButtonTap(): void {
-        const i = this.getUserLocation();
-        console.log("i: ", i);
-        this.mapbox.nativeElement.setViewport(
-        {
-            center: {
-                lat: i.latitude,
-                lng: i.longitude
+        if (this.userLoc.latitude > 0) {
+            this.map.setCenter({
+                lat: this.userLoc.latitude,
+                lng: this.userLoc.longitude
+            })
+        } else {
+            this.userLoc.longitude = -1.491650;
+            this.userLoc.latitude = 53.369690;
+        }
+        this.mapViewService.getMapMarkers(this.userLoc.longitude, this.userLoc.latitude, 2000)
+            .subscribe((res) => {
+                this.displayMarkers(res);
             },
-            animated: true // default true
-        });
+            (err) => {
+                console.log(err);
+            }
+        );
     }
 
-    getUserLocation(): IUserLocation {
+    displayMarkers(response) {
+        let i = 0;
+        for (const marker of response) {
+            i++;
+            this.map.addMarkers([
+                {
+                    id: i,
+                    lat: marker.lat,
+                    lng: marker.long,
+                    onTap: (marker) => {
+                        this.showPropertyView(marker);
+                    }
+                }
+            ]);
+        }
+    }
+
+    getUserLocation(): UserLocation {
         getCurrentLocation({
                 desiredAccuracy: 3,
                 updateDistance: 10,
@@ -98,9 +100,10 @@ export class HomeComponent implements OnInit {
                 timeout: 2000
             }).then((loc) => {
                 if (loc) {
-                    console.log("User found: " + loc.latitude + " and " + loc.longitude);
                     this.userLoc.latitude = loc.latitude;
                     this.userLoc.longitude = loc.longitude;
+                    console.log(this.userLoc);
+
                 }
             }, (err) => {
                 console.log("Error: " + err);
@@ -109,9 +112,16 @@ export class HomeComponent implements OnInit {
         return this.userLoc;
     }
 
-    showPropertyView() {
-        this.propertyLoad = true;
-        const property = this.propertyViewService.getPropertyModel();
-        console.log(this);
+    showPropertyView(marker: any) {
+        this.routerExtensions.navigate(["/property"], {
+            transition: {
+                name: "fade"
+            },
+            queryParams: {
+                "long": marker.lat,
+                "lat": marker.lng,
+                "prevLocation": "/home"
+            }
+        });
     }
 }

@@ -1,5 +1,7 @@
 import { Injectable } from "@angular/core";
-import { PropertyView, SaleHistoryObject } from "../models/property";
+import { PropertyView } from "../models/property";
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
     providedIn: "root"
@@ -9,23 +11,12 @@ export class PropertyViewService {
 
     toReturn: PropertyView;
 
-    constructor() {}
+    constructor(private http: HttpClient) {}
 
-    getPropertyModel() {
-        this.toReturn.fullAddress = "fullAddress";             // string
-        this.toReturn.propertyType = "propertyType";           // string
-        this.toReturn.bedroomNumber = 1;         // number
-        this.toReturn.bathroomNumber = 1;       // number
-        this.toReturn.parkingSpaces = 2;         // number
-        this.toReturn.tags = ["tags"];                           // string[]
-        this.toReturn.propertyImageUrl = "propertyImageUrl";   // string
-        this.toReturn.streetviewLink = "streetviewLink";       // string
-        this.toReturn.isForSale = true;                 // boolean
-        this.toReturn.isForRent = false;                 // boolean
-        this.toReturn.price = 200000;                         // number
-        this.toReturn.saleHistory = [new SaleHistoryObject()];             // {date, price}[]
+    public getPropertyModel(long: Number, lat: Number) {
+        const _url = `${environment.server.url}/property?lat=${lat}?long=${long}`;
 
-        return this.toReturn;
+        return this.http.get(_url);        
     }
 
 }
