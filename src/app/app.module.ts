@@ -5,6 +5,7 @@ import { NativeScriptUISideDrawerModule } from "nativescript-ui-sidedrawer/angul
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { PropertyViewComponent } from "./components/property-view/property-view.component";
+import { NativescriptBottomNavigationModule} from "nativescript-bottom-navigation/angular";
 
 @NgModule({
     bootstrap: [
@@ -13,7 +14,8 @@ import { PropertyViewComponent } from "./components/property-view/property-view.
     imports: [
         AppRoutingModule,
         NativeScriptModule,
-        NativeScriptUISideDrawerModule
+        NativeScriptUISideDrawerModule,
+        NativescriptBottomNavigationModule
     ],
     declarations: [
         AppComponent,

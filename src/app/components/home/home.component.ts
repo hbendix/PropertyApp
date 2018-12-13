@@ -14,6 +14,7 @@ import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 import { environment } from "../../../environments/environment";
 import { IUserLocation } from "../../models/user";
 import { PropertyViewService } from "../../services/property-view.service";
+import { BottomNavigation, BottomNavigationTab, OnTabPressedEventData, OnTabSelectedEventData } from 'nativescript-bottom-navigation';
 
 import * as app from "tns-core-modules/application";
 
@@ -21,6 +22,7 @@ registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView);
 
 @Component({
     selector: "Home",
+    moduleId: module.id,
     templateUrl: "./home.component.html"
 })
 export class HomeComponent implements OnInit {
@@ -51,6 +53,7 @@ export class HomeComponent implements OnInit {
     onMapReady(args: any) {
         this.map = args.map;
         console.log(this.map);
+
         // const i = this.getUserLocation();
         // console.log("i: ", i);
         // this.mapbox.nativeElement.setViewport(
@@ -72,6 +75,19 @@ export class HomeComponent implements OnInit {
                 }
             }
         ]);
+    }
+
+    onCurrentButtonTap(): void {
+        const i = this.getUserLocation();
+        console.log("i: ", i);
+        this.mapbox.nativeElement.setViewport(
+        {
+            center: {
+                lat: i.latitude,
+                lng: i.longitude
+            },
+            animated: true // default true
+        });
     }
 
     getUserLocation(): IUserLocation {

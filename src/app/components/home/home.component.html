@@ -15,24 +15,35 @@
     <Label class="action-bar-title" text="Home"></Label>
 </ActionBar>
 
-<GridLayout class="page page-content">
-    <ContentView height="100%" width="100%">
+<GridLayout rows="*, auto">
+    <StackLayout row="0">
         <Mapbox
-            #map
-            accessToken="{{ accessToken }}"
-            mapStyle="dark"
-            latitude="53.369690"
-            longitude="-1.491650"
-            hideCompass="false"
-            zoomLevel="10"
-            showUserLocation="true"
-            disableZoom="false"
-            disableRotation="false"
-            disableScroll="false"
-            disableTilt="false"
-            (mapReady)="onMapReady($event)">
-        </Mapbox>
-      </ContentView>
+        #map
+        accessToken="{{ accessToken }}"
+        mapStyle="dark"
+        latitude="53.369690"
+        longitude="-1.491650"
+        hideCompass="false"
+        zoomLevel="10"
+        showUserLocation="true"
+        disableZoom="false"
+        disableRotation="false"
+        disableScroll="false"
+        disableTilt="false"
+        (mapReady)="onMapReady($event)">
+    </Mapbox>
+    </StackLayout>
+    <BottomNavigation activeColor="white"
+                      inactiveColor="white"
+                      backgroundColor = #3A53FF
+                      keyLineColor="black"
+                      (tabSelected)="onBottomNavigationTabSelected($event)"
+                      (tabPressed)="onBottomNavigationTabPressed($event)"
+                      row="1">
+        <BottomNavigationTab title="Filter" icon="ic_filter"></BottomNavigationTab>
+        <BottomNavigationTab title="Current Location" icon="ic_current"></BottomNavigationTab>
+        <BottomNavigationTab title="Area" icon="ic_area"></BottomNavigationTab>
+    </BottomNavigation>
 </GridLayout>
 
 <ns-property-view *ngIf="propertyLoad"></ns-property-view>
