@@ -11,7 +11,7 @@ export class MapViewService {
     constructor(private http: HttpClient) {}
 
     public getMapMarkers(long: Number, lat: Number, radius: Number) {
-        const _url = `${environment.server.url}/properties?lat=${lat}&long=${long}&radius=${radius}`;
+        const _url = `${environment.server.url}/markers?lat=${lat}&long=${long}&radius=${radius}`;
 
         return this.http.get(_url);
     }

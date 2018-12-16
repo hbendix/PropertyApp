@@ -14,7 +14,9 @@ export class PropertyViewService {
     constructor(private http: HttpClient) {}
 
     public getPropertyModel(long: Number, lat: Number) {
-        const _url = `${environment.server.url}/property?lat=${lat}?long=${long}`;
+        const _url = `${environment.server.url}/properties?lat=${lat}&long=${long}`;
+
+        console.log(_url);
 
         return this.http.get(_url);        
     }

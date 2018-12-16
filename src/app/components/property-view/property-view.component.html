@@ -2,26 +2,49 @@
     <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()"></NavigationButton>
 </ActionBar>
 
-<FAB (tap)="fabTap()" rippleColor="#f1f1f1" class="fab-button"></FAB>
+<FAB (tap)="fabTap()" rippleColor="#f1f1f1" row="1" class="fab-button" icon="res://ic_star">
+</FAB>
 <StackLayout orientation="vertical" width="100%" height="100%"
     backgroundColor="white">   
     <StackLayout orientation="vertical" width="100%" height="100%" margin="0 10">
         <Image src="{{property.propertyImageUrl}}" width="100%" height="150"
-            margin="10 0"></Image>
+            margin="0 0"></Image>
         <Label text="DETAILS" margin="0 10"></Label>
-        <TextView editable="false">
-            <Span text="£{{property.price}}" fontWeight="Bold" fontSize="36"></Span>
+        <TextView editable="false" class="price-area">
+            <Span text="{{property.price}}" fontWeight="Bold" fontSize="36"></Span>
         </TextView>
-        <Label text="{{property.fullAddress}}" margin="3 10" fontSize="26"></Label>
-        <Label text="{{property.propertyType}}" margin="3 10" fontSize="26"></Label>
-        <Label text="STATS" margin="30 10"></Label>
+        <TextView editable="false" class="textarea">
+            <Span text="{{property.fullAddress}}" margin="1 10" fontSize="26"></Span>
+        </TextView>
+        <StackLayout orientation="horizontal" width="100%" height="auto"
+            backgroundColor="white">
+            <Button text="Button"
+                    class="my-button" 
+                    width="33%" 
+                    height="60"
+                    text="{{property.propertyType}}">
+            </Button>
+            <Button text="Button" 
+                    class="my-button {{property.isForSale ? 'green' : 'red'}}"
+                    width="33%"
+                    height="60" 
+                    text="{{property.isForSale ? 'For sale' : 'Not for sale'}}">
+            </Button>
+            <Button text="Button" 
+                    class="my-button {{property.isForRent ? 'green' : 'red'}}"
+                    width="33%"
+                    height="60"
+                    text="{{property.isForRent ? 'For rent' : 'Not for rent'}}">
+            </Button>
+        </StackLayout>
+        <Label text="STATS" margin="30 10"></Label>        
         <ListView class="list-group" style="height:1250px" [items]="stats">
             <ng-template let-item="item">
                 <FlexboxLayout flexDirection="row" class="list-group-item">
                     <Label [text]="item.name" class="list-group-item-heading"
-                        verticalAlignment="center" style="width: 60%"></Label>
+                        verticalAlignment="center" style="width: 40%"></Label>
                     <Label [text]="item.value" class="list-group-item-heading"
-                        verticalAlignment="center" style="width: 60%"></Label>
+                        verticalAlignment="center" style="width: 40%"></Label>  
                 </FlexboxLayout>
             </ng-template>    
         </ListView>

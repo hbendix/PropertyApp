@@ -31,11 +31,12 @@ export class PropertyViewComponent implements OnInit {
       this.lat = params.lat;
       this.prevLocation = params.prevLocation;
     });
-    console.log(this.long, this.lat);
+    console.log(`Long: ${this.long}, Lat: ${this.lat}`);
+    this.loadProperty();
   }
 
   ngOnInit() {
-    this.loadProperty();
+    
   }
 
   onNavBtnTap(){
@@ -49,25 +50,30 @@ export class PropertyViewComponent implements OnInit {
   private loadProperty () {
     this.propertyViewService.getPropertyModel(this.long, this.lat)
       .subscribe((res) => {
-        this.property = <any>res;
-        this.stats = [
-          {
-            "name": "Bathroom Count",
-            "value": this.property.bathroomNumber
-          },
+        console.log(res);
+        this.property = <any>res[0];
+        this.isBusy = false;        
+        this.stats = [         
           {
             "name": "Bedroom Count",
-            "value": this.property.bedroomNumber
+            "value": this.property.bedroomNumber,
+            "icon": "&#xf236;"
           },
           {
             "name": "Parking Spaces",
-            "value": this.property.parkingSpaces
+            "value": this.property.parkingSpaces,
+            "icon": "&#xf236;"
           },
         ]
-        this.isBusy = false;
-        console.log(res);
+        if (this.property.bathroomNumber > 0) {
+          this.stats.push({
+            "name": "Bathroom Count",
+            "value": this.property.bathroomNumber,
+            "icon": "&#xf236;"
+          })
+        }
       }, (err) => {
-        console.log(err);
+        console.log(`Error retrieving Property: ${err}`);
       }
     );
   }

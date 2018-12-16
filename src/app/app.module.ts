@@ -7,6 +7,8 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { PropertyViewComponent } from "./components/property-view/property-view.component";
 import { NativescriptBottomNavigationModule} from "nativescript-bottom-navigation/angular";
+import { RouteReuseStrategy } from "@angular/router";
+import { CustomReuseStrategy } from "./custom-resuse-strategy";
 
 @NgModule({
     bootstrap: [
@@ -25,6 +27,9 @@ import { NativescriptBottomNavigationModule} from "nativescript-bottom-navigatio
     ],
     schemas: [
         NO_ERRORS_SCHEMA
+    ],
+    providers: [
+        { provide: RouteReuseStrategy, useClass: CustomReuseStrategy }
     ]
 })
 export class AppModule { }
