@@ -18,6 +18,7 @@ import { UserLocation } from "../../models/user";
 import { PropertyViewService } from "../../services/property-view.service";
 import { BottomNavigation, BottomNavigationTab, OnTabPressedEventData, OnTabSelectedEventData } from 'nativescript-bottom-navigation';
 import { MapViewService } from "../../services/map-view.service";
+import { UserService } from "../../services/user.service";
 
 import * as app from "tns-core-modules/application";
 
@@ -40,7 +41,8 @@ export class HomeComponent implements OnInit  {
 
     constructor(public propertyViewService: PropertyViewService, 
         private routerExtensions: RouterExtensions,
-        private mapViewService: MapViewService) {
+        private mapViewService: MapViewService,
+        private userService: UserService) {
         this.accessToken = environment.mapbox.accessToken;
         this.getUserLocation();
     }
@@ -78,7 +80,7 @@ export class HomeComponent implements OnInit  {
             this.userLoc.latitude = point.lat;
             console.log("Map longpressed at latitude: " + point.lat + ", longitude: " + point.lng);
             this.getMapMarkers(point.lng, point.lat);
-
+            this.userService.updateUserLocation(this.userLoc);
         });
     }
 
@@ -111,23 +113,30 @@ export class HomeComponent implements OnInit  {
     }
 
     getUserLocation(): UserLocation {
-        getCurrentLocation({
-                desiredAccuracy: 3,
-                updateDistance: 10,
-                maximumAge: 2000,
-                timeout: 2000
-            }).then((loc) => {
-                if (loc) {
-                    this.userLoc.latitude = loc.latitude;
-                    this.userLoc.longitude = loc.longitude;
-                    console.log(this.userLoc);
+        console.log('GET USER LOCATION', this.userService.getUserLocation());
+        if (this.userService.getUserLocation().latitude > 0) {
+            this.userLoc.latitude = this.userService.getUserLocation().latitude;
+            this.userLoc.longitude = this.userService.getUserLocation().longitude;
+            return this.userLoc;
+        } else {
+            getCurrentLocation({
+                    desiredAccuracy: 3,
+                    updateDistance: 10,
+                    maximumAge: 2000,
+                    timeout: 2000
+                }).then((loc) => {
+                    if (loc) {
+                        this.userLoc.latitude = loc.latitude;
+                        this.userLoc.longitude = loc.longitude;
+                        console.log(this.userLoc);
 
-                }
-            }, (err) => {
-                console.log("Error: " + err);
-            });
+                    }
+                }, (err) => {
+                    console.log("Error: " + err);
+                });
 
-        return this.userLoc;
+            return this.userLoc;
+        }
     }
 
     

@@ -21,8 +21,8 @@
         #map
         accessToken="{{ accessToken }}"
         mapStyle="dark"
-        latitude="53.369690"
-        longitude="-1.491650"
+        latitude="{{ userLoc.lat > 0 ? userLoc.lat : 53.369690}}"
+        longitude="{{ userLoc.long > 0 ? userLoc.lat : -1.491650}}"
         hideCompass="false"
         zoomLevel="13"
         showUserLocation="true"
