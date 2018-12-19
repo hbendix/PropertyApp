@@ -71,6 +71,7 @@ export class PropertyViewComponent implements OnInit {
   }
 
   private sortStats () {
+    this.stats = [];
     if (this.property.bedroomNumber > 0) {
       this.stats.push({
         "name": "Bedrooms",
