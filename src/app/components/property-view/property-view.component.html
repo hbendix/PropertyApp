@@ -2,10 +2,10 @@
     <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()"></NavigationButton>
 </ActionBar>
 
-<FAB (tap)="fabTap()" rippleColor="#f1f1f1" row="1" class="fab-button" icon="res://ic_star">
+<FAB (tap)="fabTap()" rippleColor="#f1f1f1" row="1" class="fab-button" icon="res://ic_star" *ngIf="!isList">
 </FAB>
 <StackLayout orientation="vertical" width="100%" height="100%"
-    backgroundColor="white">   
+    backgroundColor="white" *ngIf="!isList">   
     <StackLayout orientation="vertical" width="100%" height="100%" margin="0 10">
         <Image src="{{property.propertyImageUrl}}" width="100%" height="150"
             margin="0 0"></Image>
@@ -50,4 +50,19 @@
         </ListView>
     </StackLayout>
 </StackLayout>
-<ActivityIndicator [busy]="isBusy" class="activity-indicator"></ActivityIndicator>
+<StackLayout orientation="vertical" width="100%" height="100%"
+    backgroundColor="white" *ngIf="isList">   
+    <TextView editable="false" class="textarea">
+        <Span text="Found {{ propertyList.length }} properties at this marker!" margin="1 10" fontSize="22"></Span>
+    </TextView>
+    <ListView class="list-group" [items]="propertyList" (itemTap)="onItemTap($event)"
+        style="height:100%;" verticalAlignment="center">
+        <ng-template let-item="item">
+            <FlexboxLayout flexDirection="row" class="list-group-item">
+                <Image [src]="item.thumbImg" class="thumb img-circle"></Image>
+                <Label [text]="item.fullAddress" class="list-group-item-heading"
+                    style="width: 60%" textWrap="true"></Label>
+            </FlexboxLayout>
+        </ng-template>
+    </ListView>
+</StackLayout>

@@ -33,11 +33,10 @@ export class HomeComponent implements OnInit  {
 
     @ViewChild("map") mapbox: ElementRef;
     
-    
-    userLoc = new UserLocation(0, 0); // long and lat
-    accessToken: string; // MapBox Api key
+    public accessToken: string; // MapBox Api key     
+    private userLoc = new UserLocation(0, 0); // long and lat
     private map: MapboxViewApi;
-    
+    // mapMarkers: any;
 
     constructor(public propertyViewService: PropertyViewService, 
         private routerExtensions: RouterExtensions,
@@ -45,6 +44,11 @@ export class HomeComponent implements OnInit  {
         private userService: UserService) {
         this.accessToken = environment.mapbox.accessToken;
         this.getUserLocation();
+        // const m = this.mapViewService.getMapMarkers();
+        // console.log(m);
+        // if (typeof m !== 'undefined') {
+        //     this.mapMarkers.push(this.mapViewService.getMapMarkers());
+        // }
     }
 
     ngOnInit(): void {
@@ -58,7 +62,7 @@ export class HomeComponent implements OnInit  {
         sideDrawer.showDrawer();
     }
 
-    onMapReady(args: any) {
+    onMapReady(args: any): void {
         this.map = args.map;
         if (this.userLoc.latitude > 0) {
             this.map.setCenter({
@@ -72,30 +76,30 @@ export class HomeComponent implements OnInit  {
 
         this.getMapMarkers(this.userLoc.longitude, this.userLoc.latitude);
 
-        this.map.setOnScrollListener((point?: any) => {
-        });
-
         this.map.setOnMapLongClickListener((point: any) => {
             this.userLoc.longitude =  point.lng;
             this.userLoc.latitude = point.lat;
-            console.log("Map longpressed at latitude: " + point.lat + ", longitude: " + point.lng);
-            this.getMapMarkers(point.lng, point.lat);
             this.userService.updateUserLocation(this.userLoc);
+            this.getMapMarkers(point.lng, point.lat);            
         });
     }
 
-    getMapMarkers (long, lat) {
-        this.mapViewService.getMapMarkers(long, lat, 2000)
+    getMapMarkers (long, lat): void {        
+        this.displayMarkers(this.mapViewService.pullMapMarkers(long, lat, 2000)
             .subscribe((res) => {
+                console.log(res);
                 this.displayMarkers(res);
             },
             (err) => {
                 console.log(err);
-            }
-        );
+            })
+        )        
     }
 
-    displayMarkers(response) {
+    displayMarkers(response): void {
+        // this.mapMarkers.push(response);
+        // this.mapViewService.saveMapMarkers(response);
+        // console.log('mapmarkers', this.mapViewService.getMapMarkers());
         let i = 0;
         for (const marker of response) {
             i++;
@@ -113,7 +117,6 @@ export class HomeComponent implements OnInit  {
     }
 
     getUserLocation(): UserLocation {
-        console.log('GET USER LOCATION', this.userService.getUserLocation());
         if (this.userService.getUserLocation().latitude > 0) {
             this.userLoc.latitude = this.userService.getUserLocation().latitude;
             this.userLoc.longitude = this.userService.getUserLocation().longitude;
@@ -139,9 +142,11 @@ export class HomeComponent implements OnInit  {
         }
     }
 
-    
+    showPropertyView(marker: any): void {
+        this.userLoc.longitude =  marker.lng;
+        this.userLoc.latitude = marker.lat;
+        this.userService.updateUserLocation(this.userLoc);
 
-    showPropertyView(marker: any) {
         this.routerExtensions.navigate(["/property"], {
             transition: {
                 name: "fade"

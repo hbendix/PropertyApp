@@ -4,6 +4,7 @@ import { PropertyView } from "../../models/property";
 import { RouterExtensions } from "nativescript-angular/router";
 import { ActivatedRoute } from "@angular/router";
 import { registerElement } from 'nativescript-angular/element-registry';
+import { ItemEventData } from "tns-core-modules/ui/list-view"
 registerElement('Fab', () => require('nativescript-floatingactionbutton').Fab);
 
 @Component({
@@ -15,13 +16,15 @@ registerElement('Fab', () => require('nativescript-floatingactionbutton').Fab);
 export class PropertyViewComponent implements OnInit {
 
   @Input()
-  long: Number;
-  lat: Number;
-  prevLocation: String;
+  private long: Number;
+  private lat: Number;
+  private prevLocation: String;
 
-  property: PropertyView;
-  isBusy = true;
-  stats = [];
+  public property: PropertyView;
+  public isBusy = true;
+  public stats = [];
+  public isList = true;
+  public propertyList = [];
 
   constructor(private propertyViewService: PropertyViewService,
     private route: ActivatedRoute,
@@ -40,41 +43,62 @@ export class PropertyViewComponent implements OnInit {
   }
 
   onNavBtnTap(){
-    this.routerExtensions.navigate([this.prevLocation], {
-      transition: {
-          name: "fade"
-      }
-    });
+    console.log(this.propertyList.length);
+    if ((this.isList) || (this.propertyList.length == 0)) {
+      this.routerExtensions.navigate([this.prevLocation], {
+        transition: {
+            name: "fade"
+        }
+      });
+    } else {
+      this.isList = true;
+    }
   }
 
   private loadProperty () {
     this.propertyViewService.getPropertyModel(this.long, this.lat)
       .subscribe((res) => {
-        console.log(res);
-        this.property = <any>res[0];
-        this.isBusy = false;        
-        this.stats = [         
-          {
-            "name": "Bedroom Count",
-            "value": this.property.bedroomNumber,
-            "icon": "&#xf236;"
-          },
-          {
-            "name": "Parking Spaces",
-            "value": this.property.parkingSpaces,
-            "icon": "&#xf236;"
-          },
-        ]
-        if (this.property.bathroomNumber > 0) {
-          this.stats.push({
-            "name": "Bathroom Count",
-            "value": this.property.bathroomNumber,
-            "icon": "&#xf236;"
-          })
+        if (res[1]) {
+          this.propertyList = <any>res;
+          this.isList = true;
+        } else {
+          this.property = <any>res[0];
+          this.sortStats();
+          this.isList = false;
         }
       }, (err) => {
         console.log(`Error retrieving Property: ${err}`);
       }
     );
+  }
+
+  private sortStats () {
+    if (this.property.bedroomNumber > 0) {
+      this.stats.push({
+        "name": "Bedrooms",
+        "value": this.property.bedroomNumber,
+        "icon": "&#xf236;"
+      })
+    }
+    if (this.property.parkingSpaces > 0) {
+      this.stats.push({
+        "name": "Parking Spaces",
+        "value": this.property.parkingSpaces,
+        "icon": "&#xf236;"
+      })
+    }
+    if (this.property.bathroomNumber > 0) {
+      this.stats.push({
+        "name": "Bathrooms",
+        "value": this.property.bathroomNumber,
+        "icon": "&#xf236;"
+      })
+    }
+  }
+
+  onItemTap (args: ItemEventData) {
+    this.property = this.propertyList[args.index];
+    this.sortStats();
+    this.isList = false;
   }
 }

@@ -8,12 +8,22 @@ import { HttpClient } from '@angular/common/http';
 
 export class MapViewService {
 
+    mapMarkers = [];
+
     constructor(private http: HttpClient) {}
 
-    public getMapMarkers(long: Number, lat: Number, radius: Number) {
+    public saveMapMarkers (mapMarkers: any) {
+        this.mapMarkers.push(mapMarkers);
+    }
+
+    public pullMapMarkers(long: Number, lat: Number, radius: Number) {       
         const _url = `${environment.server.url}/markers?lat=${lat}&long=${long}&radius=${radius}`;
 
-        return this.http.get(_url);
+        return this.http.get(_url);        
+    }
+
+    public getMapMarkers () {
+        return this.mapMarkers;
     }
 
 }
