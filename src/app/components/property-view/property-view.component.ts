@@ -34,7 +34,6 @@ export class PropertyViewComponent implements OnInit {
       this.lat = params.lat;
       this.prevLocation = params.prevLocation;
     });
-    console.log(`Long: ${this.long}, Lat: ${this.lat}`);
     this.loadProperty();
   }
 
@@ -43,7 +42,6 @@ export class PropertyViewComponent implements OnInit {
   }
 
   onNavBtnTap(){
-    console.log(this.propertyList.length);
     if ((this.isList) || (this.propertyList.length == 0)) {
       this.routerExtensions.navigate([this.prevLocation], {
         transition: {

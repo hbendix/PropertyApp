@@ -87,7 +87,6 @@ export class HomeComponent implements OnInit  {
     getMapMarkers (long, lat): void {        
         this.displayMarkers(this.mapViewService.pullMapMarkers(long, lat, 2000)
             .subscribe((res) => {
-                console.log(res);
                 this.displayMarkers(res);
             },
             (err) => {
@@ -131,7 +130,6 @@ export class HomeComponent implements OnInit  {
                     if (loc) {
                         this.userLoc.latitude = loc.latitude;
                         this.userLoc.longitude = loc.longitude;
-                        console.log(this.userLoc);
 
                     }
                 }, (err) => {
