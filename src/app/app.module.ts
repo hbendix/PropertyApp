@@ -9,6 +9,7 @@ import { PropertyViewComponent } from "./components/property-view/property-view.
 import { NativescriptBottomNavigationModule} from "nativescript-bottom-navigation/angular";
 import { RouteReuseStrategy } from "@angular/router";
 import { CustomReuseStrategy } from "./custom-resuse-strategy";
+import { AreaViewComponent } from "./components/area-view/area-view.component";
 
 @NgModule({
     bootstrap: [
@@ -23,7 +24,8 @@ import { CustomReuseStrategy } from "./custom-resuse-strategy";
     ],
     declarations: [
         AppComponent,
-        PropertyViewComponent
+        PropertyViewComponent,
+        AreaViewComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA

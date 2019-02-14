@@ -1,0 +1,38 @@
+<ActionBar title="{{area.areaName}} details" class="action-bar">
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()"></NavigationButton>
+</ActionBar>
+
+<FAB (tap)="fabTap()" rippleColor="#f1f1f1" row="1" class="fab-button" icon="res://ic_star"
+    *ngIf="!isList">
+</FAB>
+
+<StackLayout orientation="vertical" width="100%" height="100%" 
+    *ngIf="!isList"  backgroundColor="#4781FE">
+    <StackLayout orientation="vertical" width="100%" height="100"
+        backgroundColor="#4781FE" class="stack">
+        <StackLayout orientation="horizontal" width="100%" height="100%"
+            backgroundColor="#4781FE">
+            <Label class="area-name" text="{{area.postcode}} - {{area.areaName}}"
+                verticalAlignment="center"></Label>
+        </StackLayout>
+    </StackLayout>
+    <StackLayout orientation="vertical" class="stack" width="100%" height="100%" margin="10 40" backgroundColor="#4781FE">
+        <StackLayout  class="details-stack" width="100%" height="100%"
+            backgroundColor="white" margin="10">
+            <Label text="DETAILS" margin="10 30 10 30"></Label>
+            <Label text="Average house price" margin="0 10 0 10"></Label>
+            <TextView editable="false" class="price-area textarea" margin="0 20 0 20">
+                <Span text="£{{area.avgPrice}}" class="textarea" fontWeight="Bold" fontSize="36"></Span>
+            </TextView>
+            <Label text="Average house type" margin="0 10 0 10"></Label>
+            <TextView editable="false" class="price-area textarea" margin="0 20 0 20">
+                <Span text="{{area.avgHouseType}}" class="textarea" fontWeight="Bold" fontSize="36"></Span>
+            </TextView>
+            <Label text="Average bed count" margin="0 10 0 10"></Label>
+            <TextView editable="false" class="price-area textarea" margin="0 20 0 20">
+                <Span text="{{area.avgBedCount}}" class="textarea" fontWeight="Bold" fontSize="36"></Span>
+            </TextView>
+            <Label text="STATS" margin="30 10 30 10"></Label>
+        </StackLayout>
+    </StackLayout>
+</StackLayout>
