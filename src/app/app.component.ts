@@ -4,6 +4,10 @@ import { RouterExtensions } from "nativescript-angular/router";
 import { DrawerTransitionBase, RadSideDrawer, SlideInOnTopTransition } from "nativescript-ui-sidedrawer";
 import { filter } from "rxjs/operators";
 import * as app from "tns-core-modules/application";
+import * as application from "tns-core-modules/application";
+import * as traceModule from "tns-core-modules/trace"
+import * as dialogs from "tns-core-modules/ui/dialogs";
+traceModule.enable();
 
 @Component({
     moduleId: module.id,
@@ -44,5 +48,32 @@ export class AppComponent implements OnInit {
 
         const sideDrawer = <RadSideDrawer>app.getRootView();
         sideDrawer.closeDrawer();
+    }
+
+    login () {
+        dialogs.login({
+            title: "Login",
+            okButtonText: "Submit",
+            cancelButtonText: "Create Account",
+            neutralButtonText: "Close",
+            userName: "",
+            password: ""
+        }).then(r => {
+            if (!r.result) {
+                this.routerExtensions.navigate(['create'], {
+                    transition: {
+                        name: "fade"
+                    }
+                });
+                const sideDrawer = <RadSideDrawer>app.getRootView();
+                sideDrawer.closeDrawer();
+            } else {
+                const user = {
+                    userName: r.userName,
+                    password: r.password
+                }
+                console.log(user);
+            }
+        });
     }
 }

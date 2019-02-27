@@ -18,22 +18,24 @@
 </ActionBar>
 
 <GridLayout rows="*, auto">
-    <StackLayout row="0">
+    <StackLayout row="0" id="map" name="map" map>
         <Mapbox
-        #map
-        accessToken="{{ accessToken }}"
-        mapStyle="dark"
-        latitude="{{ userLoc.lat > 0 ? userLoc.lat : 53.369690}}"
-        longitude="{{ userLoc.long > 0 ? userLoc.lat : -1.491650}}"
-        hideCompass="false"
-        zoomLevel="13"
-        showUserLocation="true"
-        disableZoom="false"
-        disableRotation="false"
-        disableScroll="false"
-        disableTilt="false"
-        (mapReady)="onMapReady($event)">
-    </Mapbox>
+            #map
+            accessToken="{{ accessToken }}"
+            mapStyle="LIGHT"
+            latitude="{{ userLoc.lat > 0 ? userLoc.lat : 53.369690}}"
+            longitude="{{ userLoc.long > 0 ? userLoc.lat : -1.491650}}"
+            hideCompass="true"
+            zoomLevel="13"
+            showUserLocation="true"
+            disableZoom="false"
+            disableRotation="false"
+            disableScroll="false"
+            disableTilt="false"
+            hideAttribution="true" 
+            hideLogo="true" 
+            (mapReady)="onMapReady($event)">
+        </Mapbox>
     </StackLayout>
     <!-- <StackLayout row="1" orientation="horizontal" backgroundColor= #3F51B5>
        <Button text="Filter" 

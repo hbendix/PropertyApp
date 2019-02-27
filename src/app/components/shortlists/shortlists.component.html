@@ -1,0 +1,20 @@
+<ActionBar class="action-bar">
+        <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()"></NavigationButton>
+        <Label class="action-bar-title" text="My Shortlists"></Label>
+</ActionBar>
+<ScrollView row="1">
+    <ListView class="list-group" [items]="shortlists" (itemTap)="itemSelected($event)" separatorColor="#f7f7f7">
+        <ng-template let-shortlist="item">
+            <GridLayout columns="auto, *" class="list-group-item"
+                style="border:1;">
+                <StackLayout col="0" backgroundColor="white" class="list-group-item" margin="0">
+                    <Image [src]="shortlist.imageSrc" class="thumb img-circle" margin="0"></Image>
+                </StackLayout>
+                <StackLayout col="1" backgroundColor="white" class="list-group-item">
+                    <Label class="list-group-item-heading" [text]="shortlist.fullAddress"></Label>
+                    <Label class="list-group-item-text" text="£{{shortlist.price}}"></Label>
+                </StackLayout>
+            </GridLayout>
+        </ng-template>
+    </ListView>
+</ScrollView>

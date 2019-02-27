@@ -97,6 +97,7 @@ export class PropertyViewComponent implements OnInit {
 
   onItemTap (args: ItemEventData) {
     this.property = this.propertyList[args.index];
+    console.log(this.property);
     this.sortStats();
     this.isList = false;
   }

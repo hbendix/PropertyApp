@@ -11,13 +11,14 @@ import {
     isEnabled,
     watchLocation
 } from "nativescript-geolocation";
-import { MapboxViewApi, Viewport as MapboxViewport } from "nativescript-mapbox";
+import { Mapbox, MapStyle, MapboxViewApi, Viewport as MapboxViewport, MapboxView } from "nativescript-mapbox";
 import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 import { environment } from "../../../environments/environment";
 import { UserLocation } from "../../models/user";
 import { PropertyViewService } from "../../services/property-view.service";
 import { MapViewService } from "../../services/map-view.service";
 import { UserService } from "../../services/user.service";
+import { View } from 'ui/core/view';
 
 import * as app from "tns-core-modules/application";
 
@@ -35,6 +36,7 @@ export class HomeComponent implements OnInit  {
     public accessToken: string; // MapBox Api key     
     private userLoc = new UserLocation(0, 0); // long and lat
     private map: MapboxViewApi;
+    private mapboxAPI: any;
     // mapMarkers: any;
 
     constructor(public propertyViewService: PropertyViewService, 
@@ -43,11 +45,7 @@ export class HomeComponent implements OnInit  {
         private userService: UserService) {
         this.accessToken = environment.mapbox.accessToken;
         this.getUserLocation();
-        // const m = this.mapViewService.getMapMarkers();
-        // console.log(m);
-        // if (typeof m !== 'undefined') {
-        //     this.mapMarkers.push(this.mapViewService.getMapMarkers());
-        // }
+        this.mapboxAPI = new Mapbox();
     }
 
     ngOnInit(): void {
@@ -55,6 +53,55 @@ export class HomeComponent implements OnInit  {
             enableLocationRequest();
         }
     }
+
+    // private loadMap () {
+    //     setTimeout(() => {
+    //         console.log("heerere");
+    //         this.mapboxAPI.show({
+    //             accessToken: this.accessToken,
+    //             mapStyle: MapStyle.LIGHT,
+    //             center: {
+    //                 lat: this.userLoc.latitude,
+    //                 lng: this.userLoc.longitude
+    //             },
+    //             zoomLevel: 13,
+    //             showUserLocation: true, 
+    //             hideAttribution: true, 
+    //             hideLogo: true, 
+    //             hideCompass: true, 
+    //             disableRotation: false, 
+    //             disableScroll: false, 
+    //             disableZoom: false, 
+    //             disableTilt: false, 
+    //         }).then(
+    //             showResult => {
+    //                 console.log('showResult' , showResult);
+    //                 this.map = showResult;
+    //                 // this.mapbox.nativeElement(showResult);
+    //                 this.onMapReady(showResult);
+    //             },
+    //             (error: string) => console.log("mapbox show error: " + error)
+    //         )
+    //     }, 3000);
+
+
+
+    //     <Mapbox
+    //     #map
+    //     accessToken="{{ accessToken }}"
+    //     mapStyle="dark"
+    //     latitude="{{ userLoc.lat > 0 ? userLoc.lat : 53.369690}}"
+    //     longitude="{{ userLoc.long > 0 ? userLoc.lat : -1.491650}}"
+    //     hideCompass="false"
+    //     zoomLevel="13"
+    //     showUserLocation="true"
+    //     disableZoom="false"
+    //     disableRotation="false"
+    //     disableScroll="false"
+    //     disableTilt="false"
+    //     (mapReady)="onMapReady($event)">
+    // </Mapbox>
+    // }
 
     onDrawerButtonTap(): void {
         const sideDrawer = <RadSideDrawer>app.getRootView();
@@ -106,6 +153,7 @@ export class HomeComponent implements OnInit  {
                     id: i,
                     lat: marker.lat,
                     lng: marker.long,
+                    iconPath: 'res/markers/green_pin_marker.png',
                     onTap: (marker) => {
                         this.showPropertyView(marker);
                     }

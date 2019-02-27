@@ -1,0 +1,18 @@
+<ActionBar title="Create Account" class="action-bar">
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()"></NavigationButton>
+    <Label class="action-bar-title" text="Create Account"></Label>
+</ActionBar>
+<StackLayout>
+        <RadDataForm [source]="album">
+            <TKEntityProperty tkDataFormProperty name="albumName" displayName="Name of Album"
+                index="0"></TKEntityProperty>
+            <TKEntityProperty tkDataFormProperty name="bandName" displayName="Name of Band"
+                index="1"></TKEntityProperty>
+            <TKEntityProperty tkDataFormProperty name="year" displayName="Release Year"
+                index="2"></TKEntityProperty>
+            <TKEntityProperty tkDataFormProperty name="myRating" displayName="My Rating"
+                index="3"></TKEntityProperty>
+            <TKEntityProperty tkDataFormProperty name="owned" displayName="Do I Own This?"
+                index="4"></TKEntityProperty>
+        </RadDataForm>
+    </StackLayout>
