@@ -3,6 +3,8 @@ import { Routes } from "@angular/router";
 import { NativeScriptRouterModule } from "nativescript-angular/router";
 import { PropertyViewComponent } from "../app/components/property-view/property-view.component";
 import { AreaViewComponent } from "./components/area-view/area-view.component";
+import { ShortlistsComponent } from "./components/shortlists/shortlists.component";
+import { CreateAccountComponent } from "./components/create-account/create-account.component";
 
 const routes: Routes = [
     { path: "", redirectTo: "/home", pathMatch: "full" },
@@ -10,7 +12,9 @@ const routes: Routes = [
     { path: "search", loadChildren: "~/app/components/search/search.module#SearchModule" },
     { path: "settings", loadChildren: "~/app/components/settings/settings.module#SettingsModule" },
     { path: "property", component: PropertyViewComponent },
-    { path: "area", component: AreaViewComponent }
+    { path: "area", component: AreaViewComponent },
+    { path: "shortlists", component: ShortlistsComponent },
+    { path: "create", component: CreateAccountComponent }
 ];
 
 @NgModule({

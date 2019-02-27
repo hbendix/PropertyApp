@@ -10,6 +10,8 @@ import { NativescriptBottomNavigationModule} from "nativescript-bottom-navigatio
 import { RouteReuseStrategy } from "@angular/router";
 import { CustomReuseStrategy } from "./custom-resuse-strategy";
 import { AreaViewComponent } from "./components/area-view/area-view.component";
+import { ShortlistsComponent } from "./components/shortlists/shortlists.component";
+import { CreateAccountComponent } from "./components/create-account/create-account.component";
 
 @NgModule({
     bootstrap: [
@@ -25,7 +27,9 @@ import { AreaViewComponent } from "./components/area-view/area-view.component";
     declarations: [
         AppComponent,
         PropertyViewComponent,
-        AreaViewComponent
+        AreaViewComponent,
+        ShortlistsComponent,
+        CreateAccountComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA

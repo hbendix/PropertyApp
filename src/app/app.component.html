@@ -17,17 +17,34 @@ http://docs.telerik.com/devtools/nativescript-ui/Controls/NativeScript/SideDrawe
                     <Label col="0" text="&#xf015;" class="fa"></Label>
                     <Label col="1" text="Home" class="p-r-10"></Label>
                 </GridLayout>
-
-                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/area')" (tap)="onNavItemTap('/area')">
-                    <Label col="0" text="&#xf015;" class="fa"></Label>
-                    <Label col="1" text="Area" class="p-r-10"></Label>
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/shortlists')" (tap)="onNavItemTap('/shortlists')">
+                    <Label col="0" text="&#xf0ca;" class="fas"></Label>
+                    <Label col="1" text="My Shortlists" class="p-r-10"></Label>
                 </GridLayout>
+
+                <!-- <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/area')" (tap)="onNavItemTap('/area')">
+                    <Label col="0" text="&#xf5a0;" class="fas"></Label>
+                    <Label col="1" text="Shortlisted Area" class="p-r-10"></Label>
+                </GridLayout>
+
+                <GridLayout columns="auto, *" class="sidedrawer-list-item">
+                    <Label col="0" text="&#xf015;" class="fa"></Label>
+                    <Label col="1" text="Shortlisted Property" class="p-r-10"></Label>
+                </GridLayout> -->
 
                 <StackLayout class="hr-light"></StackLayout>
 
                 <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/settings')" (tap)="onNavItemTap('/settings')">
                     <Label col="0" text="&#xf013;" class="fa"></Label>
-                    <Label col="1" text="Settings" class="p-r-10"></Label>
+                    <Label col="1" text="My Account" class="p-r-10"></Label>
+                </GridLayout>
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/settings')" (tap)="logout()">
+                    <Label col="0" text="&#xf2f5;" class="fas"></Label>
+                    <Label col="1" text="Logout" class="p-r-10"></Label>
+                </GridLayout>
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/settings')" (tap)="login()">
+                    <Label col="0" text="&#xf2f5;" class="fas"></Label>
+                    <Label col="1" text="Log in" class="p-r-10"></Label>
                 </GridLayout>
             </StackLayout>
         </ScrollView>

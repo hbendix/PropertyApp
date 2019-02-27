@@ -1,5 +1,6 @@
-<ActionBar title="{{area.areaName}} details" class="action-bar">
+<ActionBar class="action-bar">
     <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()"></NavigationButton>
+    <Label class="action-bar-title" text="{{area.areaName}} details"></Label>
 </ActionBar>
 
 <FAB (tap)="fabTap()" rippleColor="#f1f1f1" row="1" class="fab-button" icon="res://ic_star"
