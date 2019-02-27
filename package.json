@@ -26,6 +26,7 @@
     "@angular/router": "~7.0.0",
     "nativescript-angular": "~7.0.0",
     "nativescript-bottom-navigation": "^1.4.4",
+    "nativescript-drop-down": "^4.0.1",
     "nativescript-floatingactionbutton": "^5.0.0",
     "nativescript-geolocation": "^4.3.1",
     "nativescript-mapbox": "4.3.1",

@@ -4,6 +4,7 @@
     because ActionItems are shown on the right side of the ActionBar
     -->
     <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+
     <!-- 
     Use the ActionItem for IOS with position set to left. Using the
     NavigationButton as a side-drawer button in iOS is not possible,
@@ -13,6 +14,7 @@
         ios.position="right">
     </ActionItem>
     <Label class="action-bar-title" text="Home"></Label>
+    <Button class="btn btn-primary btn-active" id="button" text="Tap me!" (tap)="onTap($event)"></Button>
 </ActionBar>
 
 <GridLayout rows="*, auto">
@@ -33,15 +35,24 @@
         (mapReady)="onMapReady($event)">
     </Mapbox>
     </StackLayout>
-    <!-- <BottomNavigation activeColor="white"
-                      inactiveColor="white"
-                      backgroundColor = #3A53FF
-                      keyLineColor="black"
-                      (tabSelected)="onBottomNavigationTabSelected($event)"
-                      (tabPressed)="onBottomNavigationTabPressed($event)"
-                      row="1">
-        <BottomNavigationTab title="Filter" icon="ic_filter"></BottomNavigationTab>
-        <BottomNavigationTab title="Current Location" icon="ic_current"></BottomNavigationTab>
-        <BottomNavigationTab title="Area" icon="ic_area"></BottomNavigationTab>
-    </BottomNavigation> -->
+    <!-- <StackLayout row="1" orientation="horizontal" backgroundColor= #3F51B5>
+       <Button text="Filter" 
+                     width="33%"
+                     height="60"
+                     color= "White"
+                     backgroundColor= #3F51B5>
+       </Button>
+       <Button text="Current Location" 
+                     width="33%"
+                     height="60"
+                     color= "White"
+                     backgroundColor= #3F51B5>
+       </Button>
+       <Button text="Statistics" 
+                     width="33%"
+                     height="60"
+                     color= "White"
+                     backgroundColor= #3F51B5>
+       </Button>
+</StackLayout> -->
 </GridLayout>

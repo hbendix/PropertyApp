@@ -1,0 +1,75 @@
+<ActionBar title="Filter" class="action-bar">
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()"></NavigationButton>
+</ActionBar>
+<GridLayout rows="*,60">
+       <ScrollView row="0">
+              <WrapLayout orientation="horizontal">
+                     <StackLayout orientation="vertical" backgroundColor= "White">
+                            <Label text="Postcode:"
+                                   col="0"
+                                   fontSize="18"
+                                   verticalAlignment="bottom">
+                            </Label>
+                            <TextField [text]=""
+                                   col="1">
+                            </TextField>-->
+                            <Label text="Minimum Price:"
+                                   col="0"
+                                   fontSize="18"
+                                   verticalAlignment="bottom">
+                            </Label>
+                            <TextField [text]=""
+                                   col="1">
+                            </TextField>-->
+                            <Label text="Maximum Price:"
+                                   col="0"
+                                   fontSize="18"
+                                   verticalAlignment="bottom">
+                            </Label>
+                            <TextField [text]=""
+                                   col="1">
+                            </TextField>-->
+                            <Label text="House Type:"
+                                   col="0"
+                                   fontSize="18"
+                                   verticalAlignment="bottom">
+                            </Label>
+                            <TextField [text]=""
+                                   col="1">
+                            </TextField>-->
+                            <Label text="Bedroom Count:"
+                                   col="0"
+                                   fontSize="18"
+                                   verticalAlignment="bottom">
+                            </Label>
+                            <TextField [text]=""
+                                   col="1">
+                            </TextField>-->
+                            <Button text="Filter" 
+                                          width="100%"
+                                          height="60">
+                            </Button>
+                     </StackLayout>
+              </WrapLayout>
+       </ScrollView>
+       <StackLayout row="1" orientation="horizontal" backgroundColor= #3F51B5>
+              <Button text="Filter" 
+                            width="33%"
+                            height="60"
+                            color= "White"
+                            backgroundColor= #3F51B5>
+              </Button>
+              <Button text="Current Location" 
+                            width="33%"
+                            height="60"
+                            color= "White"
+                            backgroundColor= #3F51B5>
+              </Button>
+              <Button text="Statistics" 
+                            width="33%"
+                            height="60"
+                            color= "White"
+                            backgroundColor= #3F51B5>
+              </Button>
+       </StackLayout>
+</GridLayout>

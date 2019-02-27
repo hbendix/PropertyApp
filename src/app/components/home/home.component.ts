@@ -16,7 +16,6 @@ import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 import { environment } from "../../../environments/environment";
 import { UserLocation } from "../../models/user";
 import { PropertyViewService } from "../../services/property-view.service";
-import { BottomNavigation, BottomNavigationTab, OnTabPressedEventData, OnTabSelectedEventData } from 'nativescript-bottom-navigation';
 import { MapViewService } from "../../services/map-view.service";
 import { UserService } from "../../services/user.service";
 
@@ -152,6 +151,22 @@ export class HomeComponent implements OnInit  {
             queryParams: {
                 "lat": marker.lat,
                 "long": marker.lng,
+                "prevLocation": "/home"
+            }
+        });
+    }
+
+    onTap() {
+        console.log("button pressed")
+        this.showFilterView();
+    }
+
+    showFilterView(): void {
+        this.routerExtensions.navigate(["/filter"], {
+            transition: {
+                name: "fade"
+            },
+            queryParams: {
                 "prevLocation": "/home"
             }
         });
