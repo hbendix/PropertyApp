@@ -5,6 +5,7 @@ import { RouterExtensions } from "nativescript-angular/router";
 import { ActivatedRoute } from "@angular/router";
 import { registerElement } from 'nativescript-angular/element-registry';
 import { ItemEventData } from "tns-core-modules/ui/list-view"
+import { NotificationService } from "~/app/services/notification.service";
 registerElement('Fab', () => require('nativescript-floatingactionbutton').Fab);
 
 @Component({
@@ -28,7 +29,8 @@ export class PropertyViewComponent implements OnInit {
 
   constructor(private propertyViewService: PropertyViewService,
     private route: ActivatedRoute,
-    private routerExtensions: RouterExtensions) {
+    private routerExtensions: RouterExtensions,
+    private notificationService: NotificationService) {
     this.route.queryParams.subscribe(params => {
       this.long = params.long;
       this.lat = params.lat;
@@ -65,13 +67,17 @@ export class PropertyViewComponent implements OnInit {
           this.isList = false;
         }
       }, (err) => {
-        console.log(`Error retrieving Property: ${err}`);
+        this.notificationService.fireNotification(`Error getting property: ${ err.status } - ${ err.statusText }`, false); 
+        console.log(err);
       }
     );
   }
 
   private sortStats () {
     this.stats = [];
+
+    
+
     if (this.property.bedroomNumber > 0) {
       this.stats.push({
         "name": "Bedrooms",

@@ -1,7 +1,7 @@
 .fab-button {
 	height: 50;
 	width: 50;
-	margin: 140 15;
+	margin: 160 15;
 	background-color: #ff4081;
 	horizontal-align: right;
 	vertical-align: top;
@@ -40,7 +40,7 @@
     border-top-right-radius: 60px;
     margin: 0px 10px;
     border-width: 2px;
-    border-color: black;
+    border-color: #707070;
 }
 
 

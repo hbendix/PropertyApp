@@ -19,7 +19,7 @@ export class MapViewService {
     public pullMapMarkers(long: Number, lat: Number, radius: Number) {       
         const _url = `${environment.server.url}/markers?lat=${lat}&long=${long}&radius=${radius}`;
 
-        return this.http.get(_url);        
+        return this.http.post(_url, {});        
     }
 
     public getMapMarkers () {

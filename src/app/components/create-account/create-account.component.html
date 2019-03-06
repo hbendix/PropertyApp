@@ -2,17 +2,26 @@
     <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()"></NavigationButton>
     <Label class="action-bar-title" text="Create Account"></Label>
 </ActionBar>
-<StackLayout>
-        <RadDataForm [source]="album">
-            <TKEntityProperty tkDataFormProperty name="albumName" displayName="Name of Album"
-                index="0"></TKEntityProperty>
-            <TKEntityProperty tkDataFormProperty name="bandName" displayName="Name of Band"
-                index="1"></TKEntityProperty>
-            <TKEntityProperty tkDataFormProperty name="year" displayName="Release Year"
-                index="2"></TKEntityProperty>
-            <TKEntityProperty tkDataFormProperty name="myRating" displayName="My Rating"
-                index="3"></TKEntityProperty>
-            <TKEntityProperty tkDataFormProperty name="owned" displayName="Do I Own This?"
-                index="4"></TKEntityProperty>
-        </RadDataForm>
+<StackLayout orientation="vertical" *ngIf="createForm !== null" margin="20">
+        <Label text="Join Habitapp today!" horizontalAlignment="center" class="join-header"></Label>
+        <TextView editable="false" style=" background-color: transparent;
+        border-color: transparent;">
+            <FormattedString>
+                <Span text="And join a growing community of first time buyers, property investors and portfolio builders!" horizontalAlignment="center" class="join-subheader"></Span>
+            </FormattedString>
+        </TextView>
+    <StackLayout orientation="vertical" [formGroup]="createForm">
+        <TextField formControlName="username" hint="Username"></TextField>
+        <Label class="action-bar-title" text="Must have a value!" *ngIf="username.invalid && username.touched" style="color:red;font-style:italic;"></Label>
+        
+        <TextField formControlName="password" hint="Password" secure="true"></TextField>
+        <Label class="action-bar-title" text="Must have a value!" *ngIf="password.invalid && password.touched" style="color:red;font-style:italic;"></Label>
+
+        <TextField formControlName="confirmPassword" hint="Confirm Password" secure="true"></TextField>
+        <Label  class="action-bar-title" text="Passwords must match!" 
+                *ngIf="createForm.value.password !== createForm.value.confirmPassword && confirmPassword.touched" 
+                style="color:red;font-style:italic;"></Label>
+
+        <Button text="Create Account" [disabled]="createForm.invalid" (tap)="create()"></Button>
     </StackLayout>
+</StackLayout>
