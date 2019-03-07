@@ -29,18 +29,6 @@ export class FilterViewComponent implements OnInit {
     
   }
 
-  public onchange() {
-    console.log(`Drop Down selected index changed from ${args.oldIndex} to ${args.newIndex}`);
-  }
-
-  public onopen() {
-    console.log("Drop Down opened.");
-  }
-
-  public onclose() {
-    console.log("Drop Down closed.");
-  }
-
   public onNavBtnTap() {
     this.routerExtensions.navigate(['home'], {
       transition: {
