@@ -21,6 +21,7 @@ import { UserService } from "../../services/user.service";
 import { View } from 'ui/core/view';
 
 import * as app from "tns-core-modules/application";
+import { NotificationService } from "~/app/services/notification.service";
 
 registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView);
 
@@ -42,7 +43,8 @@ export class HomeComponent implements OnInit  {
     constructor(public propertyViewService: PropertyViewService, 
         private routerExtensions: RouterExtensions,
         private mapViewService: MapViewService,
-        private userService: UserService) {
+        private userService: UserService,
+        private notificationService: NotificationService) {
         this.accessToken = environment.mapbox.accessToken;
         this.getUserLocation();
         this.mapboxAPI = new Mapbox();
@@ -53,55 +55,6 @@ export class HomeComponent implements OnInit  {
             enableLocationRequest();
         }
     }
-
-    // private loadMap () {
-    //     setTimeout(() => {
-    //         console.log("heerere");
-    //         this.mapboxAPI.show({
-    //             accessToken: this.accessToken,
-    //             mapStyle: MapStyle.LIGHT,
-    //             center: {
-    //                 lat: this.userLoc.latitude,
-    //                 lng: this.userLoc.longitude
-    //             },
-    //             zoomLevel: 13,
-    //             showUserLocation: true, 
-    //             hideAttribution: true, 
-    //             hideLogo: true, 
-    //             hideCompass: true, 
-    //             disableRotation: false, 
-    //             disableScroll: false, 
-    //             disableZoom: false, 
-    //             disableTilt: false, 
-    //         }).then(
-    //             showResult => {
-    //                 console.log('showResult' , showResult);
-    //                 this.map = showResult;
-    //                 // this.mapbox.nativeElement(showResult);
-    //                 this.onMapReady(showResult);
-    //             },
-    //             (error: string) => console.log("mapbox show error: " + error)
-    //         )
-    //     }, 3000);
-
-
-
-    //     <Mapbox
-    //     #map
-    //     accessToken="{{ accessToken }}"
-    //     mapStyle="dark"
-    //     latitude="{{ userLoc.lat > 0 ? userLoc.lat : 53.369690}}"
-    //     longitude="{{ userLoc.long > 0 ? userLoc.lat : -1.491650}}"
-    //     hideCompass="false"
-    //     zoomLevel="13"
-    //     showUserLocation="true"
-    //     disableZoom="false"
-    //     disableRotation="false"
-    //     disableScroll="false"
-    //     disableTilt="false"
-    //     (mapReady)="onMapReady($event)">
-    // </Mapbox>
-    // }
 
     onDrawerButtonTap(): void {
         const sideDrawer = <RadSideDrawer>app.getRootView();
@@ -136,6 +89,7 @@ export class HomeComponent implements OnInit  {
                 this.displayMarkers(res);
             },
             (err) => {
+                this.notificationService.fireNotification(`Error getting markers: ${ err.status } - ${ err.statusText }`, false); 
                 console.log(err);
             })
         )        

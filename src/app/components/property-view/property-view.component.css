@@ -1,0 +1,64 @@
+.fab-button {
+	height: 50;
+	width: 50;
+	margin: 160 15;
+	background-color: #ff4081;
+	horizontal-align: right;
+	vertical-align: top;
+}
+
+.textarea {
+    background-color: transparent;
+    border-color: transparent;
+    margin: 0 5;
+}
+
+.price-area {
+    border-color: #3F51B5;
+}
+
+.my-button {
+    background-color: #3F51B5;
+    color: white;
+}
+
+.green {
+    background-color: #4CAF50;
+}
+
+.red {
+    background-color: #F44336; 
+}
+
+.my-button:active {
+    background-color: lightslategray;
+    color:white;
+}
+
+.details-stack {
+    border-top-left-radius: 60px;
+    border-top-right-radius: 60px;
+    margin: 0px 10px;
+    border-width: 2px;
+    border-color: #707070;
+}
+
+
+.stack-card {
+    background-color: #4781FE;
+}
+
+.area-name {
+    font-size: 24px;
+    margin-left: 100px;
+    color: white;
+    padding: 16px;
+    text-align: right;
+    line-height: 100%;
+}
+
+.image {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}

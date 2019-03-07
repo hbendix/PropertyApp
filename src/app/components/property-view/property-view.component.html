@@ -1,58 +1,82 @@
-<ActionBar title="Property" class="action-bar">
-    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()"></NavigationButton>
+<ActionBar class="action-bar">
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" class="titleFont"></NavigationButton>
+    <Label class="action-bar-title" text="Property"></Label>
 </ActionBar>
-    
-<FAB (tap)="fabTap()" rippleColor="#f1f1f1" row="1" class="fab-button" icon="res://ic_star"
-    *ngIf="!isList">
+<FAB (tap)="saveProperty(property)" rippleColor="#f1f1f1" row="1" class="fab-button"
+    *ngIf="!isList" horizontalAlignment="right">
+        <Label col="0" text="&#xf0ca;" class="fas"></Label>
 </FAB>
+<StackLayout orientation="vertical" *ngIf="!isList" backgroundColor="red">
+    <AbsoluteLayout width="100%">
+        <StackLayout    width="100%" 
+                        class="image" 
+                        height="200" 
+                        backgroundImage="{{property.propertyImageUrl}}"
+                        backgroundColor="white"></StackLayout>
+                            
+        
+        <ScrollView orientation="vertical" width="100%" height="100%" margin="185 0 0 0">
+            <StackLayout class="details-stack" backgroundColor="white" margin="0">
+                <Label text="DETAILS" class="paragraphText" margin="10 30 10 30"></Label>
+                <Label text="{{property.fullAddress}}" margin="0 10 0 10" class="titleFont"></Label>
+                <TextView editable="false" class="price-area">
+                    <Span text="{{property.price}}" fontWeight="Bold" fontSize="36"></Span>
+                </TextView>
+                                
+                <StackLayout orientation="horizontal" width="100%" height="auto"
+                    backgroundColor="white">
+                    <Button text="Button" class="my-button" width="50%" height="60"
+                        text="{{property.propertyType}}">
+                    </Button>
+                    <Button text="Button" class="my-button green" width="50%" height="60"
+                        text="{{property.isForSale ? 'For sale' : 'For rent'}}">
+                    </Button>
+                </StackLayout>
+                
+
+                <Label text="STATS" margin="10"></Label>
+                <ListView class="list-group" [items]="stats" height="100%">
+                    <ng-template let-item="item">
+                        <FlexboxLayout flexDirection="row" class="list-group-item">
+                            <Label [text]="item.name" class="list-group-item-heading"
+                                verticalAlignment="center" style="width: 40%"></Label>
+                            <Label [text]="item.value" class="list-group-item-heading"
+                                verticalAlignment="center" style="width: 40%"></Label>
+                        </FlexboxLayout>
+                    </ng-template>
+                </ListView>
+
+                <Label text="TAGS" margin="10"></Label>
+                <ListView class="list-group" [items]="property.tags" height="100">
+                    <ng-template let-item="item">
+                        <FlexboxLayout flexDirection="row" class="list-group-item">
+                            <Label [text]="item" class="list-group-item-heading"
+                                verticalAlignment="center" style="width: 40%"></Label>
+                        </FlexboxLayout>
+                    </ng-template>
+                </ListView>
+            </StackLayout>
+        </ScrollView>    
+    </AbsoluteLayout>
+</StackLayout>
 <StackLayout orientation="vertical" width="100%" height="100%"
-    backgroundImage="{{property.propertyImageUrl}}" class="image" *ngIf="!isList">
-    <StackLayout orientation="vertical" width="100%" height="150"
-        backgroundImage="{{property.propertyImageUrl}}" class="image">
-    </StackLayout>
-    <StackLayout class="details-stack" width="100%" height="100%"
-        backgroundColor="white">
-        <Label text="DETAILS" margin="10 30 10 30"></Label>
-        <Label text="{{property.fullAddress}}" margin="0 10 0 10"></Label>
-        <TextView editable="false" class="price-area">
-            <Span text="{{property.price}}" fontWeight="Bold" fontSize="36"></Span>
+    backgroundColor="white" *ngIf="isList">
+    <StackLayout orientation="vertical" width="100%" height="100%"
+    backgroundColor="white" *ngIf="propertyList.length > 0">
+        <TextView editable="false" class="textarea">
+            <Span text="Found {{ propertyList.length }} properties at this marker!"
+                margin="1 10" fontSize="22" class="titleFont"></Span>
         </TextView>
-        <StackLayout orientation="horizontal" width="100%" height="auto"
-            backgroundColor="white">
-            <Button text="Button" class="my-button" width="50%" height="60"
-                text="{{property.propertyType}}">
-            </Button>
-            <Button text="Button" class="my-button green" width="50%" height="60"
-                text="{{property.isForSale ? 'For sale' : 'For rent'}}">
-            </Button>
-        </StackLayout>
-        <Label text="STATS" margin="30 10"></Label>
-        <ListView class="list-group" style="height:1250px" [items]="stats">
+        <ListView class="list-group" [items]="propertyList" (itemTap)="onItemTap($event)"
+            style="height:100%;" verticalAlignment="center">
             <ng-template let-item="item">
                 <FlexboxLayout flexDirection="row" class="list-group-item">
-                    <Label [text]="item.name" class="list-group-item-heading"
-                        verticalAlignment="center" style="width: 40%"></Label>
-                    <Label [text]="item.value" class="list-group-item-heading"
-                        verticalAlignment="center" style="width: 40%"></Label>
+                    <Image [src]="item.propertyThumbUrl" class="thumb img-circle"></Image>
+                    <Label [text]="item.fullAddress" class="list-group-item-heading paragraphText"
+                        style="width: 60%" textWrap="true"></Label>
                 </FlexboxLayout>
             </ng-template>
         </ListView>
     </StackLayout>
-</StackLayout>
-<StackLayout orientation="vertical" width="100%" height="100%"
-    backgroundColor="white" *ngIf="isList">
-    <TextView editable="false" class="textarea">
-        <Span text="Found {{ propertyList.length }} properties at this marker!"
-            margin="1 10" fontSize="22"></Span>
-    </TextView>
-    <ListView class="list-group" [items]="propertyList" (itemTap)="onItemTap($event)"
-        style="height:100%;" verticalAlignment="center">
-        <ng-template let-item="item">
-            <FlexboxLayout flexDirection="row" class="list-group-item">
-                <Image [src]="item.propertyThumbUrl" class="thumb img-circle"></Image>
-                <Label [text]="item.fullAddress" class="list-group-item-heading"
-                    style="width: 60%" textWrap="true"></Label>
-            </FlexboxLayout>
-        </ng-template>
-    </ListView>
+    <ActivityIndicator [busy]="isBusy" class="activity-indicator" margin="15 0 0 0" *ngIf="propertyList.length === 0"></ActivityIndicator>
 </StackLayout>

@@ -19,6 +19,27 @@
     font-family: Font Awesome 5 Free, fa-solid-900;
     font-weight: 900; 
 }
+
+.titleFont {
+    font-family: 'Oswald', Oswald-Regular, sans-serif;
+}
+
+.paragraphText {
+    font-family: 'Roboto Condensed', RobotoCondensed-Regular,  sans-serif;
+}
+
+Label {
+    font-family: 'Roboto Condensed', RobotoCondensed-Regular,  sans-serif;
+}
+
+Span {
+    font-family: 'Roboto Condensed', RobotoCondensed-Regular,  sans-serif;
+}
+
+ActionBar Label {
+    font-family: 'Oswald', Oswald-Regular, sans-serif;
+}
+
 // Common page class
 .page-content {
     .page-placeholder {
@@ -43,7 +64,7 @@ ActionBar .action-bar-title {
 }
 
  // Drawer navigation custom styles
-$sidedrawer-header-image-size: 60;
+$sidedrawer-header-image-size: 70;
 $sidedrawer-header-image-offset-top: 20;
 $sidedrawer-header-image-offset-bottom: 5;
 $sidedrawer-list-item-offset-left: 15;
@@ -71,10 +92,20 @@ $sidedrawer-list-icon-size: 20;
     }
     
     .sidedrawer-header {
+        position: relative;
+        height: $sidedrawer-header-image-size;
         background-color: $ab-background;
+        horizontal-align:center;
+        margin-bottom: 10;
 
         .sidedrawer-header-brand {
             color: $ab-color;
+        }
+
+        .ab {
+            position: absolute;
+            bottom: 0;
+            left: 0;
         }
     }
 
@@ -143,4 +174,8 @@ $sidedrawer-list-icon-size: 20;
 .my-button:active {
     background-color: lightslategray;
     color:white;
+}
+
+.hidden {
+    visibility: hidden;
 }

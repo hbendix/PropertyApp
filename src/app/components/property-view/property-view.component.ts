@@ -5,6 +5,10 @@ import { RouterExtensions } from "nativescript-angular/router";
 import { ActivatedRoute } from "@angular/router";
 import { registerElement } from 'nativescript-angular/element-registry';
 import { ItemEventData } from "tns-core-modules/ui/list-view"
+import { NotificationService } from "~/app/services/notification.service";
+import * as dialogs from "tns-core-modules/ui/dialogs";
+import { ShortlistService } from "~/app/services/shortlist.service";
+
 registerElement('Fab', () => require('nativescript-floatingactionbutton').Fab);
 
 @Component({
@@ -28,7 +32,9 @@ export class PropertyViewComponent implements OnInit {
 
   constructor(private propertyViewService: PropertyViewService,
     private route: ActivatedRoute,
-    private routerExtensions: RouterExtensions) {
+    private routerExtensions: RouterExtensions,
+    private notificationService: NotificationService,
+    private shortlistService: ShortlistService) {
     this.route.queryParams.subscribe(params => {
       this.long = params.long;
       this.lat = params.lat;
@@ -41,7 +47,7 @@ export class PropertyViewComponent implements OnInit {
     
   }
 
-  onNavBtnTap(){
+  public onNavBtnTap(){
     if ((this.isList) || (this.propertyList.length == 0)) {
       this.routerExtensions.navigate([this.prevLocation], {
         transition: {
@@ -65,13 +71,17 @@ export class PropertyViewComponent implements OnInit {
           this.isList = false;
         }
       }, (err) => {
-        console.log(`Error retrieving Property: ${err}`);
+        this.notificationService.fireNotification(`Error getting property: ${ err.status } - ${ err.statusText }`, false); 
+        console.log(err);
       }
     );
   }
 
   private sortStats () {
     this.stats = [];
+
+    
+
     if (this.property.bedroomNumber > 0) {
       this.stats.push({
         "name": "Bedrooms",
@@ -95,10 +105,27 @@ export class PropertyViewComponent implements OnInit {
     }
   }
 
-  onItemTap (args: ItemEventData) {
+  public onItemTap (args: ItemEventData) {
     this.property = this.propertyList[args.index];
     console.log(this.property);
     this.sortStats();
     this.isList = false;
+  }
+
+  public saveProperty (property: PropertyView) {
+    console.log(property);
+
+    dialogs.prompt({
+        title: "Add a name to Property?",
+        okButtonText: "Save",
+        cancelButtonText: "Skip",
+        inputType: dialogs.inputType.text
+      }).then(r => {
+        if (r.result) {
+          property.propertyName = r.text;
+        }
+
+        this.shortlistService.addPropertyToShortList(property);
+      });
   }
 }
