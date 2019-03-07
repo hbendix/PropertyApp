@@ -3,7 +3,6 @@ import { FilterViewService } from "../../services/filter-view.service";
 import { FilterView } from "../../models/filter";
 import { RouterExtensions } from "nativescript-angular/router";
 import { ActivatedRoute } from "@angular/router";
-import { SelectedIndexChangedEventData } from "nativescript-drop-down";
 
 @Component({
   selector: "ns-filter-view",
@@ -30,7 +29,7 @@ export class FilterViewComponent implements OnInit {
     
   }
 
-  public onchange(args: SelectedIndexChangedEventData) {
+  public onchange() {
     console.log(`Drop Down selected index changed from ${args.oldIndex} to ${args.newIndex}`);
   }
 
