@@ -62,3 +62,8 @@
     background-position: center;
     background-size: cover;
 }
+
+.absolute-parent {
+    height: 30%;
+    width: 100%;
+}
