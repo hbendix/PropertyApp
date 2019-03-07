@@ -10,7 +10,19 @@ export class PropertyView {
     isForRent: boolean;
     price: number;
 
-    constructor (fullAddress, propertyType, bedroomNumber, bathroomNumber, parkingSpaces, tags, propertyImageUrl,  isForSale, isForRent, price) {
+    propertyName: string;
+
+    constructor (fullAddress, 
+        propertyType, 
+        bedroomNumber, 
+        bathroomNumber, 
+        parkingSpaces, 
+        tags, 
+        propertyImageUrl, 
+         isForSale, 
+        isForRent, 
+        price, 
+        propertyName) {
             this.fullAddress = fullAddress;             // string
             this.propertyType = propertyType;           // string
             this.bedroomNumber = bedroomNumber;         // number
@@ -21,6 +33,7 @@ export class PropertyView {
             this.isForSale = isForSale;                 // boolean
             this.isForRent = isForRent;                 // boolean
             this.price = price;                         // number
+            this.propertyName = propertyName; 
     }
 }
 

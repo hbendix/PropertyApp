@@ -31,6 +31,10 @@ export class AppComponent implements OnInit {
         private userService: UserService,
         private notificationService: NotificationService) {
         this.isLoggedIn = this.authService.isLoggedIn();
+
+        if (this.isLoggedIn) {
+            this.username = this.authService.getLoggedInUser();
+        }
         // Use the component constructor to inject services.
     }
 
@@ -77,6 +81,7 @@ export class AppComponent implements OnInit {
             okButtonText: "Submit",
             cancelButtonText: "Create Account",
             neutralButtonText: "Close",
+            defaulText: "Enter your username...",
             userNameHint: "Enter your username",
             passwordHint: "Enter your password",
             userName: "",
@@ -93,7 +98,6 @@ export class AppComponent implements OnInit {
                 const sideDrawer = <RadSideDrawer>app.getRootView();
                 sideDrawer.closeDrawer();
             } else if (r.result) {
-                console.log(r.userName, r.password);
                 if ((r.userName === '') || (r.password === '')) {
                     return this.notificationService.fireNotification(`Missing details. 🤔`, false);
                 }
@@ -103,8 +107,8 @@ export class AppComponent implements OnInit {
                 this.userService.loginUser(user)
                 .subscribe(
                     (res) => {
+                        this.authService.logIn(res.token, user.username);                        
                         this.notificationService.fireNotification(`Successfully logged in! ⭐ Hi ${ user.username } 👋`, true);
-                        this.authService.logIn(res, user.username);                        
                     }, (err) => {
                         this.notificationService.fireNotification(`Error creating account: ${ err.status } - ${ err.statusText }`, false); 
                     }

@@ -8,11 +8,8 @@ import * as appSettings from "tns-core-modules/application-settings";
 export class AuthService {
     authObservable = new Subject();
 
-    loggedIn: boolean;
-    token: string;
-
     public isLoggedIn (): boolean {
-        return this.loggedIn;
+        return appSettings.getBoolean('loggedIn');
     }
 
     public logIn (token: string, username: string) {
@@ -20,21 +17,18 @@ export class AuthService {
         appSettings.setString('token', token);
         appSettings.setString('username', username);
 
-        this.token = token;
-        this.loggedIn = appSettings.getBoolean('loggedIn');
+        
 
         this.authObservable.next(true);
     }
 
     public logOut () {
         appSettings.clear();
-        this.loggedIn = false;
-
         this.authObservable.next(false);
     }
 
     public getUserToken () {
-        return this.token;
+        return appSettings.getString('token');
     }
 
     public getLoggedInUser(): string {
