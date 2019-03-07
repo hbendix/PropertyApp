@@ -41,4 +41,24 @@ export class FilterViewComponent implements OnInit {
   public onclose() {
     console.log("Drop Down closed.");
   }
+
+  public onNavBtnTap() {
+    this.routerExtensions.navigate(['home'], {
+      transition: {
+          name: "fade"
+      }
+    });
+  }
+
+  /*displayFilteredMap(): void {
+    this.routerExtensions.navigate(["/home"], {
+        transition: {
+            name: "fade"
+        },
+        queryParams: {
+            "Postcode": postcode"
+        }
+    });
+  }*/
 }
+

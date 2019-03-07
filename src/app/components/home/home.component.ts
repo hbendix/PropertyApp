@@ -204,13 +204,44 @@ export class HomeComponent implements OnInit  {
         });
     }
 
-    onTap() {
-        console.log("button pressed")
+    onFilterTap() {
+        console.log("Filter button pressed")
         this.showFilterView();
+    }
+
+    onCurrentTap() {
+        console.log("Current button pressed")
+    }
+
+    onAreaTap() {
+        console.log("Area button pressed")
+        this.showAreaView();
     }
 
     showFilterView(): void {
         this.routerExtensions.navigate(["/filter"], {
+            transition: {
+                name: "fade"
+            },
+            queryParams: {
+                "prevLocation": "/home"
+            }
+        });
+    }
+
+    showPropertySearchView(): void {
+        this.routerExtensions.navigate(["/property-search"], {
+            transition: {
+                name: "fade"
+            },
+            queryParams: {
+                "prevLocation": "/home"
+            }
+        });
+    }
+
+    showAreaView(): void {
+        this.routerExtensions.navigate(["/area"], {
             transition: {
                 name: "fade"
             },

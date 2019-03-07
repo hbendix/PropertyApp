@@ -7,6 +7,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { PropertyViewComponent } from "./components/property-view/property-view.component";
 import { FilterViewComponent } from "./components/filter-view/filter-view.component";
+import { PropertySearchViewComponent } from "./components/property-search/property-search.component";
 import { NativescriptBottomNavigationModule} from "nativescript-bottom-navigation/angular";
 import { RouteReuseStrategy } from "@angular/router";
 import { CustomReuseStrategy } from "./custom-resuse-strategy";
@@ -29,6 +30,7 @@ import { CreateAccountComponent } from "./components/create-account/create-accou
         AppComponent,
         PropertyViewComponent,
         FilterViewComponent,
+        PropertySearchViewComponent,
         AreaViewComponent,
         ShortlistsComponent,
         CreateAccountComponent

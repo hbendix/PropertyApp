@@ -14,11 +14,10 @@
         ios.position="right">
     </ActionItem>
     <Label class="action-bar-title" text="Home"></Label>
-    <Button class="btn btn-primary btn-active" id="button" text="Tap me!" (tap)="onTap($event)"></Button>
 </ActionBar>
 
 <GridLayout rows="*, auto">
-    <StackLayout row="0" id="map" name="map" map>
+    <StackLayout row="0" id="map" height="90%" name="map" map>
         <Mapbox
             #map
             accessToken="{{ accessToken }}"
@@ -37,24 +36,36 @@
             (mapReady)="onMapReady($event)">
         </Mapbox>
     </StackLayout>
-    <!-- <StackLayout row="1" orientation="horizontal" backgroundColor= #3F51B5>
-       <Button text="Filter" 
+    <StackLayout row="1" orientation="horizontal" height="10%" backgroundColor= #3F51B5>
+       <Button text="&#xf0b0;" 
+       class="fas"
                      width="33%"
                      height="60"
                      color= "White"
-                     backgroundColor= #3F51B5>
+                     backgroundColor= #3F51B5
+                     id="filterButton"
+                    (tap)="onFilterTap()"
+                     >
        </Button>
-       <Button text="Current Location" 
+       <Button text="&#xf124;" 
+       class="fas"
                      width="33%"
                      height="60"
                      color= "White"
-                     backgroundColor= #3F51B5>
+                     backgroundColor= #3F51B5
+                     id="currentButton"
+                    (tap)="onCurrentTap()"
+                    >
        </Button>
-       <Button text="Statistics" 
+       <Button text="&#xf1fe;" 
+       class="fas"
                      width="33%"
                      height="60"
                      color= "White"
-                     backgroundColor= #3F51B5>
+                     backgroundColor= #3F51B5
+                     id="areaButton"
+                    (tap)="onAreaTap()"
+                    >
        </Button>
-</StackLayout> -->
+</StackLayout>
 </GridLayout>

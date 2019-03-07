@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { FilterView } from "../models/filter";
+import { PropertySearchView } from "../models/propertySearch";
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
@@ -7,9 +7,9 @@ import { environment } from '../../environments/environment';
     providedIn: "root"
 })
 
-export class FilterViewService {
+export class PropertySearchViewService {
 
-    toReturn: FilterView;
+    toReturn: PropertySearchView;
 
     constructor(private http: HttpClient) {}
 }

@@ -6,6 +6,7 @@ import { FilterViewComponent } from "../app/components/filter-view/filter-view.c
 import { AreaViewComponent } from "./components/area-view/area-view.component";
 import { ShortlistsComponent } from "./components/shortlists/shortlists.component";
 import { CreateAccountComponent } from "./components/create-account/create-account.component";
+import { PropertySearchViewComponent } from "./components/property-search/property-search.component";
 
 const routes: Routes = [
     { path: "", redirectTo: "/home", pathMatch: "full" },
@@ -14,6 +15,7 @@ const routes: Routes = [
     { path: "settings", loadChildren: "~/app/components/settings/settings.module#SettingsModule" },
     { path: "property", component: PropertyViewComponent },
     { path: "filter", component: FilterViewComponent },
+    { path: "property-search", component: PropertySearchViewComponent },
     { path: "area", component: AreaViewComponent },
     { path: "shortlists", component: ShortlistsComponent },
     { path: "create", component: CreateAccountComponent }

@@ -17,11 +17,15 @@ http://docs.telerik.com/devtools/nativescript-ui/Controls/NativeScript/SideDrawe
                     <Label col="0" text="&#xf015;" class="fa"></Label>
                     <Label col="1" text="Home" class="p-r-10"></Label>
                 </GridLayout>
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/property-search')" (tap)="onNavItemTap('/property-search')">
+                    <Label col="0" text="&#xf002;" class="fas"></Label>
+                    <Label col="1" text="Search" class="p-r-10"></Label>
+                </GridLayout>
                 <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/shortlists')" (tap)="onNavItemTap('/shortlists')">
                     <Label col="0" text="&#xf0ca;" class="fas"></Label>
                     <Label col="1" text="My Shortlists" class="p-r-10"></Label>
                 </GridLayout>
-
+                
                 <!-- <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/area')" (tap)="onNavItemTap('/area')">
                     <Label col="0" text="&#xf5a0;" class="fas"></Label>
                     <Label col="1" text="Shortlisted Area" class="p-r-10"></Label>
