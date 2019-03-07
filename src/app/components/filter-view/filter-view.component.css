@@ -1,0 +1,34 @@
+.textarea {
+    background-color: transparent;
+    border-color: transparent;
+    margin: 0 5;
+}
+
+.price-area {
+    border-color: #3F51B5;
+}
+
+.my-button {
+    background-color: #3F51B5;
+    color: white;
+}
+
+.green {
+    background-color: #4CAF50;
+}
+
+.red {
+    background-color: #F44336; 
+}
+
+.my-button:active {
+    background-color: lightslategray;
+    color:white;
+}
+
+.form {
+    margin-left: 30;
+    margin-right: 30;
+    flex-grow: 2;
+    vertical-align: middle;
+  }
