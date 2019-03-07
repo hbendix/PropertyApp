@@ -29,7 +29,7 @@ export class MapViewService {
         if (this.isBeingFilered) {
             return this.http.post(_url, this.filterBody);
         } else {
-            return this.http.get(_url);        
+            return this.http.post(_url, {});        
         }
 
     }

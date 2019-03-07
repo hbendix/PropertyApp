@@ -3,7 +3,7 @@
     <Label class="action-bar-title" text="Property"></Label>
 </ActionBar>
 <FAB (tap)="saveProperty(property)" rippleColor="#f1f1f1" row="1" class="fab-button"
-    *ngIf="!isList" horizontalAlignment="right">
+    *ngIf="!isList" horizontalAlignment="right" icon="res://ic_star" >
         <Label col="0" text="&#xf0ca;" class="fas"></Label>
 </FAB>
 <StackLayout orientation="vertical" *ngIf="!isList" backgroundColor="red">
