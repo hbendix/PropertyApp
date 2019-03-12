@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, OnDestroy } from "@angular/core";
 import { PropertyViewService } from "../../services/property-view.service";
 import { PropertyView } from "../../models/property";
 import { RouterExtensions } from "nativescript-angular/router";
@@ -17,7 +17,7 @@ registerElement('Fab', () => require('nativescript-floatingactionbutton').Fab);
   styleUrls: ["./property-view.component.css"],
   moduleId: module.id
 })
-export class PropertyViewComponent implements OnInit {
+export class PropertyViewComponent implements OnInit, OnDestroy {
 
   @Input()
   private long: Number;
@@ -43,12 +43,11 @@ export class PropertyViewComponent implements OnInit {
     this.loadProperty();
   }
 
-  ngOnInit() {
-    
-  }
+  ngOnInit() {}
 
   public onNavBtnTap(){
     if ((this.isList) || (this.propertyList.length == 0)) {
+      this.propertyViewService.isViewingShortList = false;    
       this.routerExtensions.navigate([this.prevLocation], {
         transition: {
             name: "fade"
@@ -60,28 +59,31 @@ export class PropertyViewComponent implements OnInit {
   }
 
   private loadProperty () {
-    this.propertyViewService.getPropertyModel(this.long, this.lat)
-      .subscribe((res) => {
-        if (res[1]) {
-          this.propertyList = <any>res;
-          this.isList = true;
-        } else {
-          this.property = <any>res[0];
-          this.sortStats();
-          this.isList = false;
+    if (this.propertyViewService.isViewingShortList) {
+      this.property = this.propertyViewService.toView;
+      this.sortStats();
+      this.isList = false;
+    } else {
+      this.propertyViewService.getPropertyModel(this.long, this.lat)
+        .subscribe((res) => {
+          if (res[1]) {
+            this.propertyList = <any>res;
+            this.isList = true;
+          } else {
+            this.property = <any>res[0];
+            this.sortStats();
+            this.isList = false;
+          }
+        }, (err) => {
+          this.notificationService.fireNotification(`Error getting property: ${ err.status } - ${ err.statusText }`, false); 
+          console.log(err);
         }
-      }, (err) => {
-        this.notificationService.fireNotification(`Error getting property: ${ err.status } - ${ err.statusText }`, false); 
-        console.log(err);
-      }
-    );
+      );
+    }
   }
 
   private sortStats () {
     this.stats = [];
-
-    
-
     if (this.property.bedroomNumber > 0) {
       this.stats.push({
         "name": "Bedrooms",
@@ -125,7 +127,21 @@ export class PropertyViewComponent implements OnInit {
           property.propertyName = r.text;
         }
 
-        this.shortlistService.addPropertyToShortList(property);
+        this.shortlistService.addPropertyToShortList(property)
+          .subscribe(
+            (res) => {
+              this.notificationService.fireNotification('Added to your shortlists!', true);
+            }, (err) => {
+              this.notificationService.fireNotification(`Error adding to your shortlist ${ err.status } ${ err.statusText }`, true);
+            }
+          );
       });
+  }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    this.propertyViewService.isViewingShortList = false;
+    console.log(this.propertyViewService.isViewingShortList);
   }
 }
