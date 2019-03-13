@@ -6,59 +6,59 @@
     *ngIf="!isList" horizontalAlignment="right">
         <Label col="0" text="&#xf0ca;" class="fas"></Label>
 </FAB>
-<StackLayout orientation="vertical" *ngIf="!isList" backgroundColor="red">
-    <AbsoluteLayout width="100%">
-        <StackLayout    width="100%" 
-                        class="image" 
-                        height="200" 
-                        backgroundImage="{{property.propertyImageUrl}}"
-                        backgroundColor="white"></StackLayout>
-                            
-        
-        <ScrollView orientation="vertical" width="100%" height="100%" margin="185 0 0 0">
-            <StackLayout class="details-stack" backgroundColor="white" margin="0">
-                <Label text="DETAILS" class="paragraphText" margin="10 30 10 30"></Label>
-                <Label text="{{property.fullAddress}}" margin="0 10 0 10" class="titleFont"></Label>
-                <TextView editable="false" class="price-area">
-                    <Span text="{{property.price}}" fontWeight="Bold" fontSize="36"></Span>
+<GridLayout class="page"  *ngIf="!isList" >
+    <ScrollView #scrollView (scroll)="onScroll($event, scrollView, topView)">
+        <StackLayout>
+            <StackLayout #topView height="250" style="background-image: url('{{property.propertyImageUrl}}'); background-repeat: no-repeat; background-position: center; background-size: cover;">
+                <Label text="{{property.isForSale ? 'For sale' : 'For rent'}}"
+                    class="forSale" textAlignment="right" width=""
+                    horizontalAlignment="right" marginTop="10"></Label>
+            </StackLayout>
+            <StackLayout width="100%" backgroundColor="white" padding="10"class="border">
+                <TextView editable="false"style="background-color: transparent;
+                        border-color: transparent;">
+                    <Span text="&#xf5a0; {{property.fullAddress}}" class="fas" fontWeight="300"
+                        fontSize="14" color="#707070" ></Span>
                 </TextView>
-                                
-                <StackLayout orientation="horizontal" width="100%" height="auto"
-                    backgroundColor="white">
-                    <Button text="Button" class="my-button" width="50%" height="60"
-                        text="{{property.propertyType}}">
-                    </Button>
-                    <Button text="Button" class="my-button green" width="50%" height="60"
-                        text="{{property.isForSale ? 'For sale' : 'For rent'}}">
-                    </Button>
-                </StackLayout>
-                
-
+                <TextView editable="false" class="price-area" style="border-color: #707070;">
+                    <Span text="{{property.price}}" fontWeight="Bold"
+                        fontSize="36"></Span>
+                </TextView>
                 <Label text="STATS" margin="10"></Label>
-                <ListView class="list-group" [items]="stats" height="100%">
-                    <ng-template let-item="item">
-                        <FlexboxLayout flexDirection="row" class="list-group-item">
-                            <Label [text]="item.name" class="list-group-item-heading"
-                                verticalAlignment="center" style="width: 40%"></Label>
-                            <Label [text]="item.value" class="list-group-item-heading"
-                                verticalAlignment="center" style="width: 40%"></Label>
-                        </FlexboxLayout>
-                    </ng-template>
-                </ListView>
+                <Label text="{{property.bedroomNumber}} Beds" textAlignment="left"
+                    margin="10" class="stats"></Label>
+                <Label text="{{property.bedroomNumber}} Parking Spaces" textAlignment="left"
+                    margin="10" class="stats"></Label>
+                <Label text="{{property.bedroomNumber}} Bathrooms" textAlignment="left"
+                    margin="10" class="stats"></Label>
 
                 <Label text="TAGS" margin="10"></Label>
-                <ListView class="list-group" [items]="property.tags" height="100">
-                    <ng-template let-item="item">
+                    <ScrollView orientation="horizontal">
+                        <GridLayout class="m-15" columns="auto auto auto auto auto auto">
+                            <Label  width="auto" 
+                                    textAlignment="center"
+                                    *ngFor="let item of property.tags; let i = index" 
+                                    text="{{item}}" 
+                                    height="30" 
+                                    class="h3 m-15 pill" 
+                                    col="{{i}}"></Label>
+                        </GridLayout>
+                    </ScrollView>
+
+                <Label text="COMMENTS" margin="10"></Label>
+                <ListView class="list-group" [items]="property.tags" (itemTap)="onItemTap($event)"
+                    style="height:1250px">
+                    <ng-template let-country="item">
                         <FlexboxLayout flexDirection="row" class="list-group-item">
-                            <Label [text]="item" class="list-group-item-heading"
-                                verticalAlignment="center" style="width: 40%"></Label>
+                            <Label [text]="country" class="list-group-item-heading"
+                                verticalAlignment="center" style="width: 60%"></Label>
                         </FlexboxLayout>
                     </ng-template>
                 </ListView>
             </StackLayout>
-        </ScrollView>    
-    </AbsoluteLayout>
-</StackLayout>
+        </StackLayout>
+    </ScrollView>
+</GridLayout>
 <StackLayout orientation="vertical" width="100%" height="100%"
     backgroundColor="white" *ngIf="isList">
     <StackLayout orientation="vertical" width="100%" height="100%"

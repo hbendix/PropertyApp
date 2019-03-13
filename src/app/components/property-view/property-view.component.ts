@@ -8,7 +8,9 @@ import { ItemEventData } from "tns-core-modules/ui/list-view"
 import { NotificationService } from "~/app/services/notification.service";
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import { ShortlistService } from "~/app/services/shortlist.service";
-
+import { ScrollView, ScrollEventData } from 'tns-core-modules/ui/scroll-view';
+import { Image } from 'tns-core-modules/ui/image';
+import { View } from 'tns-core-modules/ui/core/view';
 registerElement('Fab', () => require('nativescript-floatingactionbutton').Fab);
 
 @Component({
@@ -137,6 +139,21 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
           );
       });
   }
+
+  onScroll(event: ScrollEventData, scrollView: ScrollView, topView: View) {
+    // If the header content is still visiible
+    // console.log(scrollView.verticalOffset);
+    if (scrollView.verticalOffset < 250) {
+        const offset = scrollView.verticalOffset / 2;
+        if (scrollView.ios) {
+            // iOS adjust the position with an animation to create a smother scrolling effect. 
+            topView.animate({ translate: { x: 0, y: offset } }).then(() => { }, () => { });
+        } else {
+            // Android, animations are jerky so instead just adjust the position without animation.
+            topView.translateY = Math.floor(offset);
+        }
+    }
+}
 
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
