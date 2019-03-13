@@ -204,4 +204,8 @@ export class HomeComponent implements OnInit  {
             }
         });
     }
+
+    /*setFilterForMap(filter) {
+        this.mapViewService.setFilterBody(filter);
+    }*/
 }

@@ -1,24 +1,12 @@
 <ActionBar title="Search" class="action-bar">
-    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()"></NavigationButton>
-</ActionBar>
-<StackLayout class="form">
-       <StackLayout class="input-field">
-              <TextField class="input" hint="Postcode"></TextField>
-       </StackLayout>   
-       <StackLayout class="input-field">
-              <TextField class="input" hint="Minimum Price" keyboardType="number"></TextField>
-       </StackLayout>
-       <StackLayout class="input-field">
-              <TextField class="input" hint="Maximum Price" keyboardType="number"></TextField>
-       </StackLayout>
-       <StackLayout class="input-field">
-              <TextField class="input" hint="House Type"></TextField>
-       </StackLayout>
-       <StackLayout class="input-field">
-              <TextField class="input" hint="Bedroom Count"></TextField>
-       </StackLayout>
-       <Button text="Search" 
-              width="100%"
-              height="60">
-       </Button>
-</StackLayout>
+       <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()"></NavigationButton>
+       <Label class="action-bar-title" text="Search Properties"></Label>
+   </ActionBar>
+   <StackLayout orientation="vertical" [formGroup]="searchForm">
+          <TextField formControlName="postcode" hint="Postcode"></TextField>
+          <TextField formControlName="minPrice" hint="Min Price" keyboardType="number"></TextField>
+          <TextField formControlName="maxPrice" hint="Max Price" keyboardType="number"></TextField>
+          <TextField formControlName="houseType" hint="House Type"></TextField>
+          <TextField formControlName="bedCount" hint="Bedroom Count" keyboardType="number"></TextField>
+          <Button text="Search" (tap)="searchProperties()"></Button>
+   </StackLayout>

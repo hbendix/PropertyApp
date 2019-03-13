@@ -1,11 +1,11 @@
 export class PropertySearchView {
     postcode: string;
-    minPrice: string;
-    maxPrice: string;
+    minPrice: number;
+    maxPrice: number;
     houseType: string;
     bedCount: number;
 
-    constructor (postcode: string, min: string, max: string, house: string, bed: number) {
+    constructor (postcode: string, min: number, max: number, house: string, bed: number) {
         this.postcode = postcode;       // string
         this.minPrice = min;            // string
         this.maxPrice = max;            // string

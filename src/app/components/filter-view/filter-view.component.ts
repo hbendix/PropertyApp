@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { FilterViewService } from "../../services/filter-view.service";
-import { FilterView } from "../../models/filter";
+import { FilterView } from "~/app/models/filter";
+import { FormGroup, Validators, FormBuilder } from "@angular/forms";
 import { RouterExtensions } from "nativescript-angular/router";
+import { MapViewService } from "../../services/map-view.service";
 import { ActivatedRoute } from "@angular/router";
 
 @Component({
@@ -12,24 +14,29 @@ import { ActivatedRoute } from "@angular/router";
 })
 export class FilterViewComponent implements OnInit {
 
-  @Input()
-  public selectedIndex = 1;
-  public items: Array<string>;
+  filter: FilterView;
+  filterForm: FormGroup = null;
 
   constructor(private filterViewService: FilterViewService,
-    private route: ActivatedRoute,
-    private routerExtensions: RouterExtensions) {
-    this.items = [];
-    for (var i = 0; i < 5; i++) {
-        this.items.push("data item " + i);
-    }
-  }
+    private fb: FormBuilder,
+    private mapService: MapViewService,
+    private routerExtensions: RouterExtensions) {}
 
   ngOnInit() {
-    
+    this.filterForm = this.fb.group({
+      minPrice: ['', Validators.required],
+      maxPrice: ['', Validators.required],
+      minBed: ['', Validators.required],
+      maxBed: ['', Validators.required],
+      minBath: ['', Validators.required],
+      maxBath: ['', Validators.required],
+      minRoom: ['', Validators.required],
+      maxRoom: ['', Validators.required],
+      tags: ['', Validators.required],
+  });
   }
 
-  public onNavBtnTap() {
+  onNavBtnTap() {
     this.routerExtensions.navigate(['home'], {
       transition: {
           name: "fade"
@@ -37,15 +44,17 @@ export class FilterViewComponent implements OnInit {
     });
   }
 
-  /*displayFilteredMap(): void {
-    this.routerExtensions.navigate(["/home"], {
-        transition: {
-            name: "fade"
-        },
-        queryParams: {
-            "Postcode": postcode"
-        }
+  filterMap(): void  {
+    let _filter = this.filterForm.value;
+    this.filter = new FilterView(Number(_filter.minPrice), Number(_filter.maxPrice), Number(_filter.minBed),
+     Number(_filter.maxBed), Number(_filter.minBath), Number(_filter.maxBath), Number(_filter.minRoom), 
+     Number(_filter.maxRoom), Array<string>(_filter.tags));
+    this.mapService.setFilterBody(this.filter);
+    this.routerExtensions.navigate(['home'], {
+      transition: {
+          name: "fade"
+      }
     });
-  }*/
+  }
 }
 

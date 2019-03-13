@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../environments/environment";
 import { HttpClient } from '@angular/common/http';
+import { filter } from "rxjs/operators";
 
 @Injectable({
     providedIn: "root"
@@ -27,8 +28,11 @@ export class MapViewService {
         const _url = `${environment.server.url}/markers?lat=${lat}&long=${long}&radius=${radius}`;
 
         if (this.isBeingFilered) {
-            return this.http.post(_url, this.filterBody);
+            console.log("Attempting to filter... ");
+            console.log({"filters":this.filterBody});
+            return this.http.post(_url, {"filters":this.filterBody});
         } else {
+            console.log("No Filter Attempt");
             return this.http.post(_url, {});        
         }
 
