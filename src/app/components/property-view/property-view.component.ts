@@ -86,21 +86,21 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
 
   private sortStats () {
     this.stats = [];
-    if (this.property.bedroomNumber > 0) {
+    if (this.property.bedroomNumber) {
       this.stats.push({
         "name": "Bedrooms",
         "value": this.property.bedroomNumber,
         "icon": "&#xf236;"
       })
     }
-    if (this.property.parkingSpaces > 0) {
+    if (this.property.parkingSpaces) {
       this.stats.push({
         "name": "Parking Spaces",
         "value": this.property.parkingSpaces,
         "icon": "&#xf236;"
       })
     }
-    if (this.property.bathroomNumber > 0) {
+    if (this.property.bathroomNumber) {
       this.stats.push({
         "name": "Bathrooms",
         "value": this.property.bathroomNumber,
@@ -117,7 +117,6 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
   }
 
   public saveProperty (property: PropertyView) {
-    console.log(property);
 
     dialogs.prompt({
         title: "Add a name to Property?",
