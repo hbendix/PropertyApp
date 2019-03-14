@@ -8,13 +8,17 @@
             <GridLayout columns="auto, *" class="list-group-item"
                 style="border:1;">
                 <StackLayout col="0" backgroundColor="white" class="list-group-item" margin="0">
-                    <Image [src]="shortlist.imageSrc" class="thumb img-circle" margin="0"></Image>
+                    <Image [src]="shortlist.propertyThumbUrl" class="thumb img-circle" margin="0"></Image>
                 </StackLayout>
-                <StackLayout col="1" backgroundColor="white" class="list-group-item">
+                <StackLayout col="1" backgroundColor="white" class="list-group-item" *ngIf="shortlist.propertyName !== undefined">
+                    <Label class="list-group-item-heading" [text]="shortlist.propertyName"></Label>
+                    <Label class="list-group-item-text" [text]="shortlist.fullAddress"></Label>
+                </StackLayout>
+                <StackLayout col="1" backgroundColor="white" class="list-group-item" *ngIf="shortlist.propertyName === undefined">
                     <Label class="list-group-item-heading" [text]="shortlist.fullAddress"></Label>
-                    <Label class="list-group-item-text" text="£{{shortlist.price}}"></Label>
                 </StackLayout>
             </GridLayout>
         </ng-template>
     </ListView>
+    <!-- <ActivityIndicator [busy]="isBusy" class="activity-indicator" margin="15 0 0 0" *ngIf="shortlists.length === 0"></ActivityIndicator> -->
 </ScrollView>

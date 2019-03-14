@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 export class MapViewService {
 
     mapMarkers = [];
-    isBeingFilered = false;
+    isBeingFiltered = false;
     filterBody: any;
 
     constructor(private http: HttpClient) {}
@@ -19,14 +19,14 @@ export class MapViewService {
     }
 
     public setFilterBody (body) {
-        this.isBeingFilered = true;
+        this.isBeingFiltered = true;
         this.filterBody = body;
     }
 
     public pullMapMarkers(long: Number, lat: Number, radius: Number) {       
         const _url = `${environment.server.url}/markers?lat=${lat}&long=${long}&radius=${radius}`;
 
-        if (this.isBeingFilered) {
+        if (this.isBeingFiltered) {
             return this.http.post(_url, this.filterBody);
         } else {
             return this.http.post(_url, {});        

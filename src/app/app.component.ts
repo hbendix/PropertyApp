@@ -78,10 +78,10 @@ export class AppComponent implements OnInit {
         let options = {
             title: "Login",
             message: "Please enter your username then your password.",
-            okButtonText: "Submit",
-            cancelButtonText: "Create Account",
-            neutralButtonText: "Close",
-            defaulText: "Enter your username...",
+            okButtonText: "Login",
+            neutralButtonText: "Create An Account",
+            cancelButtonText: "Close",
+            defaultText: "Enter your username...",
             userNameHint: "Enter your username",
             passwordHint: "Enter your password",
             userName: "",
@@ -89,7 +89,7 @@ export class AppComponent implements OnInit {
         }
         dialogs.login(options).then(r => {
             console.log(r.result);
-            if (!r.result && r.result !== undefined) {
+            if (r.result === undefined) {
                 this.routerExtensions.navigate(['create'], {
                     transition: {
                         name: "fade"

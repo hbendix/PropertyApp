@@ -1,16 +1,16 @@
 export class ShortListItem {
-    id: string;
+    _id: string;
     fullAddress: string;
-    price: number;
-    imageSrc?: string;
+    propertyName: string;
+    imageSrc: string;
 
-    constructor(id: string,
+    constructor(_id: string,
         fullAddress: string,
-        price: number,
-        imageSrc?: string) {
-        this.id = id;
+        propertyName: string,
+        imageSrc: string) {
+        this._id = _id;
         this.fullAddress = fullAddress;
-        this.price = price;
+        this.propertyName = propertyName;
         this.imageSrc = imageSrc;
     }
 }
