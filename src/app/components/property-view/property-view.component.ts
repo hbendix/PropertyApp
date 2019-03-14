@@ -11,6 +11,7 @@ import { ShortlistService } from "~/app/services/shortlist.service";
 import { ScrollView, ScrollEventData } from 'tns-core-modules/ui/scroll-view';
 import { Image } from 'tns-core-modules/ui/image';
 import { View } from 'tns-core-modules/ui/core/view';
+import { AuthService } from "~/app/services/auth.service";
 registerElement('Fab', () => require('nativescript-floatingactionbutton').Fab);
 
 @Component({
@@ -31,12 +32,14 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
   public stats = [];
   public isList = true;
   public propertyList = [];
+  public isLoggedIn = this.auth.isLoggedIn();
 
   constructor(private propertyViewService: PropertyViewService,
     private route: ActivatedRoute,
     private routerExtensions: RouterExtensions,
     private notificationService: NotificationService,
-    private shortlistService: ShortlistService) {
+    private shortlistService: ShortlistService,
+    private auth: AuthService) {
     this.route.queryParams.subscribe(params => {
       this.long = params.long;
       this.lat = params.lat;
