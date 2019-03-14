@@ -1,24 +1,16 @@
 <ActionBar title="Filter" class="action-bar">
     <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()"></NavigationButton>
+    <Label class="action-bar-title" text="Filter"></Label>
 </ActionBar>
-<StackLayout class="form">
-       <StackLayout class="input-field">
-              <TextField class="input" hint="Postcode"></TextField>
-       </StackLayout>   
-       <StackLayout class="input-field">
-              <TextField class="input" hint="Minimum Price" keyboardType="number"></TextField>
-       </StackLayout>
-       <StackLayout class="input-field">
-              <TextField class="input" hint="Maximum Price" keyboardType="number"></TextField>
-       </StackLayout>
-       <StackLayout class="input-field">
-              <TextField class="input" hint="House Type"></TextField>
-       </StackLayout>
-       <StackLayout class="input-field">
-              <TextField class="input" hint="Bedroom Count"></TextField>
-       </StackLayout>
-       <Button text="Filter" 
-              width="100%"
-              height="60">
-       </Button>
+<StackLayout orientation="vertical" [formGroup]="filterForm">
+       <TextField formControlName="minPrice" hint="Min Price" keyboardType="number"></TextField>
+       <TextField formControlName="maxPrice" hint="Max Price" keyboardType="number"></TextField>
+       <TextField formControlName="minBed" hint="Min Bed Count" keyboardType="number"></TextField>
+       <TextField formControlName="maxBed" hint="Max Bed Count" keyboardType="number"></TextField>
+       <TextField formControlName="minBath" hint="Min Bathroom Count" keyboardType="number"></TextField>
+       <TextField formControlName="maxBath" hint="Max Bathroom Count" keyboardType="number"></TextField>
+       <TextField formControlName="minRoom" hint="Min Room Count" keyboardType="number"></TextField>
+       <TextField formControlName="maxRoom" hint="Max Room Count" keyboardType="number"></TextField>
+       <TextField formControlName="tags" hint="Tags"></TextField>
+       <Button text="Filter" (tap)="filterMap()"></Button>
 </StackLayout>
