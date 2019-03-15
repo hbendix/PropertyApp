@@ -111,3 +111,10 @@
     border-width: 1;
     border-radius: 20px;
 }
+
+.addComment{
+    border-color: #ff8a50;
+    padding: 20px;
+    border-radius: 20px;
+    border-width: 1;
+}

@@ -11,6 +11,8 @@ export class PropertyView {
     price: number;
 
     propertyName: string;
+    _id: string;
+    notes: [];
 
     constructor (fullAddress, 
         propertyType, 
@@ -22,7 +24,9 @@ export class PropertyView {
          isForSale, 
         isForRent, 
         price, 
-        propertyName) {
+        propertyName,
+        notes,
+        _id: string) {
             this.fullAddress = fullAddress;             // string
             this.propertyType = propertyType;           // string
             this.bedroomNumber = bedroomNumber;         // number
@@ -34,6 +38,8 @@ export class PropertyView {
             this.isForRent = isForRent;                 // boolean
             this.price = price;                         // number
             this.propertyName = propertyName; 
+            this._id = _id;
+            this.notes = notes;
     }
 }
 

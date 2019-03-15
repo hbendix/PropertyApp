@@ -12,6 +12,7 @@ import { ScrollView, ScrollEventData } from 'tns-core-modules/ui/scroll-view';
 import { Image } from 'tns-core-modules/ui/image';
 import { View } from 'tns-core-modules/ui/core/view';
 import { AuthService } from "~/app/services/auth.service";
+import { DatePipe } from "@angular/common";
 registerElement('Fab', () => require('nativescript-floatingactionbutton').Fab);
 
 @Component({
@@ -33,6 +34,10 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
   public isList = true;
   public propertyList = [];
   public isLoggedIn = this.auth.isLoggedIn();
+  public isEditing = false;
+
+  pipe = new DatePipe('en-UK'); // Use your own locale
+  editingComment: boolean;
 
   constructor(private propertyViewService: PropertyViewService,
     private route: ActivatedRoute,
@@ -136,10 +141,73 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
             (res) => {
               this.notificationService.fireNotification('Added to your shortlists!', true);
             }, (err) => {
-              this.notificationService.fireNotification(`Error adding to your shortlist ${ err.status } ${ err.statusText }`, true);
+              this.notificationService.fireNotification(`Error adding to your shortlist ${ err.status } ${ err.statusText }`, false);
             }
           );
       });
+  }
+
+  public addComment (comment: string) {
+    console.log(comment);
+
+    if (comment === '') {
+      this.notificationService.fireNotification('Comments cannot  be empty!', false);
+      return;
+    }
+
+    this.shortlistService.addComment(this.property._id, comment)
+      .subscribe(
+        (res) => {
+          this.notificationService.fireNotification('Comment added. 📝', true);
+          this.isEditing = false;
+        }, (err) => {
+            this.notificationService.fireNotification(`Error adding a comment ${ err.status } ${ err.statusText }`, false);
+            console.log(err);
+        }
+      )
+  }
+
+  public getDatesForComment (index) {
+    const note = <any>this.property.notes[index];
+
+    const cD = this.pipe.transform(note.created, 'dd/MM/yy HH:mm');
+    const eD = this.pipe.transform(note.updated, 'dd/MM/yy HH:mm');
+    if (cD === eD) {
+      return cD;
+    } else {
+      return `${ cD } - edited ${ eD }`
+    }
+  }
+
+  public updateComment (index, newComment) {
+    console.log(index, newComment);
+    const note = this.property.notes[index];
+    const propertyId = this.property._id;
+
+    this.shortlistService.updateComment(note, propertyId, newComment).subscribe(
+      (res) => {
+        this.notificationService.fireNotification('Comment updated. 📝', true);
+        this.editingComment = false;
+      }, (err) => {
+        this.notificationService.fireNotification(`Error updating comment ${ err.status } ${ err.statusText }`, false);
+        console.log(err);
+      }
+    )
+  }
+
+  public deleteComment (index) {
+    const note = this.property.notes[index];
+    const propertyId = this.property._id;
+
+    this.shortlistService.deleteNote(note, propertyId).subscribe(
+      (res) => {
+        this.notificationService.fireNotification('Comment deleted. 📝', true);
+        this.editingComment = false;
+      }, (err) => {
+        this.notificationService.fireNotification(`Error deleting comment ${ err.status } ${ err.statusText }`, false);
+        console.log(err);
+      }
+    )
   }
 
   onScroll(event: ScrollEventData, scrollView: ScrollView, topView: View) {

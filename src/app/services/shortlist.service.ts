@@ -10,6 +10,7 @@ import { ShortListItem } from "../models/shortlistItem";
 })
 
 export class ShortlistService {
+  
 
     constructor (private http: HttpClient,
         private auth: AuthService) {}
@@ -30,4 +31,40 @@ export class ShortlistService {
         return this.http.get(_url).pipe(map(res => <ShortListItem[]>res));
     }
 
+    public addComment(propertyId: string, comment: string): any {
+        const _url = `${ environment.server.url }/shortlist/note/add`;
+
+        const body = {
+            "username": this.auth.getLoggedInUser(),
+            "propertyid": propertyId,
+            "note": comment
+        };
+
+        return this.http.post(_url, body);
+    }
+
+    public updateComment(note, propertyId, comment: any): any {
+        const _url = `${ environment.server.url }/shortlist/note/update`;
+
+        const body = {
+            "username": this.auth.getLoggedInUser(),
+            "propertyid": propertyId,
+            "note": comment,
+            "noteid": note._id
+        };
+
+        return this.http.post(_url, body);
+    }
+
+    public deleteNote (note, propertyId) {
+        const _url = `${ environment.server.url }/shortlist/note/delete`;
+
+        const body = {
+            "username": this.auth.getLoggedInUser(),
+            "propertyid": propertyId,
+            "noteid": note._id
+        };
+
+        return this.http.post(_url, body);
+    }
 }
