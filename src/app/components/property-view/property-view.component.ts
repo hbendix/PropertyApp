@@ -37,6 +37,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
   public isEditing = false;
 
   pipe = new DatePipe('en-UK'); // Use your own locale
+  isViewingShortlist = false;
   editingComment: boolean;
 
   constructor(private propertyViewService: PropertyViewService,
@@ -50,6 +51,10 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
       this.lat = params.lat;
       this.prevLocation = params.prevLocation;
     });
+    console.log(this.prevLocation);
+    if (this.prevLocation === '/shortlists') {
+      this.isViewingShortlist = true;
+    }
     this.loadProperty();
   }
 
@@ -126,25 +131,50 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
 
   public saveProperty (property: PropertyView) {
 
-    dialogs.prompt({
-        title: "Add a name to Property?",
-        okButtonText: "Save",
-        cancelButtonText: "Skip",
-        inputType: dialogs.inputType.text
+    if (this.isViewingShortlist) {
+      dialogs.confirm({
+        title: "Remove Property from Shortlist?",
+        okButtonText: "Yes",
+        cancelButtonText: "Cancel"
       }).then(r => {
-        if (r.result) {
-          property.propertyName = r.text;
+        if (r) {
+          this.shortlistService.deletePropertyFromShortlist(this.property._id)
+            .subscribe(
+              (res) => {
+                this.notificationService.fireNotification('Removed from your shortlists!', true);
+                this.routerExtensions.navigate([this.prevLocation], {
+                  transition: {
+                      name: "fade"
+                  }
+                });
+              }, (err) => {
+                this.notificationService.fireNotification(`Error deleting Property ${ err.status } ${ err.statusText }`, false);
+              }
+            );
         }
-
-        this.shortlistService.addPropertyToShortList(property)
-          .subscribe(
-            (res) => {
-              this.notificationService.fireNotification('Added to your shortlists!', true);
-            }, (err) => {
-              this.notificationService.fireNotification(`Error adding to your shortlist ${ err.status } ${ err.statusText }`, false);
-            }
-          );
       });
+    } else {
+      dialogs.prompt({
+          title: "Add a name to Property?",
+          okButtonText: "Save",
+          cancelButtonText: "Skip",
+          inputType: dialogs.inputType.text
+        }).then(r => {
+          if (r.result) {
+            property.propertyName = r.text;
+          }
+  
+          this.shortlistService.addPropertyToShortList(property)
+            .subscribe(
+              (res) => {
+                this.notificationService.fireNotification('Added to your shortlists!', true);
+              }, (err) => {
+                this.notificationService.fireNotification(`Error adding to your shortlist ${ err.status } ${ err.statusText }`, false);
+              }
+            );
+        });
+    }
+
   }
 
   public addComment (comment: string) {
@@ -160,7 +190,8 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
         (res) => {
           this.notificationService.fireNotification('Comment added. 📝', true);
           this.isEditing = false;
-        }, (err) => {
+          this.refreshComments();
+      }, (err) => {
             this.notificationService.fireNotification(`Error adding a comment ${ err.status } ${ err.statusText }`, false);
             console.log(err);
         }
@@ -188,6 +219,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
       (res) => {
         this.notificationService.fireNotification('Comment updated. 📝', true);
         this.editingComment = false;
+        this.refreshComments();
       }, (err) => {
         this.notificationService.fireNotification(`Error updating comment ${ err.status } ${ err.statusText }`, false);
         console.log(err);
@@ -198,16 +230,28 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
   public deleteComment (index) {
     const note = this.property.notes[index];
     const propertyId = this.property._id;
-
+    console.log(note, propertyId);
     this.shortlistService.deleteNote(note, propertyId).subscribe(
       (res) => {
         this.notificationService.fireNotification('Comment deleted. 📝', true);
         this.editingComment = false;
+        this.refreshComments();
       }, (err) => {
         this.notificationService.fireNotification(`Error deleting comment ${ err.status } ${ err.statusText }`, false);
         console.log(err);
       }
     )
+  }
+
+  private refreshComments () {
+    this.shortlistService.refreshComments(this.property._id)
+      .subscribe(
+        (res) => {
+          this.property.notes = <any>res;
+        }, (err) => {
+          this.notificationService.fireNotification(`Error refreshing comments ${ err.status } ${ err.statusText }`, false);
+        }
+      );
   }
 
   onScroll(event: ScrollEventData, scrollView: ScrollView, topView: View) {

@@ -54,7 +54,8 @@
                             width="100%" 
                             height="35"
                             (tap)="isEditing = !isEditing"
-                            backgroundColor="white">
+                            backgroundColor="white"
+                            *ngIf="isViewingShortlist">
                     <Label  text="COMMENTS" 
                             textAlignment="left" 
                             row="0" 
@@ -85,7 +86,7 @@
                 <TextView   editable="true" 
                             class="comment"
                             margin="10" 
-                            *ngIf="isEditing"
+                            *ngIf="isEditing && isViewingShortlist"
                             name="newComment"
                             [(ngModel)]="newComment"></TextView>
 
@@ -95,11 +96,11 @@
                         fontSize="20"
                         textAlignment="center" 
                         margin="10" 
-                        *ngIf="isEditing"
+                        *ngIf="isEditing && isViewingShortlist"
                         (tap)="addComment(newComment)"
                         color="#ff5722"></Label>
-                <StackLayout *ngFor="let comment of property.notes; let i = index;"
-                                margin="0 0 10 0">
+                <StackLayout    *ngFor="let comment of property.notes; let i = index;"
+                                margin="0 0 10 0" >
                     <Label  text="{{ getDatesForComment(i)}}" 
                             fontWeight="300"
                             fontSize="12" 
@@ -148,7 +149,7 @@
                                 textAlignment="left" 
                                 horizontalAlignment="left"
                                 row="0" 
-                                margin="2"
+                                margin="2 0 0 10"
                                 col="0" 
                                 backgroundColor="white"
                                 color="red"

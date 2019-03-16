@@ -25,6 +25,17 @@ export class ShortlistService {
         return this.http.post(_url, toSend)
     }
 
+    public deletePropertyFromShortlist (propertyId: string) {
+        const _url = `${ environment.server.url }/shortlist/delete`;
+
+        const body = { 
+            "username": this.auth.getLoggedInUser(),
+	        "propertyid": propertyId
+        }
+
+        return this.http.post(_url, body);
+    }
+
     public getShortlist () {
         const _url = `${ environment.server.url }/shortlist/get?username=${ this.auth.getLoggedInUser() }`;
         
@@ -66,5 +77,11 @@ export class ShortlistService {
         };
 
         return this.http.post(_url, body);
+    }
+
+    public refreshComments (propertyId: string) {
+        const _url = `${ environment.server.url }/shortlist/note/get?username=${this.auth.getLoggedInUser()}&propertyid=${ propertyId }`;
+
+        return this.http.get(_url);
     }
 }
