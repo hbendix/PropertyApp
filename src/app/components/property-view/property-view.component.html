@@ -129,7 +129,7 @@
                                 margin="2"
                                 col="1" 
                                 backgroundColor="white"
-                                color="green"
+                                color="#4CAF50"
                                 *ngIf="!editingComment"
                                 (tap)="editingComment = !editingComment"></Label>
                         <Label   text="&#xf0c7;" 
@@ -140,7 +140,7 @@
                                 margin="2"
                                 col="1" 
                                 backgroundColor="white"
-                                color="green"
+                                color="#4CAF50"
                                 *ngIf="editingComment"
                                 (tap)="updateComment(i, updatedComment)"></Label>
 
@@ -152,11 +152,10 @@
                                 margin="2 0 0 10"
                                 col="0" 
                                 backgroundColor="white"
-                                color="red"
+                                color="#F44336"
                                 *ngIf="editingComment"
                                 (tap)="deleteComment(i)"></Label>
                     </GridLayout>
-                    
                 </StackLayout>
                  
                 <Label style="visibility:hidden;" margin="10 0 45 0"></Label>               

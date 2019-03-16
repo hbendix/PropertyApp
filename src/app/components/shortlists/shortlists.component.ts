@@ -8,7 +8,9 @@ import { Property } from "~/app/models/property";
 import { PropertyViewService } from "~/app/services/property-view.service";
 import { NotificationService } from "~/app/services/notification.service";
 import { ShortlistService } from "~/app/services/shortlist.service";
-
+import { registerElement } from 'nativescript-angular/element-registry';
+import { CardView } from 'nativescript-cardview';
+registerElement('CardView', () => CardView);
 @Component({
   selector: "ns-shortlists",
   templateUrl: "./shortlists.component.html",
