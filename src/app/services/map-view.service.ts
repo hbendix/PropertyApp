@@ -25,6 +25,7 @@ export class MapViewService {
     }
 
     public pullMapMarkers(long: Number, lat: Number, radius: Number) {       
+        console.log(long, lat);
         const _url = `${environment.server.url}/markers?lat=${lat}&long=${long}&radius=${radius}`;
 
         if (this.isBeingFiltered) {

@@ -157,11 +157,15 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
       dialogs.prompt({
           title: "Add a name to Property?",
           okButtonText: "Save",
-          cancelButtonText: "Skip",
+          neutralButtonText: "Skip",
+          cancelButtonText: "Cancel",
           inputType: dialogs.inputType.text
         }).then(r => {
+          console.log(r.result);
           if (r.result) {
             property.propertyName = r.text;
+          } else if (!r.result) {
+            return;
           }
   
           this.shortlistService.addPropertyToShortList(property)
@@ -267,7 +271,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
             topView.translateY = Math.floor(offset);
         }
     }
-}
+  }
 
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.

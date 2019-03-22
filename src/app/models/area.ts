@@ -1,17 +1,28 @@
-export class Area {
-    areaID: string;
-    areaName: string;
-    avgHouseType: string;
+export interface Area {
     postcode: string;
+    broadband: InternetStats;
+    gas: GasElectric;
+    electricity: GasElectric;
+    crime: CrimeStats[];
     avgPrice: number;
-    avgBedCount: number;
+}
 
-    constructor(id : string, name : string, hType : string, code: string, cost : number, bed : number) {
-        this.areaID = id;
-        this.areaName = name;
-        this.avgHouseType = hType;
-        this.postcode = code;
-        this.avgPrice = cost;
-        this.avgBedCount = bed;
-    }
+export interface InternetStats {
+    super_fast: number;    
+    avg_download: number;
+    min_download: number;
+    max_download: number;
+    avg_upload: number;
+    min_upload: number;
+    max_upload: number;
+}
+
+export interface GasElectric {
+    consumption: number;
+    meter_count: number;
+}
+
+export interface CrimeStats {
+    type: string;
+    location: string;
 }

@@ -1,39 +1,341 @@
 <ActionBar class="action-bar">
     <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()"></NavigationButton>
-    <Label class="action-bar-title" text="{{area.areaName}} details"></Label>
+    <Label class="action-bar-title" text="{{area.postcode}} details"></Label>
 </ActionBar>
 
-<FAB (tap)="fabTap()" rippleColor="#f1f1f1" row="1" class="fab-button" icon="res://ic_star"
-    *ngIf="!isList">
-</FAB>
+<FAB (tap)="saveProperty(property)" rippleColor="#f1f1f1" row="1" class="fab-button"
+    *ngIf="!isList && isLoggedIn" horizontalAlignment="right">
+</FAB> 
+<GridLayout class="page"  *ngIf="!isList" >
+    <ScrollView #scrollView (scroll)="onScroll($event, scrollView, topView)">
+        <StackLayout>
+            <StackLayout #topView height="250" style="background-image: url('{{area.propertyImageUrl}}'); background-repeat: no-repeat; background-position: center; background-size: cover;">
+                <Mapbox *ngIf="loaded"
+                        #map
+                        accessToken="{{ accessToken }}"
+                        mapStyle="LIGHT"
+                        latitude={{lat}}
+                        longitude={{long}}
+                        hideCompass="false"
+                        zoomLevel="12"
+                        showUserLocation="false"
+                        disableZoom="true"
+                        disableRotation="true"
+                        disableScroll="true"
+                        disableTilt="true"
+                        hideAttribution="true" 
+                        hideLogo="true" 
+                        (mapReady)="onMapReady($event)">
+                        </Mapbox>    
+                <Label text="{{area.postcode}}" color="gray" textAlignment="center" style="z-index:999" fontSize="45" marginTop="40"></Label>
+            </StackLayout>
+            <StackLayout width="100%" backgroundColor="white" padding="10"class="border">
+                <Label text="AVERAGE HOUSE PRICE" margin="10"></Label>
+                <TextView   editable="false" 
+                            class="price-area"
+                            style="border-color: #707070;">
+                    <Span   text="£{{area.avgPrice}}" 
+                            fontWeight="Bold"
+                            fontSize="36"></Span>
+                </TextView>
 
-<StackLayout orientation="vertical" width="100%" height="100%" 
-    *ngIf="!isList"  backgroundColor="#4781FE">
-    <StackLayout orientation="vertical" width="100%" height="100"
-        backgroundColor="#4781FE" class="stack">
-        <StackLayout orientation="horizontal" width="100%" height="100%"
-            backgroundColor="#4781FE">
-            <Label class="area-name" text="{{area.postcode}} - {{area.areaName}}"
-                verticalAlignment="center"></Label>
+                <TextView editable="false"style="background-color: transparent;
+                        border-color: transparent;"
+                        textAlignment="center"
+                        horizontalAlignment="center">
+                    <Span   text="&#xf1eb; " 
+                            class="fas" 
+                            fontSize="16" 
+                            color="#3F51B5"></Span>
+                    <Span text="&#xA;"></Span>
+                    <Span   text="INTERNET" color="#707070"
+                            fontSize="16"></Span>
+                </TextView>
+
+
+                <Label  text="{{area.broadband.super_fast}}% Super Fast Broadband Availability" 
+                        margin="15"
+                        fontSize="17"
+                        color="black"></Label>
+                
+
+                <GridLayout rows="*, *, *, *, *, *, *, *, *, * ,*" columns="*">
+                    <Label  text="AVERAGE SPEED" 
+                            textAlignment="left" 
+                            row="0" 
+                            col="0"
+                            margin="10"
+                            backgroundColor="white"></Label>
+                    <Label  text="Download: {{ area.broadband.avg_download }}Mbps"
+                            textAlignment="left" 
+                            row="1"
+                                margin="0 0 3 20"
+                                fontSize="17"
+                            color="black"
+                            col="0"></Label>
+                    <Label  text="{{ getDownloadStat()}}"
+                                [ngClass]="{'greenTxt': downIsGreater, 'redTxt': !downIsGreater}"
+                                textAlignment="left" 
+                                margin="0 0 3 20"
+                                row="2"
+                            fontSize="13"
+                            col="0"></Label>
+                    <Label  text="Upload: {{ area.broadband.avg_upload }}Mbps"
+                            textAlignment="left" 
+                            row="3"
+                                margin="0 0 3 20"
+                                fontSize="17"
+                            color="black"
+                            col="0"></Label>
+                    <Label  text="{{ getUploadStat() }}"
+                            textAlignment="left" 
+                                [ngClass]="{'greenTxt': uploadIsGreater, 'redTxt': !uploadIsGreater}"
+                                margin="0 0 3 20"
+                                row="4"
+                            fontSize="13"
+                            col="0"></Label>
+ 
+
+                    <Label  text="MAX SPEEDS" 
+                            textAlignment="left" 
+                            row="5" 
+                            col="0"
+                            margin="10"
+                            backgroundColor="white"></Label>
+                    <Label  text="Download: {{ area.broadband.max_download }}Mbps"
+                            textAlignment="left" 
+                                margin="0 0 3 20"
+                                row="6"
+                            fontSize="17"
+                            color="black"
+                            col="0"></Label>
+                    <Label  text="Upload: {{ area.broadband.max_upload }}Mbps"
+                            textAlignment="left" 
+                            row="7"
+                                margin="0 0 3 20"
+                                fontSize="17"
+                            color="black"
+                            col="0"></Label>
+
+                    <Label  text="MIN SPEEDS" 
+                            textAlignment="left" 
+                            row="8" 
+                            col="0"
+                            margin="10"
+                            backgroundColor="white"></Label>
+                    <Label  text="Download: {{ area.broadband.min_download }}Mbps"
+                            textAlignment="left" 
+                            row="9"
+                                margin="0 0 3 20"
+                                fontSize="17"
+                            color="black"
+                            col="0"></Label>
+                    <Label  text="Upload: {{ area.broadband.min_upload }}Mbps"
+                            textAlignment="left" 
+                                margin="0 0 3 20"
+                                row="10"
+                            fontSize="17"
+                            color="black"
+                            col="0"></Label>
+                </GridLayout>
+
+
+                <TextView editable="false"style="background-color: transparent;border-color: transparent;"
+                        textAlignment="center">
+                    <Span   text="&#xf46a; " 
+                            class="fas" 
+                            fontSize="16" 
+                            color="#fd7e14"></Span>
+                    <Span text="&#xA;"></Span>
+                    <Span   text="GAS" 
+                            color="#707070"
+                            fontSize="16"></Span>
+                </TextView>
+                <GridLayout rows="*, *" columns="*" margin="0 0 20 0">
+                        <Label  text="Consumption: {{ area.gas.consumption }}KWh" 
+                                textAlignment="left" 
+                                row="0" 
+                                col="0"
+                                margin="0 0 0 20"
+                                fontSize="17"
+                                color="black"
+                                backgroundColor="white"></Label>
+                        <Label  text="Meter Count: {{ area.gas.meter_count }}"
+                                textAlignment="left" 
+                                row="1"
+                                margin="0 0 0 20"
+                                fontSize="17"
+                                color="black"
+                                col="0"></Label>
+                </GridLayout>
+
+
+                <TextView editable="false"style="background-color: transparent;border-color: transparent;"
+                        textAlignment="center">
+                    <Span   text="&#xf0e7; " 
+                            class="fas" 
+                            fontSize="16" 
+                            color="#FFD600"></Span>
+                    <Span text="&#xA;"></Span>
+                    <Span   text="ELECTRICITY" color="#707070"
+                            fontSize="16"></Span>
+                </TextView>
+                <GridLayout rows="*, *" columns="*" margin="0 0 20 0">
+                        <Label  text="Consumption: {{ area.electricity.consumption }}KWh" 
+                                textAlignment="left" 
+                                row="0" 
+                                col="0"
+                                margin="0 0 0 20"
+                                fontSize="17"
+                                color="black"
+                                backgroundColor="white"></Label>
+                        <Label  text="Meter Count: {{ area.electricity.meter_count }}"
+                                textAlignment="left" 
+                                row="1"
+                                margin="0 0 0 20"
+                                fontSize="17"
+                                color="black"
+                                col="0"></Label>
+                </GridLayout>
+                
+                <TextView editable="false"style="background-color: transparent;border-color: transparent;"
+                        textAlignment="center">
+                    <Span   text="&#xf556; " 
+                            class="far" 
+                            fontSize="16" 
+                            color="#d50000"></Span>
+                    <Span text="&#xA;"></Span>
+                    <Span   text="RECENT CRIME STATS" color="#707070"
+                            fontSize="16"></Span>
+                </TextView>
+
+                <GridLayout rows="*, *" columns="*" *ngFor="let crime of area.crime">
+                        <Label  text="{{crime.type}}" 
+                                textAlignment="left" 
+                                row="0" 
+                                col="0"
+                                margin="0 0 0 20"
+                                fontSize="17"
+                                color="black"
+                                backgroundColor="white"></Label>
+                        <Label  text="{{crime.location}}"
+                                textAlignment="left" 
+                                row="1"
+                                margin="0 0 0 20"
+                                fontSize="15"
+                                style="font-style:italic;"
+                                col="0"></Label>
+                </GridLayout>
+                
+                <GridLayout columns="*, *" 
+                            width="100%" 
+                            height="35"
+                            (tap)="isEditing = !isEditing"
+                            backgroundColor="white"
+                            *ngIf="isViewingShortlist">
+                    <Label  text="COMMENTS" 
+                            textAlignment="left" 
+                            row="0" 
+                            col="0" 
+                            margin="10"
+                            backgroundColor="white"></Label>
+                    <Label  text="&#xf055;" 
+                            class="fas" 
+                            textAlignment="right" 
+                            row="0" 
+                            margin="10"
+                            col="1" 
+                            backgroundColor="white"
+                            *ngIf="!isEditing" 
+                            color="#ff5722"></Label>
+
+                    <Label  text="&#xf056;" 
+                            class="fas" 
+                            textAlignment="right" 
+                            row="0" 
+                            margin="10"
+                            col="1" 
+                            backgroundColor="white" 
+                            *ngIf="isEditing"
+                            color="#ff5722"></Label>
+                </GridLayout>
+                <TextView   editable="true" 
+                            class="comment"
+                            margin="10" 
+                            *ngIf="isEditing && isViewingShortlist"
+                            name="newComment"
+                            [(ngModel)]="newComment"></TextView>
+
+                <Label  text="ADD COMMENT" 
+                        class="addComment" 
+                        width="auto"
+                        fontSize="20"
+                        textAlignment="center" 
+                        margin="10" 
+                        *ngIf="isEditing && isViewingShortlist"
+                        (tap)="addComment(newComment)"
+                        color="#ff5722"></Label>
+                <StackLayout    *ngFor="let comment of area.notes; let i = index;"
+                                margin="0 0 10 0" >
+                    <Label  text="{{ getDatesForComment(i)}}" 
+                            fontWeight="300"
+                            fontSize="12" 
+                            margin="3 0 3 10"
+                            color="#707070">
+                    </Label>
+                    <TextView   editable="{{editingComment ? true : false}}" 
+                                class="comment" 
+                                [(ngModel)]="updatedComment"
+                                name="updatedComment-{{i}}"
+                                margin="3">
+                    <Span   text="{{comment.content}}" 
+                            fontWeight="300"
+                            fontSize="14" 
+                            color="black" ></Span>
+                    </TextView>
+                    <GridLayout columns="*, *" 
+                            width="100%" 
+                            height="35"
+                            backgroundColor="white">
+                        <Label   text="&#xf044;" 
+                                class="far" 
+                                textAlignment="right" 
+                                horizontalAlignment="right"
+                                row="0" 
+                                margin="2"
+                                col="1" 
+                                backgroundColor="white"
+                                color="#4CAF50"
+                                *ngIf="!editingComment"
+                                (tap)="editingComment = !editingComment"></Label>
+                        <Label   text="&#xf0c7;" 
+                                class="far" 
+                                textAlignment="right" 
+                                horizontalAlignment="right"
+                                row="0" 
+                                margin="2"
+                                col="1" 
+                                backgroundColor="white"
+                                color="#4CAF50"
+                                *ngIf="editingComment"
+                                (tap)="updateComment(i, updatedComment)"></Label>
+
+                        <Label   text="&#xf2ed;" 
+                                class="far" 
+                                textAlignment="left" 
+                                horizontalAlignment="left"
+                                row="0" 
+                                margin="2 0 0 10"
+                                col="0" 
+                                backgroundColor="white"
+                                color="#F44336"
+                                *ngIf="editingComment"
+                                (tap)="deleteComment(i)"></Label>
+                    </GridLayout>
+                </StackLayout>
+                 
+                <Label style="visibility:hidden;" margin="10 0 45 0"></Label>               
+            </StackLayout>
         </StackLayout>
-    </StackLayout>
-    <StackLayout orientation="vertical" class="stack" width="100%" height="100%" margin="10 40" backgroundColor="#4781FE">
-        <StackLayout  class="details-stack" width="100%" height="100%"
-            backgroundColor="white" margin="10">
-            <Label text="DETAILS" margin="10 30 10 30"></Label>
-            <Label text="Average house price" margin="0 10 0 10"></Label>
-            <TextView editable="false" class="price-area textarea" margin="0 20 0 20">
-                <Span text="£{{area.avgPrice}}" class="textarea" fontWeight="Bold" fontSize="36"></Span>
-            </TextView>
-            <Label text="Average house type" margin="0 10 0 10"></Label>
-            <TextView editable="false" class="price-area textarea" margin="0 20 0 20">
-                <Span text="{{area.avgHouseType}}" class="textarea" fontWeight="Bold" fontSize="36"></Span>
-            </TextView>
-            <Label text="Average bed count" margin="0 10 0 10"></Label>
-            <TextView editable="false" class="price-area textarea" margin="0 20 0 20">
-                <Span text="{{area.avgBedCount}}" class="textarea" fontWeight="Bold" fontSize="36"></Span>
-            </TextView>
-            <Label text="STATS" margin="30 10 30 10"></Label>
-        </StackLayout>
-    </StackLayout>
-</StackLayout>
+    </ScrollView>
+</GridLayout>

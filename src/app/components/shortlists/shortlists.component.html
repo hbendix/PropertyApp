@@ -8,7 +8,7 @@
                     margin="10"
                     class="card"
                     *ngFor="let shortlist of shortlists"> -->
-        <ListView class="list-group" [items]="shortlists" (itemTap)="itemSelected($event)" separatorColor="#f7f7f7" backgroundColor="white">
+        <ListView class="list-group" [items]="shortlists" separatorColor="#f7f7f7" backgroundColor="white">
                 <ng-template let-shortlist="item">
                         <CardView class="cardStyle" margin="10" elevation="40" radius="15" ripple="true" >
                             <GridLayout rows="*, *, *, *, *" columns="*, *">
@@ -48,6 +48,7 @@
                                         col="0" 
                                         fontSize="22"
                                         color="#F44336"
+                                        (tap)="deleteShortlist(shortlist._id)"
                                         backgroundColor="white"></Label>
                                 <Label  text="&#xf0a4;" 
                                         class="far" 
@@ -57,6 +58,7 @@
                                         margin="2"
                                         padding="10"
                                         col="1" 
+                                        (tap)="itemSelected(shortlist._id)" 
                                         fontSize="22"
                                         color="#4CAF50"
                                         backgroundColor="white"></Label>

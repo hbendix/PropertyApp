@@ -9,6 +9,7 @@ import { PropertyViewService } from "~/app/services/property-view.service";
 import { NotificationService } from "~/app/services/notification.service";
 import { ShortlistService } from "~/app/services/shortlist.service";
 import { registerElement } from 'nativescript-angular/element-registry';
+import * as dialogs from "tns-core-modules/ui/dialogs";
 import { CardView } from 'nativescript-cardview';
 registerElement('CardView', () => CardView);
 @Component({
@@ -32,6 +33,10 @@ export class ShortlistsComponent implements OnInit {
   }
   
   ngOnInit() {
+    this.getShortlist();
+  }
+
+  private getShortlist(): any {
     this.shortlistService.getShortlist()
       .subscribe(
         (res) => {
@@ -54,10 +59,28 @@ export class ShortlistsComponent implements OnInit {
     });
   }
 
-  public itemSelected (args: ItemEventData) {
-    this.property = this.shortlists[args.index];
-    console.log(this.property);
-    this.propertyService.viewProperty(this.property._id)
+  public deleteShortlist (propertyId) {
+    dialogs.confirm({
+      title: "Remove Property from Shortlist?",
+      okButtonText: "Yes",
+      cancelButtonText: "Cancel"
+    }).then(r => {
+      if (r) {
+        this.shortlistService.deletePropertyFromShortlist(propertyId)
+          .subscribe(
+            (res) => {
+              this.notificationService.fireNotification('Deleted property', true); 
+              this.getShortlist();         
+            }, (err) => {
+              this.notificationService.fireNotification(`Error deleting property: ${ err.status } ${ err.statusText }`, false);          
+            }
+          )
+      }
+    });
+  }
+
+  public itemSelected (propertyId) {
+    this.propertyService.viewProperty(propertyId)
       .subscribe(
         (res) => {
           console.log(res);
