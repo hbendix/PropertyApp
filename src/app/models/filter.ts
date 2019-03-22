@@ -9,16 +9,23 @@ export class FilterView {
     roomMax: number;
     tags: Array<string>;
 
-    constructor (minP: number, maxP: number, minBed: number, maxBed: number, minBath: number,
-        maxBath: number, minR: number, maxR: number, tag: Array<string>) {
-        this.priceMin = minP;           
-        this.priceMax = maxP;     
-        this.bedMin = minBed;           
-        this.bedMax = maxBed; 
-        this.bathMin = minBath;           
-        this.bathMax = maxBath;
-        this.roomMin = minR;           
-        this.roomMax = maxR;
-        this.tags = tag;                    
-    }
+    constructor(priceMin: number = null,
+        priceMax: number = null,
+        bedMin: number = null,
+        bedMax: number = null,
+        bathMin: number = null,
+        bathMax: number = null,
+        roomMin: number = null,
+        roomMax: number = null,
+        tags: Array<string> = []) {
+            this.priceMin = priceMin;
+            this.priceMax = priceMax;
+            this.bedMin = bedMin;
+            this.bedMax = bedMax;
+            this.bathMin = bathMin;
+            this.bathMax = bathMax;
+            this.roomMin = roomMin;
+            this.roomMax = roomMax;
+            this.tags = tags;
+        }
 }

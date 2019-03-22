@@ -3,6 +3,7 @@ import { PropertyView, Property } from "../models/property";
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AuthService } from "./auth.service";
+import { MapViewService } from "./map-view.service";
 
 @Injectable({
     providedIn: "root"
@@ -14,12 +15,16 @@ export class PropertyViewService {
     public toView: PropertyView;
     
     constructor(private http: HttpClient,
-        private auth: AuthService) {}
+        private auth: AuthService,
+        private mapViewService: MapViewService) {}
     
     public getPropertyModel(long: Number, lat: Number) {
         const _url = `${environment.server.url}/properties?lat=${lat}&long=${long}`;
-
-        return this.http.post(_url, {});                
+        if (this.mapViewService.isBeingFiltered) {
+            return this.http.post(_url,  { "filters": this.mapViewService.filterBody });                
+        } else {
+            return this.http.post(_url, {});                
+        }
     }
     
     public viewProperty(propertyId: string) {

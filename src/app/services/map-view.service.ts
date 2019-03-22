@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { environment } from "../../environments/environment";
 import { HttpClient } from '@angular/common/http';
 import { filter } from "rxjs/operators";
+import { FilterView } from "../models/filter";
 
 @Injectable({
     providedIn: "root"
@@ -10,8 +11,9 @@ import { filter } from "rxjs/operators";
 export class MapViewService {
 
     mapMarkers = [];
-    isBeingFiltered = false;
-    filterBody: any;
+
+    public isBeingFiltered = false;
+    public filterBody: FilterView;
 
     constructor(private http: HttpClient) {}
 
@@ -25,15 +27,13 @@ export class MapViewService {
     }
 
     public pullMapMarkers(long: Number, lat: Number, radius: Number) {       
-        console.log(long, lat);
+        console.log(this.isBeingFiltered);
         const _url = `${environment.server.url}/markers?lat=${lat}&long=${long}&radius=${radius}`;
 
         if (this.isBeingFiltered) {
-            console.log("Attempting to filter... ");
-            console.log({"filters":this.filterBody});
-            return this.http.post(_url, {"filters":this.filterBody});
+            console.log(this.filterBody);
+            return this.http.post(_url, { "filters": this.filterBody });
         } else {
-            console.log("No Filter Attempt");
             return this.http.post(_url, {});        
         }
 

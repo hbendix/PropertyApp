@@ -1,12 +1,66 @@
 <ActionBar title="Search" class="action-bar">
        <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()"></NavigationButton>
        <Label class="action-bar-title" text="Search Properties"></Label>
-   </ActionBar>
-   <StackLayout orientation="vertical" [formGroup]="searchForm">
-          <TextField formControlName="postcode" hint="Postcode"></TextField>
-          <TextField formControlName="minPrice" hint="Min Price" keyboardType="number"></TextField>
-          <TextField formControlName="maxPrice" hint="Max Price" keyboardType="number"></TextField>
-          <TextField formControlName="houseType" hint="House Type"></TextField>
-          <TextField formControlName="bedCount" hint="Bedroom Count" keyboardType="number"></TextField>
-          <Button text="Search" (tap)="searchProperties()"></Button>
-   </StackLayout>
+</ActionBar>
+<StackLayout orientation="vertical" [formGroup]="searchForm" margin="10" *ngIf="!viewingList || !loading">
+       <Label text="Search for properties" horizontalAlignment="center" class="join-header"></Label>
+       <TextField formControlName="postcode" hint="Postcode"></TextField>
+       <Label text="Postcode required " horizontalAlignment="left" class="required" *ngIf="!isValid"></Label>
+       <TextField formControlName="minPrice" hint="Min Price" keyboardType="number"></TextField>
+       <TextField formControlName="maxPrice" hint="Max Price" keyboardType="number"></TextField>
+       <TextField formControlName="houseType" hint="House Type"></TextField>
+       <TextField formControlName="bedCount" hint="Bedroom Count" keyboardType="number"></TextField>
+       <Button text="Search" (tap)="searchProperties()"></Button>
+</StackLayout>
+<StackLayout orientation="vertical" margin="10" *ngIf="loading">
+    <ActivityIndicator [busy]="isBusy" class="activity-indicator" margin="15 0 0 0"></ActivityIndicator>       
+</StackLayout>
+<ScrollView row="1" backgroundColor="white"  *ngIf="viewingList && !loading">
+       <ListView class="list-group" [items]="properties" separatorColor="#f7f7f7" backgroundColor="white">
+              <ng-template let-shortlist="item">
+                     <CardView class="cardStyle" margin="10" elevation="40" radius="15" ripple="true" >
+                     <GridLayout rows="*, *, *, *, *" columns="*, *">
+                            <Image
+                            src="{{shortlist.propertyImageUrl}}"
+                            stretch="aspectFit"
+                            verticalAlignment="stretch"
+                            col="0"
+                            row="0"
+                            rowSpan="2"
+                            colSpan="2"
+                            ></Image>
+                            <StackLayout    col="0" 
+                                          row="3"
+                                          colSpan="2"
+                                          backgroundColor="white" 
+                                          class="list-group-item" 
+                                          *ngIf="shortlist.propertyName !== undefined">
+                            <Label class="list-group-item-heading" [text]="shortlist.propertyName"></Label>
+                            <Label class="list-group-item-text" [text]="shortlist.fullAddress"></Label>
+                            </StackLayout>
+                            <StackLayout    col="0" 
+                                          row="3"
+                                          colSpan="2"
+                                          backgroundColor="white" 
+                                          class="list-group-item" 
+                                          *ngIf="shortlist.propertyName === undefined">
+                            <Label class="list-group-item-heading" [text]="shortlist.fullAddress"></Label>
+                            </StackLayout>
+                            <Label  text="&#xf0a4;" 
+                                   class="far" 
+                                   textAlignment="right" 
+                                   horizontalAlignment="right"
+                                   row="4" 
+                                   margin="2"
+                                   padding="10"
+                                   col="1" 
+                                   colSpan="2" 
+                                   (tap)="itemSelected(shortlist._id)" 
+                                   fontSize="22"
+                                   color="#4CAF50"
+                                   backgroundColor="white"></Label>
+                     </GridLayout>
+                     </CardView>
+              </ng-template> 
+       </ListView>
+</ScrollView>

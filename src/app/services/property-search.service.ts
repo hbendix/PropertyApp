@@ -12,4 +12,11 @@ export class PropertySearchViewService {
     toReturn: PropertySearchView;
 
     constructor(private http: HttpClient) {}
+
+    public getSearch (params: string, body: any) {
+        const _url = `${ environment.server.url }/properties-list?postcode=${ params }&radius=50`;
+        console.log(_url);
+
+        return this.http.post(_url, { "filters": body });
+    }
 }

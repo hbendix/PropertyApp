@@ -23,17 +23,29 @@ export class FilterViewComponent implements OnInit {
     private routerExtensions: RouterExtensions) {}
 
   ngOnInit() {
-    this.filterForm = this.fb.group({
-      minPrice: ['', Validators.required],
-      maxPrice: ['', Validators.required],
-      minBed: ['', Validators.required],
-      maxBed: ['', Validators.required],
-      minBath: ['', Validators.required],
-      maxBath: ['', Validators.required],
-      minRoom: ['', Validators.required],
-      maxRoom: ['', Validators.required],
-      tags: ['', Validators.required],
-  });
+    if (this.mapService.filterBody !== undefined) {
+      this.filterForm = this.fb.group({
+        priceMin: [this.mapService.filterBody.priceMin !== undefined ? <number>this.mapService.filterBody.priceMin : '', Validators.required],
+        priceMax: [this.mapService.filterBody.priceMax !== undefined ? <number>this.mapService.filterBody.priceMax : '', Validators.required],
+        bedMin: [this.mapService.filterBody.bedMax !== undefined ? <number>this.mapService.filterBody.bedMax : '', Validators.required],
+        bedMax: [this.mapService.filterBody.bedMin !== undefined ? <number>this.mapService.filterBody.bedMin : '', Validators.required],
+        bathMin: [this.mapService.filterBody.bathMin !== undefined ? <number>this.mapService.filterBody.bathMin : '', Validators.required],
+        bathMax: [this.mapService.filterBody.bathMax !== undefined ? <number>this.mapService.filterBody.bathMax : '', Validators.required],
+        roomMin: [this.mapService.filterBody.roomMin !== undefined ? <number>this.mapService.filterBody.roomMin : '', Validators.required],
+        roomMax: [this.mapService.filterBody.roomMax !== undefined ? <number>this.mapService.filterBody.roomMax : '', Validators.required],
+      });
+    } else {
+      this.filterForm = this.fb.group({
+        priceMin: ['', Validators.required],
+        priceMax: ['', Validators.required],
+        bedMin: ['', Validators.required],
+        bedMax: ['', Validators.required],
+        bathMin: ['', Validators.required],
+        bathMax: ['', Validators.required],
+        roomMin: ['', Validators.required],
+        roomMax: ['', Validators.required],
+      });
+    }
   }
 
   onNavBtnTap() {
@@ -46,9 +58,15 @@ export class FilterViewComponent implements OnInit {
 
   filterMap(): void  {
     let _filter = this.filterForm.value;
-    this.filter = new FilterView(Number(_filter.minPrice), Number(_filter.maxPrice), Number(_filter.minBed),
-     Number(_filter.maxBed), Number(_filter.minBath), Number(_filter.maxBath), Number(_filter.minRoom), 
-     Number(_filter.maxRoom), Array<string>(_filter.tags));
+    this.filter = new FilterView();
+
+    this.filter.tags = [];
+    Object.keys(_filter).forEach(e => {
+      if (_filter[e]) {
+        this.filter[e] = _filter[e];
+      }
+    });
+    console.log(this.filter);
     this.mapService.setFilterBody(this.filter);
     this.routerExtensions.navigate(['home'], {
       transition: {

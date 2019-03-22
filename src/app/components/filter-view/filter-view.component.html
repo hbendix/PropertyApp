@@ -2,15 +2,16 @@
     <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()"></NavigationButton>
     <Label class="action-bar-title" text="Filter"></Label>
 </ActionBar>
-<StackLayout orientation="vertical" [formGroup]="filterForm">
-       <TextField formControlName="minPrice" hint="Min Price" keyboardType="number"></TextField>
-       <TextField formControlName="maxPrice" hint="Max Price" keyboardType="number"></TextField>
-       <TextField formControlName="minBed" hint="Min Bed Count" keyboardType="number"></TextField>
-       <TextField formControlName="maxBed" hint="Max Bed Count" keyboardType="number"></TextField>
-       <TextField formControlName="minBath" hint="Min Bathroom Count" keyboardType="number"></TextField>
-       <TextField formControlName="maxBath" hint="Max Bathroom Count" keyboardType="number"></TextField>
-       <TextField formControlName="minRoom" hint="Min Room Count" keyboardType="number"></TextField>
-       <TextField formControlName="maxRoom" hint="Max Room Count" keyboardType="number"></TextField>
-       <TextField formControlName="tags" hint="Tags"></TextField>
+
+<StackLayout orientation="vertical" [formGroup]="filterForm" margin="10">
+        <Label text="Filter the map markers" horizontalAlignment="center" class="join-header"></Label>
+       <TextField formControlName="priceMin" hint="Min Price" keyboardType="number"></TextField>
+       <TextField formControlName="priceMax" hint="Max Price" keyboardType="number"></TextField>
+       <TextField formControlName="bedMin" hint="Min Bed Count" keyboardType="number"></TextField>
+       <TextField formControlName="bedMax" hint="Max Bed Count" keyboardType="number"></TextField>
+       <TextField formControlName="bathMin" hint="Min Bathroom Count" keyboardType="number"></TextField>
+       <TextField formControlName="bathMax" hint="Max Bathroom Count" keyboardType="number"></TextField>
+       <TextField formControlName="roomMin" hint="Min Room Count" keyboardType="number"></TextField>
+       <TextField formControlName="roomMax" hint="Max Room Count" keyboardType="number"></TextField>
        <Button text="Filter" (tap)="filterMap()"></Button>
 </StackLayout>

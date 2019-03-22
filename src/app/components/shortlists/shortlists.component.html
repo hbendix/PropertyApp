@@ -3,11 +3,6 @@
         <Label class="action-bar-title" text="My Shortlists"></Label>
 </ActionBar>
 <ScrollView row="1" backgroundColor="white">
-    <!-- <StackLayout    width="100%" 
-                    height="200"
-                    margin="10"
-                    class="card"
-                    *ngFor="let shortlist of shortlists"> -->
         <ListView class="list-group" [items]="shortlists" separatorColor="#f7f7f7" backgroundColor="white">
                 <ng-template let-shortlist="item">
                         <CardView class="cardStyle" margin="10" elevation="40" radius="15" ripple="true" >
@@ -66,24 +61,4 @@
                         </CardView>
                 </ng-template> 
             </ListView>
-                        
-    <!-- </StackLayout> -->
-    <!-- <ActivityIndicator [busy]="isBusy" class="activity-indicator" margin="15 0 0 0" *ngIf="shortlists.length === 0"></ActivityIndicator> -->
 </ScrollView>
-            <!-- <ListView class="list-group" [items]="shortlists" (itemTap)="itemSelected($event)" separatorColor="#f7f7f7">
-                <ng-template let-shortlist="item">
-                    <GridLayout columns="auto, *" class="list-group-item"
-                        style="border:1;">
-                        <StackLayout col="0" backgroundColor="white" class="list-group-item" margin="0">
-                            <Image [src]="shortlist.propertyThumbUrl" class="thumb img-circle" margin="0"></Image>
-                        </StackLayout>
-                        <StackLayout col="1" backgroundColor="white" class="list-group-item" *ngIf="shortlist.propertyName !== undefined">
-                            <Label class="list-group-item-heading" [text]="shortlist.propertyName"></Label>
-                            <Label class="list-group-item-text" [text]="shortlist.fullAddress"></Label>
-                        </StackLayout>
-                        <StackLayout col="1" backgroundColor="white" class="list-group-item" *ngIf="shortlist.propertyName === undefined">
-                            <Label class="list-group-item-heading" [text]="shortlist.fullAddress"></Label>
-                        </StackLayout>
-                    </GridLayout>
-                </ng-template>
-            </ListView> -->
