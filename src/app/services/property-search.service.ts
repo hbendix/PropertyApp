@@ -2,14 +2,16 @@ import { Injectable } from "@angular/core";
 import { PropertySearchView } from "../models/propertySearch";
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { ShortListItem } from "../models/shortlistItem";
 
 @Injectable({
     providedIn: "root"
 })
 
-export class PropertySearchViewService {
+export class PropertySearchService {
 
     toReturn: PropertySearchView;
+    searchResults: ShortListItem[];
 
     constructor(private http: HttpClient) {}
 
@@ -18,5 +20,13 @@ export class PropertySearchViewService {
         console.log(_url);
 
         return this.http.post(_url, { "filters": body });
+    }
+
+    public setSearchResults (searchResults: ShortListItem[]) {
+        this.searchResults = searchResults;
+    }
+
+    public getSearchResults () {
+        return this.searchResults;
     }
 }

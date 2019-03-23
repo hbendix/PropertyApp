@@ -26,11 +26,15 @@ export class PropertyViewService {
             return this.http.post(_url, {});                
         }
     }
+
+    public setProperty (property) {
+        this.toView = property;
+    }
     
     public viewProperty(propertyId: string) {
         this.isViewingShortList = true;
         const _url = `${environment.server.url}/shortlist/property?username=${ this.auth.getLoggedInUser() }&propertyid=${ propertyId }`;
-        console.log(_url);
+
         return this.http.get(_url);
     }
 

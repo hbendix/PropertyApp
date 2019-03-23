@@ -39,6 +39,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
   pipe = new DatePipe('en-UK'); // Use your own locale
   isViewingShortlist = false;
   editingComment: boolean;
+  isViewingSearchItem = false;
 
   constructor(private propertyViewService: PropertyViewService,
     private route: ActivatedRoute,
@@ -51,14 +52,18 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
       this.lat = params.lat;
       this.prevLocation = params.prevLocation;
     });
-    console.log(this.prevLocation);
+
     if (this.prevLocation === '/shortlists') {
       this.isViewingShortlist = true;
+    } else if (this.prevLocation === '/property-search') {
+      this.isViewingSearchItem = true;
     }
     this.loadProperty();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.notificationService.loader.hide();
+  }
 
   public onNavBtnTap(){
     if ((this.isList) || (this.propertyList.length == 0)) {
@@ -74,7 +79,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
   }
 
   private loadProperty () {
-    if (this.propertyViewService.isViewingShortList) {
+    if (this.propertyViewService.isViewingShortList || this.isViewingSearchItem) {
       this.property = this.propertyViewService.toView;
       this.sortStats();
       this.isList = false;

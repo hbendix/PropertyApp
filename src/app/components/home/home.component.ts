@@ -148,7 +148,7 @@ export class HomeComponent implements OnInit  {
         this.userLoc.longitude =  marker.lng;
         this.userLoc.latitude = marker.lat;
         this.userService.updateUserLocation(this.userLoc);
-
+        this.notificationService.loader.show();
         this.routerExtensions.navigate(["/property"], {
             transition: {
                 name: "fade"
@@ -184,12 +184,21 @@ export class HomeComponent implements OnInit  {
     }
 
     onAreaTap() {
+        this.notificationService.loader.show();
+        
         this.map.getCenter().then((res) => {
             this.userLoc.longitude =  res.lng;
             this.userLoc.latitude = res.lat;
             this.userService.updateUserLocation(this.userLoc);
-            // this.areaService.pullArea(res.lat, res.lng);
-            this.showAreaView(res.lat, res.lng);
+            this.areaService.pullArea(res.lat, res.lng).subscribe((area) => {
+                console.log(res);
+                this.areaService.area = area;
+                this.showAreaView(res.lat, res.lng);
+            }, (err) => {
+                this.notificationService.loader.hide();
+                this.notificationService.fireNotification(`Error loading Area: ${ err.status } ${ err.statusText }`, false);
+
+            });
         });
     }
 
@@ -216,6 +225,7 @@ export class HomeComponent implements OnInit  {
     }
 
     showAreaView(lat, lng): void {
+        console.log(lat, lng);
         this.routerExtensions.navigate(["/area"], {
             transition: {
                 name: "fade"

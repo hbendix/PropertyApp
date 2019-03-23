@@ -13,6 +13,7 @@ import { View } from 'tns-core-modules/ui/core/view';
 import { AuthService } from "~/app/services/auth.service";
 import { Mapbox, MapStyle, MapboxViewApi, Viewport as MapboxViewport, MapboxView } from "nativescript-mapbox";
 import { environment } from "~/environments/environment";
+import { NotificationService } from "~/app/services/notification.service";
 
 @Component({
   selector: "ns-area-view",
@@ -42,8 +43,10 @@ export class AreaViewComponent implements OnInit {
   constructor(private areaService: AreaService,
     private route: ActivatedRoute,
     private routerExtensions: RouterExtensions,
-    private auth: AuthService) {
+    private auth: AuthService,
+    private notificationService: NotificationService) {
     this.route.queryParams.subscribe(params => {
+      console.log(params);
       this.long = params.long;
       this.lat = params.lat;
       this.prevLocation = params.prevLocation;
@@ -57,6 +60,7 @@ export class AreaViewComponent implements OnInit {
     setTimeout(()=>{
       console.log(this.long);
       console.log(this.lat);
+      this.notificationService.loader.hide();
       this.loaded = true;
     }, 100)
   }
@@ -67,6 +71,7 @@ export class AreaViewComponent implements OnInit {
 
   private loadArea () {
     this.area = <any>this.areaService.getArea();
+    this.area.postcode = this.area.postcode.split(" ")[0];
   }
 
   public getDownloadStat () {
