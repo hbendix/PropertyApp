@@ -3,7 +3,7 @@
     <Label class="action-bar-title" text="{{area.postcode}} details"></Label>
 </ActionBar>
 
-<FAB (tap)="saveProperty(property)" rippleColor="#f1f1f1" row="1" class="fab-button"
+<FAB (tap)="saveArea(area)" rippleColor="#f1f1f1" row="1" class="fab-button"
     *ngIf="!isList && isLoggedIn" horizontalAlignment="right">
 </FAB> 
 <GridLayout class="page"  *ngIf="!isList" >

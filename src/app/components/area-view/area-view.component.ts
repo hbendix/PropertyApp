@@ -14,6 +14,7 @@ import { AuthService } from "~/app/services/auth.service";
 import { Mapbox, MapStyle, MapboxViewApi, Viewport as MapboxViewport, MapboxView } from "nativescript-mapbox";
 import { environment } from "~/environments/environment";
 import { NotificationService } from "~/app/services/notification.service";
+import { ShortlistService } from "~/app/services/shortlist.service";
 
 @Component({
   selector: "ns-area-view",
@@ -44,7 +45,8 @@ export class AreaViewComponent implements OnInit {
     private route: ActivatedRoute,
     private routerExtensions: RouterExtensions,
     private auth: AuthService,
-    private notificationService: NotificationService) {
+    private notificationService: NotificationService,
+    private shortlistService: ShortlistService) {
     this.route.queryParams.subscribe(params => {
       console.log(params);
       this.long = params.long;
@@ -65,7 +67,7 @@ export class AreaViewComponent implements OnInit {
     }, 100)
   }
 
-  onMapReady(args: any): void {
+  onMapReady(args: any) {
     this.map = args.map;    
   }
 
@@ -119,7 +121,7 @@ export class AreaViewComponent implements OnInit {
   }
 
   onScroll(event: ScrollEventData, scrollView: ScrollView, topView: View) {
-    // If the header content is still visiible
+    // If the header content is still visible
     // console.log(scrollView.verticalOffset);
     if (scrollView.verticalOffset < 250) {
         const offset = scrollView.verticalOffset / 2;
@@ -131,5 +133,18 @@ export class AreaViewComponent implements OnInit {
             topView.translateY = Math.floor(offset);
         }
     }
+  }
+
+  saveArea (area: Area) {
+    this.notificationService.loader.show();    
+    this.shortlistService.addAreaToShortlist(area).subscribe(
+      (res) => {
+        this.notificationService.fireNotification('Added to your shortlists!', true);
+        this.notificationService.loader.hide();
+      }, (err) => {
+        this.notificationService.fireNotification(`Error loading Area: ${ err.status } ${ err.statusText }`, false);
+        this.notificationService.loader.hide();
+      }
+    )
   }
 }

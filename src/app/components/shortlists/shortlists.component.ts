@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from "@angular/core";
 import { UserService } from "~/app/services/user.service";
 import { ActivatedRoute } from "@angular/router";
 import { RouterExtensions } from "nativescript-angular/router";
-import { ShortListItem } from "~/app/models/shortlistItem";
+import { ShortListItem, AreaShortListItem } from "~/app/models/shortlistItem";
 import { ItemEventData } from "tns-core-modules/ui/list-view/list-view";
 import { Property } from "~/app/models/property";
 import { PropertyViewService } from "~/app/services/property-view.service";
@@ -22,6 +22,7 @@ export class ShortlistsComponent implements OnInit {
 
   shortlists: ShortListItem[] = [];
   property: ShortListItem;
+  areas: AreaShortListItem[] = [];
 
   constructor(private userService: UserService,
     private route: ActivatedRoute,
@@ -33,6 +34,7 @@ export class ShortlistsComponent implements OnInit {
   }
   
   ngOnInit() {
+    this.notificationService.loader.show();    
     this.getShortlist();
   }
 
@@ -41,9 +43,22 @@ export class ShortlistsComponent implements OnInit {
       .subscribe(
         (res) => {
           console.log(res);
+          this.notificationService.loader.hide();    
           this.shortlists =  res;
         }, (err) => {
           this.notificationService.fireNotification(`Error loading your shortlist: ${ err.status } ${ err.statusText }`, false);
+          this.notificationService.loader.hide();    
+        }
+      );
+    
+      this.shortlistService.getAreaShortlist().subscribe(
+        (res) => {
+          console.log(res);
+          this.areas = res;
+          this.notificationService.loader.hide();    
+        }, (err) => {
+          this.notificationService.fireNotification(`Error loading your shortlist: ${ err.status } ${ err.statusText }`, false);
+          this.notificationService.loader.hide();    
         }
       );
   }
@@ -99,6 +114,22 @@ export class ShortlistsComponent implements OnInit {
           this.notificationService.fireNotification(`Error loading property: ${ err.status } ${ err.statusText }`, false);
         }
       );
+  }
+
+  public deleteArea (areaId) {
+    dialogs.confirm({
+      title: "Remove Area from Shortlist?",
+      okButtonText: "Yes",
+      cancelButtonText: "Cancel"
+    }).then(r => {
+      if (r) {
+        
+      }
+    });
+  }
+
+  public areaSelected (areaId) {
+
   }
   
 }

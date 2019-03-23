@@ -14,3 +14,9 @@ export class ShortListItem {
         this.imageSrc = imageSrc;
     }
 }
+
+export class AreaShortListItem {
+    _id: string;
+    postcode: string;
+    avgPrice: number;
+}

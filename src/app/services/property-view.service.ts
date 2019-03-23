@@ -33,7 +33,7 @@ export class PropertyViewService {
     
     public viewProperty(propertyId: string) {
         this.isViewingShortList = true;
-        const _url = `${environment.server.url}/shortlist/property?username=${ this.auth.getLoggedInUser() }&propertyid=${ propertyId }`;
+        const _url = `${environment.server.url}/shortlist/property/get?username=${ this.auth.getLoggedInUser() }&propertyid=${ propertyId }`;
 
         return this.http.get(_url);
     }

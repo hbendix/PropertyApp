@@ -169,16 +169,18 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
           console.log(r.result);
           if (r.result) {
             property.propertyName = r.text;
-          } else if (!r.result) {
+          } else if (!r.result && r.result !== undefined) {
             return;
           }
-  
+          this.notificationService.loader.show();        
           this.shortlistService.addPropertyToShortList(property)
             .subscribe(
               (res) => {
                 this.notificationService.fireNotification('Added to your shortlists!', true);
+                this.notificationService.loader.hide();        
               }, (err) => {
                 this.notificationService.fireNotification(`Error adding to your shortlist ${ err.status } ${ err.statusText }`, false);
+                this.notificationService.loader.hide();        
               }
             );
         });
@@ -256,7 +258,10 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     this.shortlistService.refreshComments(this.property._id)
       .subscribe(
         (res) => {
+          console.log(res); 
           this.property.notes = <any>res;
+          console.log(this.property);
+          console.log(this.property.notes);
         }, (err) => {
           this.notificationService.fireNotification(`Error refreshing comments ${ err.status } ${ err.statusText }`, false);
         }
