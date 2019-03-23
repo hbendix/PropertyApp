@@ -42,7 +42,6 @@ export class ShortlistsComponent implements OnInit {
     this.shortlistService.getShortlist()
       .subscribe(
         (res) => {
-          console.log(res);
           this.notificationService.loader.hide();    
           this.shortlists =  res;
         }, (err) => {
@@ -54,7 +53,7 @@ export class ShortlistsComponent implements OnInit {
       this.shortlistService.getAreaShortlist().subscribe(
         (res) => {
           console.log(res);
-          this.areas = res;
+          this.areas = <any>res;
           this.notificationService.loader.hide();    
         }, (err) => {
           this.notificationService.fireNotification(`Error loading your shortlist: ${ err.status } ${ err.statusText }`, false);

@@ -59,10 +59,8 @@ export class AreaViewComponent implements OnInit {
   
   ngOnInit() { 
     this.loadArea();
-    this.notificationService.loader.hide();
     setTimeout(()=>{
-      console.log(this.long);
-      console.log(this.lat);
+      this.notificationService.loader.hide();
       this.loaded = true;
     }, 100)
   }
@@ -74,7 +72,7 @@ export class AreaViewComponent implements OnInit {
   private loadArea () {
     this.area = <any>this.areaService.getArea();
     console.log(this.area);
-    // this.area.postcode = this.area.postcode.split(" ")[0];
+    this.area.postcode = this.area.postcode.split(" ")[0];
   }
 
   public getDownloadStat () {

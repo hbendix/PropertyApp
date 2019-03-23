@@ -98,6 +98,6 @@ export class ShortlistService {
     public getAreaShortlist() {
         const _url = `${ environment.server.url }/shortlist/area/list?username=${ this.auth.getLoggedInUser() }`;
         
-        return this.http.get(_url).pipe(map(res => <AreaShortListItem[]>res));
+        return this.http.get(_url);
     }
 }
