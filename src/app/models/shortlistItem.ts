@@ -19,4 +19,6 @@ export class AreaShortListItem {
     _id: string;
     postcode: string;
     avgPrice: number;
+    long: number;
+    lat: number;
 }

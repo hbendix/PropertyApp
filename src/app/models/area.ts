@@ -5,6 +5,10 @@ export interface Area {
     electricity: GasElectric;
     crime: CrimeStats[];
     avgPrice: number;
+    long: number;
+    lat: number;
+    _id: string;
+    notes: [];
 }
 
 export interface InternetStats {

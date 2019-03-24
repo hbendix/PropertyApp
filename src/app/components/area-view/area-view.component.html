@@ -4,7 +4,7 @@
 </ActionBar>
 
 <FAB (tap)="saveArea(area)" rippleColor="#f1f1f1" row="1" class="fab-button"
-    *ngIf="!isList && isLoggedIn" horizontalAlignment="right">
+    *ngIf="isLoggedIn" horizontalAlignment="right">
 </FAB> 
 <GridLayout class="page"  *ngIf="!isList" >
     <ScrollView #scrollView (scroll)="onScroll($event, scrollView, topView)">
@@ -30,9 +30,10 @@
                 <Label text="{{area.postcode}}" color="gray" textAlignment="center" style="z-index:999" fontSize="45" marginTop="40"></Label>
             </StackLayout>
             <StackLayout width="100%" backgroundColor="white" padding="10"class="border">
-                <Label text="AVERAGE HOUSE PRICE" margin="10"></Label>
+                <Label text="AVERAGE HOUSE PRICE" margin="10" *ngIf="area.avgPrice !== null"></Label>
                 <TextView   editable="false" 
                             class="price-area"
+                            *ngIf="area.avgPrice !== null"
                             style="border-color: #707070;">
                     <Span   text="£{{area.avgPrice}}" 
                             fontWeight="Bold"
@@ -51,15 +52,22 @@
                     <Span   text="INTERNET" color="#707070"
                             fontSize="16"></Span>
                 </TextView>
-
+                <Label  text="{{area.broadband}}" 
+                        margin="15"
+                        fontSize="17"
+                        color="black"
+                        *ngIf="area.broadband === 'No Broadband data for this location'"></Label>
 
                 <Label  text="{{area.broadband.super_fast}}% Super Fast Broadband Availability" 
                         margin="15"
                         fontSize="17"
-                        color="black"></Label>
+                        color="black"
+                        *ngIf="area.broadband !== 'No Broadband data for this location'"></Label>
                 
 
-                <GridLayout rows="*, *, *, *, *, *, *, *, *, * ,*" columns="*">
+                <GridLayout     rows="*, *, *, *, *, *, *, *, *, * ,*" 
+                                columns="*"
+                                *ngIf="area.broadband !== 'No Broadband data for this location'">
                     <Label  text="AVERAGE SPEED" 
                             textAlignment="left" 
                             row="0" 
@@ -151,7 +159,14 @@
                             color="#707070"
                             fontSize="16"></Span>
                 </TextView>
-                <GridLayout rows="*, *" columns="*" margin="0 0 20 0">
+
+                <Label  text="{{area.gas}}" 
+                        margin="15"
+                        fontSize="17"
+                        color="black"
+                        *ngIf="area.gas === 'No Gas data for this location'"></Label>
+
+                <GridLayout rows="*, *" columns="*" margin="0 0 20 0" *ngIf="area.gas !== 'No Gas data for this location'">
                         <Label  text="Consumption: {{ area.gas.consumption }}KWh" 
                                 textAlignment="left" 
                                 row="0" 
@@ -180,7 +195,14 @@
                     <Span   text="ELECTRICITY" color="#707070"
                             fontSize="16"></Span>
                 </TextView>
-                <GridLayout rows="*, *" columns="*" margin="0 0 20 0">
+
+                <Label  text="{{area.electricity}}" 
+                        margin="15"
+                        fontSize="17"
+                        color="black"
+                        *ngIf="area.electricity === 'No Electricity data for this location'"></Label>
+
+                <GridLayout rows="*, *" columns="*" margin="0 0 20 0" *ngIf="area.electricity !== 'No Electricity data for this location'">
                         <Label  text="Consumption: {{ area.electricity.consumption }}KWh" 
                                 textAlignment="left" 
                                 row="0" 
@@ -208,7 +230,11 @@
                     <Span   text="RECENT CRIME STATS" color="#707070"
                             fontSize="16"></Span>
                 </TextView>
-
+                <Label  text="No Crime data for this location" 
+                        margin="15"
+                        fontSize="17"
+                        color="black"
+                        *ngIf="area.crime.length === 0"></Label>
                 <GridLayout rows="*, *" columns="*" *ngFor="let crime of area.crime">
                         <Label  text="{{crime.type}}" 
                                 textAlignment="left" 

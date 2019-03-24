@@ -196,7 +196,11 @@ export class HomeComponent implements OnInit  {
                 this.showAreaView(res.lat, res.lng);
             }, (err) => {
                 this.notificationService.loader.hide();
-                this.notificationService.fireNotification(`Error loading Area: ${ err.status } ${ err.statusText }`, false);
+                if (err.status === 404) {
+                    this.notificationService.fireNotification(`No area data found!`, false);
+                } else {
+                    this.notificationService.fireNotification(`Error loading Area: ${ err.status } ${ err.statusText }`, false);
+                }
 
             });
         });
@@ -237,8 +241,4 @@ export class HomeComponent implements OnInit  {
             }
         });
     }
-
-    /*setFilterForMap(filter) {
-        this.mapViewService.setFilterBody(filter);
-    }*/
 }

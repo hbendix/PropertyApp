@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { UserService } from "~/app/services/user.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { RouterExtensions } from "nativescript-angular/router";
 import { ShortListItem, AreaShortListItem } from "~/app/models/shortlistItem";
 import { ItemEventData } from "tns-core-modules/ui/list-view/list-view";
@@ -11,6 +11,7 @@ import { ShortlistService } from "~/app/services/shortlist.service";
 import { registerElement } from 'nativescript-angular/element-registry';
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import { CardView } from 'nativescript-cardview';
+import { AreaService } from "~/app/services/area.service";
 registerElement('CardView', () => CardView);
 @Component({
   selector: "ns-shortlists",
@@ -26,10 +27,12 @@ export class ShortlistsComponent implements OnInit {
 
   constructor(private userService: UserService,
     private route: ActivatedRoute,
+    private router: Router,
     private routerExtensions: RouterExtensions,
     private propertyService: PropertyViewService,
     private notificationService: NotificationService,
-    private shortlistService: ShortlistService) {
+    private shortlistService: ShortlistService,
+    private areaService: AreaService) {
       
   }
   
@@ -94,6 +97,7 @@ export class ShortlistsComponent implements OnInit {
   }
 
   public itemSelected (propertyId) {
+    this.notificationService.loader.show();    
     this.propertyService.viewProperty(propertyId)
       .subscribe(
         (res) => {
@@ -110,25 +114,55 @@ export class ShortlistsComponent implements OnInit {
             }
           });
         }, (err) => {
+          this.notificationService.loader.hide();    
           this.notificationService.fireNotification(`Error loading property: ${ err.status } ${ err.statusText }`, false);
         }
       );
   }
 
-  public deleteArea (areaId) {
+  public deleteArea (area) {
     dialogs.confirm({
       title: "Remove Area from Shortlist?",
       okButtonText: "Yes",
       cancelButtonText: "Cancel"
     }).then(r => {
       if (r) {
-        
+        this.shortlistService.deleteAreaFromShortlist(area._id).subscribe(
+          (res) => {
+            this.notificationService.fireNotification('Deleted Area', true); 
+            this.getShortlist(); 
+          }, (err) => {
+            console.log(err);
+            this.notificationService.fireNotification(`Error deleting area: ${ err.status } ${ err.statusText }`, false);
+          }
+        )
       }
     });
   }
 
-  public areaSelected (areaId) {
-
+  public areaSelected (area: AreaShortListItem) {
+    this.notificationService.loader.show();    
+    console.log(area);
+    this.areaService.viewArea(area._id).subscribe(
+      (res) => {
+        console.log(res);
+        this.areaService.setArea(res);
+        this.routerExtensions.navigate(['area'], {
+          transition: {
+              name: "fade",
+            },
+            queryParams: {
+              "prevLocation": "/shortlists",
+              "long": area.long,
+              "lat": area.lat
+          }
+        });
+      }, (err) => {
+        console.log(err);
+        this.notificationService.loader.hide();    
+        this.notificationService.fireNotification(`Error loading your shortlist: ${ err.status } ${ err.statusText }`, false);
+      }
+    )
   }
   
 }

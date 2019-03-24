@@ -95,9 +95,63 @@ export class ShortlistService {
         return this.http.post(_url, toSend)
     }
 
+    public deleteAreaFromShortlist (areaId: string) {
+        const _url = `${ environment.server.url }/shortlist/area/delete`;
+
+        const body = { 
+            "username": this.auth.getLoggedInUser(),
+	        "areaid": areaId
+        }
+
+        return this.http.post(_url, body);
+    }
+
     public getAreaShortlist() {
         const _url = `${ environment.server.url }/shortlist/area/list?username=${ this.auth.getLoggedInUser() }`;
         
+        return this.http.get(_url);
+    }
+
+    public addAreaComment(areaId: string, comment: string): any {
+        const _url = `${ environment.server.url }/shortlist/area/note/add`;
+
+        const body = {
+            "username": this.auth.getLoggedInUser(),
+            "areaid": areaId,
+            "note": comment
+        };
+
+        return this.http.post(_url, body);
+    }
+
+    public updateAreaComment(note, areaId, comment: any): any {
+        const _url = `${ environment.server.url }/shortlist/area/note/update`;
+
+        const body = {
+            "username": this.auth.getLoggedInUser(),
+            "areaid": areaId,
+            "note": comment,
+            "noteid": note._id
+        };
+
+        return this.http.post(_url, body);
+    }
+
+    public deleteAreaNote (note, areaId) {
+        const _url = `${ environment.server.url }/shortlist/area/note/delete`;
+
+        const body = {
+            "username": this.auth.getLoggedInUser(),
+            "areaid": areaId,
+            "noteid": note._id
+        };
+
+        return this.http.post(_url, body);
+    }
+
+    public refreshAreaComments (areaId: string) {
+        const _url = `${ environment.server.url }/shortlist/area/note/get?username=${this.auth.getLoggedInUser()}&areaid=${ areaId }`;
+
         return this.http.get(_url);
     }
 }

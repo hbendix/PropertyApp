@@ -15,6 +15,7 @@ import { Mapbox, MapStyle, MapboxViewApi, Viewport as MapboxViewport, MapboxView
 import { environment } from "~/environments/environment";
 import { NotificationService } from "~/app/services/notification.service";
 import { ShortlistService } from "~/app/services/shortlist.service";
+import * as dialogs from "tns-core-modules/ui/dialogs";
 
 @Component({
   selector: "ns-area-view",
@@ -40,6 +41,8 @@ export class AreaViewComponent implements OnInit {
   uploadIsGreater = false;
   downIsGreater = false;
   loaded = false;
+  isViewingShortlist: boolean;
+  editingComment: boolean;
 
   constructor(private areaService: AreaService,
     private route: ActivatedRoute,
@@ -53,6 +56,11 @@ export class AreaViewComponent implements OnInit {
       this.lat = params.lat;
       this.prevLocation = params.prevLocation;
     });
+
+    if (this.prevLocation === '/shortlists') {
+      this.isViewingShortlist = true;
+    } 
+
     this.accessToken = environment.mapbox.accessToken;
 
   }
@@ -112,7 +120,7 @@ export class AreaViewComponent implements OnInit {
   }
 
   onNavBtnTap (args: ItemEventData) {
-    this.routerExtensions.navigate(['/home'], {
+    this.routerExtensions.navigate([this.prevLocation], {
       transition: {
           name: "fade"
       }
@@ -135,15 +143,121 @@ export class AreaViewComponent implements OnInit {
   }
 
   saveArea (area: Area) {
-    this.notificationService.loader.show();    
-    this.shortlistService.addAreaToShortlist(area).subscribe(
-      (res) => {
-        this.notificationService.fireNotification('Added to your shortlists!', true);
-        this.notificationService.loader.hide();
+    if (this.isViewingShortlist) {
+      dialogs.confirm({
+        title: "Remove Area from Shortlist?",
+        okButtonText: "Yes",
+        cancelButtonText: "Cancel"
+      }).then(r => {
+        if (r) {
+          this.shortlistService.deleteAreaFromShortlist(area._id)
+            .subscribe(
+              (res) => {
+                this.notificationService.fireNotification('Removed from your shortlists!', true);
+                this.routerExtensions.navigate(["shortlists"], {
+                  transition: {
+                      name: "fade"
+                  }
+                });
+              }, (err) => {
+                this.notificationService.fireNotification(`Error deleting Property ${ err.status } ${ err.statusText }`, false);
+              }
+            )
+        }
+      });
+    } else {
+      this.notificationService.loader.show();   
+      area.lat = this.lat; 
+      area.long = this.long; 
+      this.shortlistService.addAreaToShortlist(area).subscribe(
+        (res) => {
+          this.notificationService.fireNotification('Added to your shortlists!', true);
+          this.notificationService.loader.hide();
+        }, (err) => {
+          this.notificationService.fireNotification(`Error loading Area: ${ err.status } ${ err.statusText }`, false);
+          this.notificationService.loader.hide();
+        }
+      )
+    }
+  }
+
+  public addComment (comment: string) {
+    console.log(comment);
+ 
+    if (comment === '') {
+      this.notificationService.fireNotification('Comments cannot  be empty!', false);
+      return;
+    }
+
+    this.shortlistService.addAreaComment(this.area._id, comment)
+      .subscribe(
+        (res) => {
+          this.notificationService.fireNotification('Comment added. 📝', true);
+          this.isEditing = false;
+          this.refreshComments();
       }, (err) => {
-        this.notificationService.fireNotification(`Error loading Area: ${ err.status } ${ err.statusText }`, false);
-        this.notificationService.loader.hide();
+            this.notificationService.fireNotification(`Error adding a comment ${ err.status } ${ err.statusText }`, false);
+            console.log(err);
+        }
+      )
+  }
+
+  public getDatesForComment (index) {
+    // const note = <any>this.area.notes[index];
+
+    // // const cD = this.pipe.transform(note.created, 'dd/MM/yy HH:mm');
+    // // const eD = this.pipe.transform(note.updated, 'dd/MM/yy HH:mm');
+    // if (cD === eD) {
+    //   return cD;
+    // } else {
+    //   return `${ cD } - edited ${ eD }`
+    // }
+  }
+
+  public updateComment (index, newComment) {
+    console.log(index, newComment);
+    const note = this.area.notes[index];
+    const areaId = this.area._id;
+
+    this.shortlistService.updateAreaComment(note, areaId, newComment).subscribe(
+      (res) => {
+        this.notificationService.fireNotification('Comment updated. 📝', true);
+        this.editingComment = false;
+        this.refreshComments();
+      }, (err) => {
+        this.notificationService.fireNotification(`Error updating comment ${ err.status } ${ err.statusText }`, false);
+        console.log(err);
       }
     )
+  }
+
+  public deleteComment (index) {
+    const note = this.area.notes[index];
+    const areaId = this.area._id;
+    console.log(note, areaId);
+    this.shortlistService.deleteAreaNote(note, areaId).subscribe(
+      (res) => {
+        this.notificationService.fireNotification('Comment deleted. 📝', true);
+        this.editingComment = false;
+        this.refreshComments();
+      }, (err) => {
+        this.notificationService.fireNotification(`Error deleting comment ${ err.status } ${ err.statusText }`, false);
+        console.log(err);
+      }
+    )
+  }
+
+  private refreshComments () {
+    this.shortlistService.refreshAreaComments(this.area._id)
+      .subscribe(
+        (res) => {
+          console.log(res); 
+          this.area.notes = <any>res;
+          console.log(this.area);
+          console.log(this.area.notes);
+        }, (err) => {
+          this.notificationService.fireNotification(`Error refreshing comments ${ err.status } ${ err.statusText }`, false);
+        }
+      );
   }
 }
