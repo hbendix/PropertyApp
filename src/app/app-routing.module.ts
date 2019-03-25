@@ -10,6 +10,7 @@ import { PropertySearchViewComponent } from "./components/property-search/proper
 import { TutorialDialogueComponent } from "./components/home/tutorial-dialogue/tutorial-dialogue.component";
 import { HomeComponent } from "./components/home/home.component";
 import { AuthGuard } from "./guard/auth.guard";
+import { LoginComponent } from "./components/login/login.component";
 
 const routes: Routes = [
     { path: "", redirectTo: "/home", pathMatch: "full" },
@@ -28,7 +29,7 @@ const routes: Routes = [
     { path: "area", component: AreaViewComponent },
     { path: "shortlists", component: ShortlistsComponent, canActivate: [AuthGuard] },
     { path: "create", component: CreateAccountComponent },
-    // { path: "login", component: LoginComponent }
+    { path: "login", component: LoginComponent }
 ];
 
 @NgModule({

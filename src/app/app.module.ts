@@ -20,6 +20,7 @@ import { CreateAccountComponent } from "./components/create-account/create-accou
 import { ModalDialogService } from "nativescript-angular/modal-dialog";
 import { TutorialDialogueComponent } from "./components/home/tutorial-dialogue/tutorial-dialogue.component";
 import { HomeComponent } from "./components/home/home.component";
+import { LoginComponent } from "./components/login/login.component";
 @NgModule({
     bootstrap: [
         AppComponent
@@ -43,7 +44,8 @@ import { HomeComponent } from "./components/home/home.component";
         AreaViewComponent,
         ShortlistsComponent,
         CreateAccountComponent,
-        TutorialDialogueComponent
+        TutorialDialogueComponent,
+        LoginComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA

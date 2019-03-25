@@ -115,7 +115,8 @@ export class HomeComponent implements OnInit  {
                     id: i,
                     lat: marker.lat,
                     lng: marker.long,
-                    iconPath: 'res/markers/green_pin_marker.png',
+                    iconPath: "../../assets/pin.svg",
+                    icon: "../../assets/pin.svg",
                     onTap: (marker) => {
                         this.showPropertyView(marker);
                     }

@@ -75,46 +75,48 @@ export class AppComponent implements OnInit {
     }
 
     login () {
-        let options = {
-            title: "Login",
-            message: "Please enter your username then your password.",
-            okButtonText: "Login",
-            neutralButtonText: "Create An Account",
-            cancelButtonText: "Close",
-            defaultText: "Enter your username...",
-            userNameHint: "Enter your username",
-            passwordHint: "Enter your password",
-            userName: "",
-            password: ""
-        }
-        dialogs.login(options).then(r => {
-            console.log(r.result);
-            if (r.result === undefined) {
-                this.routerExtensions.navigate(['create'], {
-                    transition: {
-                        name: "fade"
-                    }
-                });
-                const sideDrawer = <RadSideDrawer>app.getRootView();
-                sideDrawer.closeDrawer();
-            } else if (r.result) {
-                if ((r.userName === '') || (r.password === '')) {
-                    return this.notificationService.fireNotification(`Missing details. 🤔`, false);
-                }
 
-                let user = new User(r.userName, r.password);
+        
+        // let options = {
+        //     title: "Login",
+        //     message: "Please enter your username then your password.",
+        //     okButtonText: "Login",
+        //     neutralButtonText: "Create An Account",
+        //     cancelButtonText: "Close",
+        //     defaultText: "Enter your username...",
+        //     userNameHint: "Enter your username",
+        //     passwordHint: "Enter your password",
+        //     userName: "",
+        //     password: ""
+        // }
+        // dialogs.login(options).then(r => {
+        //     console.log(r.result);
+        //     if (r.result === undefined) {
+        //         this.routerExtensions.navigate(['create'], {
+        //             transition: {
+        //                 name: "fade"
+        //             }
+        //         });
+        //         const sideDrawer = <RadSideDrawer>app.getRootView();
+        //         sideDrawer.closeDrawer();
+        //     } else if (r.result) {
+        //         if ((r.userName === '') || (r.password === '')) {
+        //             return this.notificationService.fireNotification(`Missing details. 🤔`, false);
+        //         }
 
-                this.userService.loginUser(user)
-                .subscribe(
-                    (res) => {
-                        this.authService.logIn(res.token, user.username);                        
-                        this.notificationService.fireNotification(`Successfully logged in! ⭐ Hi ${ user.username } 👋`, true);
-                    }, (err) => {
-                        this.notificationService.fireNotification(`Error creating account: ${ err.status } - ${ err.statusText }`, false); 
-                    }
-                );
-            }
-        });
+        //         let user = new User(r.userName, r.password);
+
+        //         this.userService.loginUser(user)
+        //         .subscribe(
+        //             (res) => {
+        //                 this.authService.logIn(res.token, user.username);                        
+        //                 this.notificationService.fireNotification(`Successfully logged in! ⭐ Hi ${ user.username } 👋`, true);
+        //             }, (err) => {
+        //                 this.notificationService.fireNotification(`Error creating account: ${ err.status } - ${ err.statusText }`, false); 
+        //             }
+        //         );
+        //     }
+        // });
     }
 
     logout () {
