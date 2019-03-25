@@ -4,7 +4,8 @@ import { HttpBackend, HttpClient } from "@angular/common/http";
 import { environment } from '../../environments/environment';
 import { AuthService } from "./auth.service";
 import { map } from 'rxjs/operators';
-import { ShortListItem } from "../models/shortlistItem";
+import { ShortListItem, AreaShortListItem } from "../models/shortlistItem";
+import { Area } from "../models/area";
 @Injectable({
     providedIn: "root"
 })
@@ -15,7 +16,7 @@ export class ShortlistService {
         private auth: AuthService) {}
 
     public addPropertyToShortList (property: PropertyView) {
-        const _url = `${ environment.server.url }/shortlist/add`;
+        const _url = `${ environment.server.url }/shortlist/property/add`;
         const toSend = {
             'username': this.auth.getLoggedInUser(),
             'property': property
@@ -24,10 +25,133 @@ export class ShortlistService {
         return this.http.post(_url, toSend)
     }
 
+    public deletePropertyFromShortlist (propertyId: string) {
+        const _url = `${ environment.server.url }/shortlist/property/delete`;
+
+        const body = { 
+            "username": this.auth.getLoggedInUser(),
+	        "propertyid": propertyId
+        }
+
+        return this.http.post(_url, body);
+    }
+
     public getShortlist () {
-        const _url = `${ environment.server.url }/shortlist/get?username=${ this.auth.getLoggedInUser() }`;
+        const _url = `${ environment.server.url }/shortlist/property/list?username=${ this.auth.getLoggedInUser() }`;
         
         return this.http.get(_url).pipe(map(res => <ShortListItem[]>res));
     }
 
+    public addComment(propertyId: string, comment: string): any {
+        const _url = `${ environment.server.url }/shortlist/property/note/add`;
+
+        const body = {
+            "username": this.auth.getLoggedInUser(),
+            "propertyid": propertyId,
+            "note": comment
+        };
+
+        return this.http.post(_url, body);
+    }
+
+    public updateComment(note, propertyId, comment: any): any {
+        const _url = `${ environment.server.url }/shortlist/property/note/update`;
+
+        const body = {
+            "username": this.auth.getLoggedInUser(),
+            "propertyid": propertyId,
+            "note": comment,
+            "noteid": note._id
+        };
+
+        return this.http.post(_url, body);
+    }
+
+    public deleteNote (note, propertyId) {
+        const _url = `${ environment.server.url }/shortlist/property/note/delete`;
+
+        const body = {
+            "username": this.auth.getLoggedInUser(),
+            "propertyid": propertyId,
+            "noteid": note._id
+        };
+
+        return this.http.post(_url, body);
+    }
+
+    public refreshComments (propertyId: string) {
+        const _url = `${ environment.server.url }/shortlist/property/note/get?username=${this.auth.getLoggedInUser()}&propertyid=${ propertyId }`;
+
+        return this.http.get(_url);
+    }
+
+    public addAreaToShortlist (area: Area) {
+        const _url = `${ environment.server.url }/shortlist/area/add`;
+        const toSend = {
+            'username': this.auth.getLoggedInUser(),
+            'area': area
+        };
+
+        return this.http.post(_url, toSend)
+    }
+
+    public deleteAreaFromShortlist (areaId: string) {
+        const _url = `${ environment.server.url }/shortlist/area/delete`;
+
+        const body = { 
+            "username": this.auth.getLoggedInUser(),
+	        "areaid": areaId
+        }
+
+        return this.http.post(_url, body);
+    }
+
+    public getAreaShortlist() {
+        const _url = `${ environment.server.url }/shortlist/area/list?username=${ this.auth.getLoggedInUser() }`;
+        
+        return this.http.get(_url);
+    }
+
+    public addAreaComment(areaId: string, comment: string): any {
+        const _url = `${ environment.server.url }/shortlist/area/note/add`;
+
+        const body = {
+            "username": this.auth.getLoggedInUser(),
+            "areaid": areaId,
+            "note": comment
+        };
+
+        return this.http.post(_url, body);
+    }
+
+    public updateAreaComment(note, areaId, comment: any): any {
+        const _url = `${ environment.server.url }/shortlist/area/note/update`;
+
+        const body = {
+            "username": this.auth.getLoggedInUser(),
+            "areaid": areaId,
+            "note": comment,
+            "noteid": note._id
+        };
+
+        return this.http.post(_url, body);
+    }
+
+    public deleteAreaNote (note, areaId) {
+        const _url = `${ environment.server.url }/shortlist/area/note/delete`;
+
+        const body = {
+            "username": this.auth.getLoggedInUser(),
+            "areaid": areaId,
+            "noteid": note._id
+        };
+
+        return this.http.post(_url, body);
+    }
+
+    public refreshAreaComments (areaId: string) {
+        const _url = `${ environment.server.url }/shortlist/area/note/get?username=${this.auth.getLoggedInUser()}&areaid=${ areaId }`;
+
+        return this.http.get(_url);
+    }
 }

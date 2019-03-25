@@ -32,3 +32,16 @@
     flex-grow: 2;
     vertical-align: middle;
   }
+
+.required {
+    color: #F44336;
+    font-size: 14px;
+    font-style: italic;
+}
+
+
+.join-header {
+    font-size: 24px;
+    color: black;
+
+}

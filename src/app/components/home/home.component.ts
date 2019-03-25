@@ -22,6 +22,7 @@ import { View } from 'ui/core/view';
 
 import * as app from "tns-core-modules/application";
 import { NotificationService } from "~/app/services/notification.service";
+import { AreaService } from "~/app/services/area.service";
 
 registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView);
 
@@ -44,7 +45,8 @@ export class HomeComponent implements OnInit  {
         private routerExtensions: RouterExtensions,
         private mapViewService: MapViewService,
         private userService: UserService,
-        private notificationService: NotificationService) {
+        private notificationService: NotificationService,
+        private areaService: AreaService) {
         this.accessToken = environment.mapbox.accessToken;
         this.getUserLocation();
         this.mapboxAPI = new Mapbox();
@@ -81,6 +83,7 @@ export class HomeComponent implements OnInit  {
             this.userService.updateUserLocation(this.userLoc);
             this.getMapMarkers(point.lng, point.lat);            
         });
+
     }
 
     getMapMarkers (long, lat): void {        
@@ -145,7 +148,7 @@ export class HomeComponent implements OnInit  {
         this.userLoc.longitude =  marker.lng;
         this.userLoc.latitude = marker.lat;
         this.userService.updateUserLocation(this.userLoc);
-
+        this.notificationService.loader.show();
         this.routerExtensions.navigate(["/property"], {
             transition: {
                 name: "fade"
@@ -159,17 +162,48 @@ export class HomeComponent implements OnInit  {
     }
 
     onFilterTap() {
-        console.log("Filter button pressed")
         this.showFilterView();
     }
 
     onCurrentTap() {
-        console.log("Current button pressed")
+        if (!isEnabled()) {
+            enableLocationRequest();
+        }
+        getCurrentLocation({
+            desiredAccuracy: 3,
+            updateDistance: 10,
+            maximumAge: 2000,
+            timeout: 2000
+        }).then((loc) => {
+            if (loc) {
+                this.map.setCenter({ lat: loc.latitude, lng: loc.longitude, animated: true });
+            }
+        }, (err) => {
+            console.log("Error: " + err);
+        });
     }
 
     onAreaTap() {
-        console.log("Area button pressed")
-        this.showAreaView();
+        this.notificationService.loader.show();
+        
+        this.map.getCenter().then((res) => {
+            this.userLoc.longitude =  res.lng;
+            this.userLoc.latitude = res.lat;
+            this.userService.updateUserLocation(this.userLoc);
+            this.areaService.pullArea(res.lat, res.lng).subscribe((area) => {
+                console.log(res);
+                this.areaService.area = area;
+                this.showAreaView(res.lat, res.lng);
+            }, (err) => {
+                this.notificationService.loader.hide();
+                if (err.status === 404) {
+                    this.notificationService.fireNotification(`No area data found!`, false);
+                } else {
+                    this.notificationService.fireNotification(`Error loading Area: ${ err.status } ${ err.statusText }`, false);
+                }
+
+            });
+        });
     }
 
     showFilterView(): void {
@@ -178,7 +212,7 @@ export class HomeComponent implements OnInit  {
                 name: "fade"
             },
             queryParams: {
-                "prevLocation": "/home"
+                "prevLocation": "/home",
             }
         });
     }
@@ -194,18 +228,17 @@ export class HomeComponent implements OnInit  {
         });
     }
 
-    showAreaView(): void {
+    showAreaView(lat, lng): void {
+        console.log(lat, lng);
         this.routerExtensions.navigate(["/area"], {
             transition: {
                 name: "fade"
             },
             queryParams: {
-                "prevLocation": "/home"
+                "prevLocation": "/home",        
+                "long": lng,
+                "lat": lat
             }
         });
     }
-
-    /*setFilterForMap(filter) {
-        this.mapViewService.setFilterBody(filter);
-    }*/
 }

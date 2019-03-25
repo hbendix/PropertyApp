@@ -17,7 +17,7 @@
 </ActionBar>
 
 <GridLayout rows="*, auto">
-    <StackLayout row="0" id="map" height="90%" name="map" map>
+    <StackLayout row="0" id="map" height="92%" name="map" map>
         <Mapbox
             #map
             accessToken="{{ accessToken }}"
@@ -36,33 +36,35 @@
             (mapReady)="onMapReady($event)">
         </Mapbox>
     </StackLayout>
-    <StackLayout row="1" orientation="horizontal" height="10%" backgroundColor= #3F51B5>
+    <StackLayout row="1" orientation="horizontal" height="8%" backgroundColor="#3d5afe" class="bottomNav">
        <Button text="&#xf0b0;" 
-       class="fas"
+       class="fas navBtn"
                      width="33%"
                      height="60"
                      color= "White"
-                     backgroundColor= #3F51B5
+                     backgroundColor="transparent"
+                     borderColor="transparent"
                      id="filterButton"
                     (tap)="onFilterTap()"
                      >
        </Button>
-       <Button text="&#xf124;" 
-       class="fas"
-                     width="33%"
-                     height="60"
-                     color= "White"
-                     backgroundColor= #3F51B5
-                     id="currentButton"
-                    (tap)="onCurrentTap()"
-                    >
+        <Button text="&#xf124;" 
+                class="fas navBtn"
+                width="33%"
+                height="60"
+                color= "White"
+                backgroundColor="transparent"
+                borderColor="transparent"
+                id="currentButton"
+                (tap)="onCurrentTap()">
        </Button>
        <Button text="&#xf1fe;" 
-       class="fas"
+       class="fas navBtn"
                      width="33%"
                      height="60"
                      color= "White"
-                     backgroundColor= #3F51B5
+                     backgroundColor="transparent"
+                     borderColor="transparent"
                      id="areaButton"
                     (tap)="onAreaTap()"
                     >

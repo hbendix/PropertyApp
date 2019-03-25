@@ -2,7 +2,7 @@
 	height: 50;
     width: 50; 
     margin: 15;
-    background-color: #ff4081;
+    background-color: #ff5722;
     horizontal-align: right;
     vertical-align: bottom;
 }
@@ -102,4 +102,19 @@
     color: black;
     border-color: white white #f7f7f7 white;
     border-width: 0 0 1 0;
+}
+
+.comment {
+    padding: 30px;
+    margin: 10px;
+    border-color: #f7f7f7;
+    border-width: 1;
+    border-radius: 20px;
+}
+
+.addComment{
+    border-color: #ff8a50;
+    padding: 20px;
+    border-radius: 20px;
+    border-width: 1;
 }

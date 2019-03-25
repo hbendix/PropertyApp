@@ -3,7 +3,7 @@
     <Label class="action-bar-title" text="Property"></Label>
 </ActionBar>
 <FAB (tap)="saveProperty(property)" rippleColor="#f1f1f1" row="1" class="fab-button"
-    *ngIf="!isList" horizontalAlignment="right">
+    *ngIf="!isList && isLoggedIn" horizontalAlignment="right">
 </FAB> 
 <GridLayout class="page"  *ngIf="!isList" >
     <ScrollView #scrollView (scroll)="onScroll($event, scrollView, topView)">
@@ -20,12 +20,21 @@
                 
                 <TextView editable="false"style="background-color: transparent;
                         border-color: transparent;">
-                    <Span text="&#xf5a0; {{property.fullAddress}}" class="fas" fontWeight="300"
-                        fontSize="14" color="#707070" ></Span>
+                    <Span   text="&#xf5a0;" 
+                            class="fas" 
+                            fontWeight="300"
+                            fontSize="14" 
+                            color="#707070" ></Span>
+                    <Span   text=" {{property.fullAddress}}" 
+                            fontWeight="500"
+                            fontSize="14"></Span>
                 </TextView>
-                <TextView editable="false" class="price-area" style="border-color: #707070;">
-                    <Span text="{{property.price}}" fontWeight="Bold"
-                        fontSize="36"></Span>
+                <TextView   editable="false" 
+                            class="price-area"
+                            style="border-color: #707070;">
+                    <Span   text="{{property.price}}" 
+                            fontWeight="Bold"
+                            fontSize="36"></Span>
                 </TextView>
                 <Label text="STATS" margin="10"></Label>
                     <Label  *ngFor="let stat of stats"
@@ -40,9 +49,116 @@
                         textAlignment="left"
                         margin="10" 
                         class="stats"></Label>
-
-                <Label text="COMMENTS" margin="10"></Label>
                 
+                <GridLayout columns="*, *" 
+                            width="100%" 
+                            height="35"
+                            (tap)="isEditing = !isEditing"
+                            backgroundColor="white"
+                            *ngIf="isViewingShortlist">
+                    <Label  text="COMMENTS" 
+                            textAlignment="left" 
+                            row="0" 
+                            col="0" 
+                            margin="10"
+                            backgroundColor="white"></Label>
+                    <Label  text="&#xf055;" 
+                            class="fas" 
+                            textAlignment="right" 
+                            row="0" 
+                            margin="10"
+                            col="1" 
+                            backgroundColor="white"
+                            *ngIf="!isEditing" 
+                            color="#ff5722"></Label>
+
+                    <Label  text="&#xf056;" 
+                            class="fas" 
+                            textAlignment="right" 
+                            row="0" 
+                            margin="10"
+                            col="1" 
+                            backgroundColor="white" 
+                            *ngIf="isEditing"
+                            color="#ff5722"></Label>
+
+                </GridLayout>
+                <TextView   editable="true" 
+                            class="comment"
+                            margin="10" 
+                            *ngIf="isEditing && isViewingShortlist"
+                            name="newComment"
+                            [(ngModel)]="newComment"></TextView>
+
+                <Label  text="ADD COMMENT" 
+                        class="addComment" 
+                        width="auto"
+                        fontSize="20"
+                        textAlignment="center" 
+                        margin="10" 
+                        *ngIf="isEditing && isViewingShortlist"
+                        (tap)="addComment(newComment)"
+                        color="#ff5722"></Label>
+                <StackLayout    *ngFor="let comment of property.notes; let i = index;"
+                                margin="0 0 10 0" >
+                    <Label  text="{{ getDatesForComment(i)}}" 
+                            fontWeight="300"
+                            fontSize="12" 
+                            margin="3 0 3 10"
+                            color="#707070">
+                    </Label>
+                    <TextView   editable="{{editingComment ? true : false}}" 
+                                class="comment" 
+                                [(ngModel)]="updatedComment"
+                                name="updatedComment-{{i}}"
+                                margin="3">
+                    <Span   text="{{comment.content}}" 
+                            fontWeight="300"
+                            fontSize="14" 
+                            color="black" ></Span>
+                    </TextView>
+                    <GridLayout columns="*, *" 
+                            width="100%" 
+                            height="35"
+                            backgroundColor="white">
+                        <Label   text="&#xf044;" 
+                                class="far" 
+                                textAlignment="right" 
+                                horizontalAlignment="right"
+                                row="0" 
+                                margin="2"
+                                col="1" 
+                                backgroundColor="white"
+                                color="#4CAF50"
+                                *ngIf="!editingComment"
+                                (tap)="editingComment = !editingComment"></Label>
+                        <Label   text="&#xf0c7;" 
+                                class="far" 
+                                textAlignment="right" 
+                                horizontalAlignment="right"
+                                row="0" 
+                                margin="2"
+                                col="1" 
+                                backgroundColor="white"
+                                color="#4CAF50"
+                                *ngIf="editingComment"
+                                (tap)="updateComment(i, updatedComment)"></Label>
+
+                        <Label   text="&#xf2ed;" 
+                                class="far" 
+                                textAlignment="left" 
+                                horizontalAlignment="left"
+                                row="0" 
+                                margin="2 0 0 10"
+                                col="0" 
+                                backgroundColor="white"
+                                color="#F44336"
+                                *ngIf="editingComment"
+                                (tap)="deleteComment(i)"></Label>
+                    </GridLayout>
+                </StackLayout>
+                 
+                <Label style="visibility:hidden;" margin="10 0 45 0"></Label>               
             </StackLayout>
         </StackLayout>
     </ScrollView>
@@ -66,5 +182,4 @@
             </ng-template>
         </ListView>
     </StackLayout>
-    <ActivityIndicator [busy]="isBusy" class="activity-indicator" margin="15 0 0 0" *ngIf="propertyList.length === 0"></ActivityIndicator>
 </StackLayout>

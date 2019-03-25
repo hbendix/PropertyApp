@@ -2,23 +2,114 @@
         <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()"></NavigationButton>
         <Label class="action-bar-title" text="My Shortlists"></Label>
 </ActionBar>
-<ScrollView row="1">
-    <ListView class="list-group" [items]="shortlists" (itemTap)="itemSelected($event)" separatorColor="#f7f7f7">
-        <ng-template let-shortlist="item">
-            <GridLayout columns="auto, *" class="list-group-item"
-                style="border:1;">
-                <StackLayout col="0" backgroundColor="white" class="list-group-item" margin="0">
-                    <Image [src]="shortlist.propertyThumbUrl" class="thumb img-circle" margin="0"></Image>
+<TabView        tabBackgroundColor="white"
+                androidSelectedTabHighlightColor="#ff5722">
+        <StackLayout *tabItem="{title: 'Properties'}">
+                <Label text="No shortlisted Properties!" *ngIf="shortlists.length === 0" horizontalAlignment="center" class="join-header" margin="10"></Label>
+                <ScrollView row="1" backgroundColor="white">
+                        <ListView class="list-group" [items]="shortlists" separatorColor="#f7f7f7" backgroundColor="white" height="100%">
+                                <ng-template let-shortlist="item">
+                                        <CardView class="cardStyle" margin="10" elevation="40" radius="15" ripple="true" >
+                                                <GridLayout rows="*, *, *, *, *" columns="*, *">
+                                                <Image
+                                                        src="{{shortlist.propertyImageUrl}}"
+                                                        stretch="aspectFit"
+                                                        verticalAlignment="stretch"
+                                                        col="0"
+                                                        row="0"
+                                                        rowSpan="2"
+                                                        colSpan="2"
+                                                ></Image>
+                                                <StackLayout    col="0" 
+                                                                row="3"
+                                                                colSpan="2"
+                                                                backgroundColor="white" 
+                                                                class="list-group-item" 
+                                                                *ngIf="shortlist.propertyName !== undefined">
+                                                        <Label class="list-group-item-heading" [text]="shortlist.propertyName"></Label>
+                                                        <Label class="list-group-item-text" [text]="shortlist.fullAddress"></Label>
+                                                </StackLayout>
+                                                <StackLayout    col="0" 
+                                                                row="3"
+                                                                colSpan="2"
+                                                                backgroundColor="white" 
+                                                                class="list-group-item" 
+                                                                *ngIf="shortlist.propertyName === undefined">
+                                                        <Label class="list-group-item-heading" [text]="shortlist.fullAddress"></Label>
+                                                </StackLayout>
+                                                <Label  text="&#xf2ed;" 
+                                                        class="far" 
+                                                        textAlignment="left" 
+                                                        horizontalAlignment="left"
+                                                        row="4" 
+                                                        margin="2"
+                                                        padding="10"
+                                                        col="0" 
+                                                        fontSize="22"
+                                                        color="#F44336"
+                                                        (tap)="deleteShortlist(shortlist._id)"
+                                                        backgroundColor="white"></Label>
+                                                <Label  text="&#xf0a4;" 
+                                                        class="far" 
+                                                        textAlignment="right" 
+                                                        horizontalAlignment="right"
+                                                        row="4" 
+                                                        margin="2"
+                                                        padding="10"
+                                                        col="1" 
+                                                        (tap)="itemSelected(shortlist._id)" 
+                                                        fontSize="22"
+                                                        color="#4CAF50"
+                                                        backgroundColor="white"></Label>
+                                                </GridLayout>
+                                        </CardView>
+                                </ng-template> 
+                        </ListView>
+                </ScrollView>
+        </StackLayout>
+        <StackLayout *tabItem="{title: 'Areas'}" height="100%" color="white">
+                <Label text="No shortlisted Areas!" *ngIf="areas.length === 0" horizontalAlignment="center" class="join-header" margin="10"></Label>
+                <StackLayout>
+                        <ListView class="list-group" [items]="areas" separatorColor="#f7f7f7" backgroundColor="white" height="100%">
+                                <ng-template let-area="item">
+                                        <CardView class="cardStyle" margin="10" elevation="40" radius="15" ripple="true" >
+                                                <GridLayout rows="*, *, *" columns="*, *">
+                                                <StackLayout    col="0" 
+                                                                row="0"
+                                                                colSpan="2"
+                                                                backgroundColor="white" 
+                                                                class="list-group-item" >
+                                                        <Label class="list-group-item-heading" [text]="area.postcode"></Label>
+                                                        <Label class="list-group-item-text" text="Average house price: £{{area.avgPrice}}"></Label>
+                                                </StackLayout>
+                                                <Label  text="&#xf2ed;" 
+                                                        class="far" 
+                                                        textAlignment="left" 
+                                                        horizontalAlignment="left"
+                                                        row="1" 
+                                                        margin="2"
+                                                        padding="10"
+                                                        col="0" 
+                                                        fontSize="16"
+                                                        color="#F44336"
+                                                        (tap)="deleteArea(area)"
+                                                        backgroundColor="white"></Label>
+                                                <Label  text="&#xf0a4;" 
+                                                        class="far" 
+                                                        textAlignment="right" 
+                                                        horizontalAlignment="right"
+                                                        row="1" 
+                                                        margin="2"
+                                                        padding="10"
+                                                        col="1" 
+                                                        (tap)="areaSelected(area)" 
+                                                        fontSize="16"
+                                                        color="#4CAF50"
+                                                        backgroundColor="white"></Label>
+                                                </GridLayout>
+                                        </CardView>
+                                </ng-template> 
+                        </ListView>
                 </StackLayout>
-                <StackLayout col="1" backgroundColor="white" class="list-group-item" *ngIf="shortlist.propertyName !== undefined">
-                    <Label class="list-group-item-heading" [text]="shortlist.propertyName"></Label>
-                    <Label class="list-group-item-text" [text]="shortlist.fullAddress"></Label>
-                </StackLayout>
-                <StackLayout col="1" backgroundColor="white" class="list-group-item" *ngIf="shortlist.propertyName === undefined">
-                    <Label class="list-group-item-heading" [text]="shortlist.fullAddress"></Label>
-                </StackLayout>
-            </GridLayout>
-        </ng-template>
-    </ListView>
-    <!-- <ActivityIndicator [busy]="isBusy" class="activity-indicator" margin="15 0 0 0" *ngIf="shortlists.length === 0"></ActivityIndicator> -->
-</ScrollView>
+        </StackLayout>
+</TabView>
