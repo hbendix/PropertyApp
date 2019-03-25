@@ -30,7 +30,7 @@ const routes: Routes = [
     { path: "area", component: AreaViewComponent },
     { path: "shortlists", component: ShortlistsComponent, canActivate: [AuthGuard] },
     { path: "create", component: CreateAccountComponent },
-    { path: "login", component: LoginComponent }
+    { path: "login", component: LoginComponent },
     { path: "my-account", component: MyAccountComponent }
 ];
 

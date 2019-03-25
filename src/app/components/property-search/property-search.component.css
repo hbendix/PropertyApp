@@ -52,11 +52,12 @@ Button {
     margin: 10px 6px 5px 6px;
     border-color: #555;
     border-width: 0 0 1 0;
+    border-radius: 20px;
 }
 
 .submitBtn {
-    background-color: white;
-    color: #ff5722;
+    background-color: #ff5722;
+    color: white;
     margin: 10px 0px 5px 0px;
     border-color: #ff5722;
     border-width: 1;
