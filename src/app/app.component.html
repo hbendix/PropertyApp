@@ -53,8 +53,8 @@ http://docs.telerik.com/devtools/nativescript-ui/Controls/NativeScript/SideDrawe
                 </GridLayout>
                 <GridLayout columns="auto, *" 
                             class="sidedrawer-list-item"
-                            [class.selected]="isComponentSelected('/settings')"
-                            (tap)="login()"
+                            [class.selected]="isComponentSelected('/login')"
+                            (tap)="onNavItemTap('/login')"
                             *ngIf="!isLoggedIn">
                     <Label col="0" text="&#xf2f5;" class="fas"></Label>
                     <Label col="1" text="Log in" class="p-r-10"></Label>

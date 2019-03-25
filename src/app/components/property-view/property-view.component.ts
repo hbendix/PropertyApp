@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from "@angular/core";
+import { Component, OnInit, Input, OnDestroy, AfterViewInit } from "@angular/core";
 import { PropertyViewService } from "../../services/property-view.service";
 import { PropertyView } from "../../models/property";
 import { RouterExtensions } from "nativescript-angular/router";
@@ -21,7 +21,7 @@ registerElement('Fab', () => require('nativescript-floatingactionbutton').Fab);
   styleUrls: ["./property-view.component.css"],
   moduleId: module.id
 })
-export class PropertyViewComponent implements OnInit, OnDestroy {
+export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input()
   private long: Number;
@@ -62,10 +62,14 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+  }
+  
+  ngAfterViewInit () {
     this.notificationService.loader.hide();
   }
 
   public onNavBtnTap(){
+    this.notificationService.loader.show();
     if ((this.isList) || (this.propertyList.length == 0)) {
       this.propertyViewService.isViewingShortList = false;    
       this.routerExtensions.navigate([this.prevLocation], {
@@ -75,6 +79,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
       });
     } else {
       this.isList = true;
+      this.notificationService.loader.hide();
     }
   }
 
@@ -127,11 +132,15 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onItemTap (args: ItemEventData) {
-    this.property = this.propertyList[args.index];
-    console.log(this.property);
+  public onItemTap (index) {
+    this.notificationService.loader.show();
+    this.property = this.propertyList[index];
+
+    
+    console.log(index, this.property);
     this.sortStats();
     this.isList = false;
+    this.notificationService.loader.hide();
   }
 
   public saveProperty (property: PropertyView) {

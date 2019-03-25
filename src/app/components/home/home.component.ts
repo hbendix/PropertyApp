@@ -1,7 +1,7 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild, ViewContainerRef } from "@angular/core";
 // tslint:disable-next-line:ordered-imports
 import { registerElement } from "nativescript-angular/element-registry";
-import { RouteReuseStrategy } from "@angular/router";
+import { RouteReuseStrategy, ActivatedRoute } from "@angular/router";
 import { RouterExtensions } from "nativescript-angular/router";
 import {
     clearWatch,
@@ -23,7 +23,8 @@ import { View } from 'ui/core/view';
 import * as app from "tns-core-modules/application";
 import { NotificationService } from "~/app/services/notification.service";
 import { AreaService } from "~/app/services/area.service";
-
+import { TutorialDialogueComponent } from "./tutorial-dialogue/tutorial-dialogue.component";
+import { ModalDialogService, ModalDialogOptions } from "nativescript-angular/modal-dialog";
 registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView);
 
 @Component({
@@ -46,10 +47,14 @@ export class HomeComponent implements OnInit  {
         private mapViewService: MapViewService,
         private userService: UserService,
         private notificationService: NotificationService,
-        private areaService: AreaService) {
+        private areaService: AreaService,
+        private _activeRoute: ActivatedRoute,
+        private modalService: ModalDialogService,
+        private vcRef: ViewContainerRef) {
         this.accessToken = environment.mapbox.accessToken;
         this.getUserLocation();
         this.mapboxAPI = new Mapbox();
+        this.notificationService.loader.hide();
     }
 
     ngOnInit(): void {
@@ -110,7 +115,8 @@ export class HomeComponent implements OnInit  {
                     id: i,
                     lat: marker.lat,
                     lng: marker.long,
-                    iconPath: 'res/markers/green_pin_marker.png',
+                    iconPath: "../../assets/pin.svg",
+                    icon: "../../assets/pin.svg",
                     onTap: (marker) => {
                         this.showPropertyView(marker);
                     }
@@ -240,5 +246,19 @@ export class HomeComponent implements OnInit  {
                 "lat": lat
             }
         });
+    }
+
+    showTutorial () {
+
+        const options: ModalDialogOptions = {
+            viewContainerRef: this.vcRef,
+            fullscreen: false,
+        };
+
+        this.modalService.showModal(TutorialDialogueComponent, options)
+            .then((result: string) => {
+                console.log(result);
+            }
+        );
     }
 }
