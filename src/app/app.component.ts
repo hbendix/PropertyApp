@@ -1,16 +1,16 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import { NavigationEnd, Router } from "@angular/router";
 import { RouterExtensions } from "nativescript-angular/router";
 import { DrawerTransitionBase, RadSideDrawer, SlideInOnTopTransition } from "nativescript-ui-sidedrawer";
 import { filter } from "rxjs/operators";
 import * as app from "tns-core-modules/application";
-import * as application from "tns-core-modules/application";
 import * as traceModule from "tns-core-modules/trace"
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import { AuthService } from "./services/auth.service";
 import { UserService } from "./services/user.service";
 import { User } from "./models/user";
 import { NotificationService } from "./services/notification.service";
+import {AccessbilityService} from "~/app/services/accessbility.service";
 traceModule.enable();
 
 @Component({
@@ -22,14 +22,16 @@ export class AppComponent implements OnInit {
     private _activatedUrl: string;
     private _sideDrawerTransition: DrawerTransitionBase;
     private isLoggedIn: boolean;
-    
     public username = "";
+    public globalFontSize;
+    public globalFont;
 
-    constructor(private router: Router, 
-        private routerExtensions: RouterExtensions,
-        private authService: AuthService,
-        private userService: UserService,
-        private notificationService: NotificationService) {
+    constructor(private router: Router,
+                private routerExtensions: RouterExtensions,
+                private authService: AuthService,
+                private userService: UserService,
+                private notificationService: NotificationService,
+                private accessibilityService: AccessbilityService) {
         this.isLoggedIn = this.authService.isLoggedIn();
 
         if (this.isLoggedIn) {
@@ -41,6 +43,9 @@ export class AppComponent implements OnInit {
     ngOnInit(): void {
         this._activatedUrl = "/home";
         this._sideDrawerTransition = new SlideInOnTopTransition();
+        this.accessibilityService.setAccessibility();
+        this.globalFont = this.accessibilityService.globalFont;
+        this.globalFontSize = this.accessibilityService.globalFontSize;
 
         this.router.events
             .pipe(filter((event: any) => event instanceof NavigationEnd))
@@ -52,6 +57,13 @@ export class AppComponent implements OnInit {
             if (action) {
                 this.username = this.authService.getLoggedInUser();
             }
+        });
+
+        this.accessibilityService.hasCssChanged.subscribe((newCss: string) => {
+            app.addCss(newCss);
+            this.routerExtensions.frameService.getFrame()._onCssStateChange();
+            this.globalFont = this.accessibilityService.globalFont;
+            this.globalFontSize = this.accessibilityService.globalFontSize;
         });
     }
 
@@ -75,8 +87,6 @@ export class AppComponent implements OnInit {
     }
 
     login () {
-
-        
         // let options = {
         //     title: "Login",
         //     message: "Please enter your username then your password.",

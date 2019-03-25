@@ -21,6 +21,9 @@ import { ModalDialogService } from "nativescript-angular/modal-dialog";
 import { TutorialDialogueComponent } from "./components/home/tutorial-dialogue/tutorial-dialogue.component";
 import { HomeComponent } from "./components/home/home.component";
 import { LoginComponent } from "./components/login/login.component";
+import {AccessbilityService} from "~/app/services/accessbility.service";
+import {MyAccountComponent} from "~/app/components/my-account/my-account.component";
+
 @NgModule({
     bootstrap: [
         AppComponent
@@ -45,14 +48,16 @@ import { LoginComponent } from "./components/login/login.component";
         ShortlistsComponent,
         CreateAccountComponent,
         TutorialDialogueComponent,
-        LoginComponent
+        LoginComponent,
+        MyAccountComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA
     ],
     providers: [
         { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
-        ModalDialogService
+        ModalDialogService,
+        AccessbilityService
     ]
 })
 export class AppModule { }
