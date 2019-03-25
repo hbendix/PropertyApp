@@ -16,6 +16,12 @@
 </ActionBar>
 
 <GridLayout class="page page-content">
-    <Label class="page-icon fa" text="&#xf013;"></Label>
-    <Label class="page-placeholder" text="<!-- Page content goes here -->"></Label>
+    <GridLayout rows="auto auto auto auto" columns="* *" class="m-5">
+        <Label text="Accesssibility" textWrap="true" row="0" colSpan="2" class="m-l-5 font-weight-bold m-t-4"></Label>
+        <StackLayout class="hr-light m-y-10" row="1" colSpan="2"></StackLayout>
+        <Label text="Larger Font Size" textWrap="true" row="2" col="0" class="m-l-5 m-y-10"></Label>
+        <Switch [checked]="isLargerFontChecked" (checkedChange)="ToggleLargerFont($event)" row="2" col="1" class="m-r-2 m-y-10"></Switch>
+        <Label text="Dyslexic Font" textWrap="true" row="3" col="0" class="m-l-5 m-y-10"></Label>
+        <Switch [checked]="isFontFamilyChecked" (checkedChange)="ToggleDyslexicFont($event)" row="3" col="1" class="m-r-2 m-y-10"></Switch>
+    </GridLayout>
 </GridLayout>
