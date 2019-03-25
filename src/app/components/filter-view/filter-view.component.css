@@ -44,11 +44,22 @@
     color: #707070;
     font-style: italic;
 }
-
+ 
 Button {
     background-color: white;
     color: #555;
+    margin: 10px 6px 5px 6px;
+    border-color: #555;
+    border-width: 0 0 1 0;
+}
+
+.submitBtn {
+    background-color: white;
+    color: #ff5722;
     margin: 10px 0px 5px 0px;
+    border-color: #ff5722;
+    border-width: 1;
+    border-radius: 20px;
 }
 
 .sub-header {

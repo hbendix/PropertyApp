@@ -25,5 +25,10 @@
             <Button text="{{minRoom !== null ? minRoom : 'Min'}} &#xf0d7;" class="fas" col="0" row="1" (tap)="showCountDialogue('Rooms', false)"></Button>
             <Button text="{{maxRoom !== null ? maxRoom : 'Max'}} &#xf0d7;" class="fas" col="1" row="1" (tap)="showCountDialogue('Rooms', true)"></Button>
         </GridLayout>
-        <Button text="Apply filter to the map" (tap)="filterMap()"></Button>
+
+        <GridLayout columns="*, *" rows="20, 40" width="100%" height="80">
+            <Label text="Tags " row="0" col="0" colSpan="1" horizontalAlignment="left" class="sub-header"></Label>
+            <Button text="{{tags !== null ? tags : 'Min'}} &#xf0d7;" class="fas" col="0" row="1" (tap)="showTagsDialogue('Rooms', false)"></Button>
+        </GridLayout>
+        <Button text="Apply filter to the map" class="submitBtn" (tap)="filterMap()"></Button>
 </StackLayout>

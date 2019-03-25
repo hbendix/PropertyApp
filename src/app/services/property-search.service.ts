@@ -15,8 +15,8 @@ export class PropertySearchService {
 
     constructor(private http: HttpClient) {}
 
-    public getSearch (params: string, body: any) {
-        const _url = `${ environment.server.url }/properties-list?postcode=${ params }&radius=50`;
+    public getSearch (params: string, radius: number, body: any) {
+        const _url = `${ environment.server.url }/properties-list?postcode=${ params }&radius=${ radius }`;
         console.log(_url);
 
         return this.http.post(_url, { "filters": body });

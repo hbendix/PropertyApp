@@ -17,7 +17,9 @@ import { PropertySearchViewComponent } from "./components/property-search/proper
 import { AreaViewComponent } from "./components/area-view/area-view.component";
 import { ShortlistsComponent } from "./components/shortlists/shortlists.component";
 import { CreateAccountComponent } from "./components/create-account/create-account.component";
-
+import { ModalDialogService } from "nativescript-angular/modal-dialog";
+import { TutorialDialogueComponent } from "./components/home/tutorial-dialogue/tutorial-dialogue.component";
+import { HomeComponent } from "./components/home/home.component";
 @NgModule({
     bootstrap: [
         AppComponent
@@ -34,18 +36,21 @@ import { CreateAccountComponent } from "./components/create-account/create-accou
     ],
     declarations: [
         AppComponent,
+        HomeComponent,
         PropertyViewComponent,
         FilterViewComponent,
         PropertySearchViewComponent,
         AreaViewComponent,
         ShortlistsComponent,
-        CreateAccountComponent
+        CreateAccountComponent,
+        TutorialDialogueComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA
     ],
     providers: [
-        { provide: RouteReuseStrategy, useClass: CustomReuseStrategy }
+        { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
+        ModalDialogService
     ]
 })
 export class AppModule { }

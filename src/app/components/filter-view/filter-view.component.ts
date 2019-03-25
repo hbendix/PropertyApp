@@ -178,6 +178,19 @@ export class FilterViewComponent implements OnInit {
     });
   }
 
+  showTagsDialogue () {
+    let options = {
+      title: "Price range",
+      cancelButtonText: "Cancel",
+      actions: DropDownData.getPriceRange()
+    };
+    dialogs.action(options).then(r => {
+      if (r !== 'Cancel') {
+
+      }
+    });
+  }
+
   filterMap(): void  {
     this.filter = new FilterView();
     this.filter.tags = [];
