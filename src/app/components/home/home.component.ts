@@ -79,13 +79,17 @@ export class HomeComponent implements OnInit  {
             this.userLoc.longitude = -1.491650;
             this.userLoc.latitude = 53.369690;
         }        
-
-        this.getMapMarkers(this.userLoc.longitude, this.userLoc.latitude);
+        if (this.mapViewService.mapMarkers.length > 0) {
+            this.loadExisting(this.mapViewService.mapMarkers);
+        } else {
+            this.getMapMarkers(this.userLoc.longitude, this.userLoc.latitude);
+        }
 
         this.map.setOnMapLongClickListener((point: any) => {
             this.userLoc.longitude =  point.lng;
             this.userLoc.latitude = point.lat;
             this.userService.updateUserLocation(this.userLoc);
+            console.log("here");
             this.getMapMarkers(point.lng, point.lat);            
         });
 
@@ -103,25 +107,53 @@ export class HomeComponent implements OnInit  {
         )        
     }
 
-    displayMarkers(response): void {
-        // this.mapMarkers.push(response);
-        // this.mapViewService.saveMapMarkers(response);
-        // console.log('mapmarkers', this.mapViewService.getMapMarkers());
-        let i = 0; 
-        for (const marker of response) {
+    loadExisting (markers) {
+        let i = 0;
+        for (const marker of markers) {            
             i++;
             this.map.addMarkers([
                 {
                     id: i,
                     lat: marker.lat,
                     lng: marker.long,
-                    icon: response.hasMultiple ? "res://ic_red_marker" : "res://ic_green_pin",
+                    icon: marker.hasMultiple ? "res://ic_red_marker" : "res://ic_green_pin",
                     onTap: (marker) => {
                         this.showPropertyView(marker);
                     }
                 }
             ]);
         }
+    }
+
+    displayMarkers(response): void {
+        let i = 0; 
+        console.log(response);
+        for (const marker of response) {
+            // if (this.mapViewService.mapMarkers.includes(marker.lat) )
+            if (this.mapViewService.mapMarkers.length > 0) {
+                const lat = this.mapViewService.mapMarkers.findIndex(m => m.lat === marker.lat);
+                const long = this.mapViewService.mapMarkers.findIndex(m => m.long === marker.long);
+                if (lat !== -1 && long !== -1) {
+                    return;
+                }
+            }
+            i++;
+            this.map.addMarkers([
+                {
+                    id: i,
+                    lat: marker.lat,
+                    lng: marker.long,
+                    icon: marker.hasMultiple ? "res://ic_red_marker" : "res://ic_green_pin",
+                    onTap: (marker) => {
+                        this.showPropertyView(marker);
+                    }
+                }
+            ]);
+
+            // newMarkers.push(marker);
+            this.mapViewService.saveMapMarkers(marker);
+        }
+
     }
  
     getUserLocation(): UserLocation {
