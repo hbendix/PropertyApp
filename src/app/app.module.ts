@@ -23,6 +23,7 @@ import { HomeComponent } from "./components/home/home.component";
 import { LoginComponent } from "./components/login/login.component";
 import {AccessbilityService} from "~/app/services/accessbility.service";
 import {MyAccountComponent} from "~/app/components/my-account/my-account.component";
+import { SalesHistoryComponent } from "./components/property-view/sales-history/sales-history.component";
 
 @NgModule({
     bootstrap: [
@@ -49,7 +50,8 @@ import {MyAccountComponent} from "~/app/components/my-account/my-account.compone
         CreateAccountComponent,
         TutorialDialogueComponent,
         LoginComponent,
-        MyAccountComponent
+        MyAccountComponent,
+        SalesHistoryComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA

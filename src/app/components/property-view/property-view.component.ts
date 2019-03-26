@@ -56,7 +56,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
       this.lat = params.lat;
       this.prevLocation = params.prevLocation;
 
-      if (params.from === '/area') {
+      if (params.from === '/area' || params.from === '/sale-history') {
         this.wasViewingArea = true;
       }
     });
@@ -99,8 +99,12 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
       this.property = this.propertyViewService.toView;
       this.sortStats();
       this.isList = false;
+      this.long = <number><unknown>this.property.long;
+      this.lat = <number><unknown>this.property.lat;
       if (this.wasViewingArea) {
         this.prevLocation = this.property.prevLocation;
+        this.long = <number><unknown>this.property.long;
+        this.lat = <number><unknown>this.property.lat;
       }
     } else {
       this.propertyViewService.getPropertyModel(this.long, this.lat)
@@ -333,6 +337,31 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
         } else {
           this.notificationService.fireNotification(`Error loading area ${ err.status } ${ err.statusText }`, false);
         }
+        this.notificationService.loader.hide();
+      }
+    )
+  }
+
+  showSalesHistory () {
+    this.notificationService.loader.show();
+
+    this.propertyViewService.pullSalesHistory(this.lat.toString(), this.long.toString()).subscribe(
+      (res) => {
+        this.propertyViewService.setSalesHistory(res);
+        this.property.prevLocation = this.prevLocation;
+        this.property.long = this.long.toString();
+        this.property.lat = this.lat.toString();
+        this.propertyViewService.setProperty(this.property);
+        this.routerExtensions.navigate(["/sale-history"], {
+          transition: {
+              name: "fade"
+          },
+          queryParams: {
+              "prevLocation": "/property"
+          }
+      });
+      }, (err) => {
+        this.notificationService.fireNotification(`Error loading area ${ err.status } ${ err.statusText }`, false);
         this.notificationService.loader.hide();
       }
     )

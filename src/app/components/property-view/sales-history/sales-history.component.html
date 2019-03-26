@@ -1,0 +1,23 @@
+<ActionBar class="action-bar">
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" class="titleFont"></NavigationButton>
+    <Label class="action-bar-title" text="Sale History"></Label>
+</ActionBar>
+<ScrollView row="1" backgroundColor="white">
+        <Label text="Sale History for Properties within a 20KM radius"></Label>
+        <ListView class="list-group" [items]="saleHistory" separatorColor="#f7f7f7" backgroundColor="white" height="100%">
+                <ng-template let-item="item">
+                        <CardView class="cardStyle" margin="10" elevation="40" radius="15" ripple="true" >
+                                <GridLayout rows="*, *, *" columns="*, *" margin="10">
+                                        <Label text="{{item.fullAddress}}" textWrap="true" col="0" colSpan="2"></Label>
+                                        <Label text="{{item.propertyType}}" textWrap="true" col="0" row="1" colSpan="2"></Label>
+                                        <StackLayout row="3" colSpan="2" margin="10">
+                                                <StackLayout *ngFor="let history of item.saleHistory; trackBy: trackByDate" margin="5 0 5 0">
+                                                        <Label text="{{history.date}}" class="date" textWrap="true" col="0" colSpan="2"></Label>
+                                                        <Label text="£{{history.price}}" class="price" textWrap="true" col="0" row="1" colSpan="2"></Label>
+                                                </StackLayout>
+                                        </StackLayout>
+                                </GridLayout>
+                        </CardView>
+                </ng-template> 
+        </ListView>
+</ScrollView>
