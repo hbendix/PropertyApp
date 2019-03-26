@@ -16,7 +16,7 @@ import { SalesHistoryComponent } from "./components/property-view/sales-history/
 
 const routes: Routes = [
     { path: "", redirectTo: "/home", pathMatch: "full" },
-    { path: "home", component: HomeComponent,
+    { path: "home", component: HomeComponent, data: { noReuse: false },
         children: [ 
             {
                 path: "tutorial", component: TutorialDialogueComponent
@@ -32,7 +32,7 @@ const routes: Routes = [
     { path: "shortlists", component: ShortlistsComponent, canActivate: [AuthGuard] },
     { path: "create", component: CreateAccountComponent },
     { path: "login", component: LoginComponent },
-    { path: "my-account", component: MyAccountComponent },
+    { path: "my-account", component: MyAccountComponent, canActivate: [AuthGuard] },
     { path: "sale-history", component: SalesHistoryComponent }
 ];
 
