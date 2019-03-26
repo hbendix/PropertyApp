@@ -101,7 +101,7 @@
                             class="fas" 
                             textAlignment="right" 
                             row="0" 
-                            margin="10"
+                            margin="13 10 10 10"
                             col="1" 
                             backgroundColor="white" 
                             *ngIf="isEditing"
@@ -134,13 +134,8 @@
                     </Label>
                     <TextView   editable="{{editingComment ? true : false}}" 
                                 class="comment" 
-                                [(ngModel)]="updatedComment"
-                                name="updatedComment-{{i}}"
+                                [(ngModel)]="comment.content"
                                 margin="3">
-                    <Span   text="{{comment.content}}" 
-                            fontWeight="300"
-                            fontSize="14" 
-                            color="black" ></Span>
                     </TextView>
                     <GridLayout columns="*, *" 
                             width="100%" 
@@ -167,7 +162,7 @@
                                 backgroundColor="white"
                                 color="#4CAF50"
                                 *ngIf="editingComment"
-                                (tap)="updateComment(i, updatedComment)"></Label>
+                                (tap)="updateComment(i, comment.content)"></Label>
 
                         <Label   text="&#xf2ed;" 
                                 class="far" 
