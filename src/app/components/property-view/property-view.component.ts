@@ -13,6 +13,8 @@ import { Image } from 'tns-core-modules/ui/image';
 import { View } from 'tns-core-modules/ui/core/view';
 import { AuthService } from "~/app/services/auth.service";
 import { DatePipe } from "@angular/common";
+import * as Utils from 'utils/utils'
+import { AreaService } from "~/app/services/area.service";
 registerElement('Fab', () => require('nativescript-floatingactionbutton').Fab);
 
 @Component({
@@ -26,7 +28,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input()
   private long: Number;
   private lat: Number;
-  private prevLocation: String;
+  private prevLocation: string;
 
   public property: PropertyView;
   public isBusy = true;
@@ -40,24 +42,33 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
   isViewingShortlist = false;
   editingComment: boolean;
   isViewingSearchItem = false;
+  wasViewingArea = false;
 
   constructor(private propertyViewService: PropertyViewService,
     private route: ActivatedRoute,
     private routerExtensions: RouterExtensions,
     private notificationService: NotificationService,
     private shortlistService: ShortlistService,
-    private auth: AuthService) {
+    private auth: AuthService,
+    private areaService: AreaService) {
     this.route.queryParams.subscribe(params => {
       this.long = params.long;
       this.lat = params.lat;
       this.prevLocation = params.prevLocation;
+
+      if (params.from === '/area') {
+        this.wasViewingArea = true;
+      }
     });
+
+    console.log(this.prevLocation);
 
     if (this.prevLocation === '/shortlists') {
       this.isViewingShortlist = true;
     } else if (this.prevLocation === '/property-search') {
       this.isViewingSearchItem = true;
     }
+
     this.loadProperty();
   }
 
@@ -84,10 +95,13 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private loadProperty () {
-    if (this.propertyViewService.isViewingShortList || this.isViewingSearchItem) {
+    if (this.propertyViewService.isViewingShortList || this.isViewingSearchItem || this.wasViewingArea) {
       this.property = this.propertyViewService.toView;
       this.sortStats();
       this.isList = false;
+      if (this.wasViewingArea) {
+        this.prevLocation = this.property.prevLocation;
+      }
     } else {
       this.propertyViewService.getPropertyModel(this.long, this.lat)
         .subscribe((res) => {
@@ -130,6 +144,10 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
         "icon": "&#xf236;"
       })
     }
+  }
+
+  public goToLink () {
+    Utils.openUrl(this.property.lister_url);
   }
 
   public onItemTap (index) {
@@ -290,6 +308,34 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
             topView.translateY = Math.floor(offset);
         }
     }
+  }
+
+  viewAreaStats () {
+      this.notificationService.loader.show();
+      this.areaService.pullArea(<number><unknown>this.property.lat, <number><unknown>this.property.long).subscribe(
+      (res) => {
+        this.areaService.area = res;
+        this.property.prevLocation = this.prevLocation;
+        this.propertyViewService.setProperty(this.property);
+        this.routerExtensions.navigate(["/area"], {
+          transition: {
+              name: "fade"
+          },
+          queryParams: {
+              "prevLocation": "/property",        
+              "long": this.property.long,
+              "lat": this.property.lat
+          }
+      });
+      }, (err) => {
+        if (err.status === 404) {
+          this.notificationService.fireNotification(`No area statistics!`, false);
+        } else {
+          this.notificationService.fireNotification(`Error loading area ${ err.status } ${ err.statusText }`, false);
+        }
+        this.notificationService.loader.hide();
+      }
+    )
   }
 
   ngOnDestroy(): void {

@@ -115,8 +115,8 @@ export class HomeComponent implements OnInit  {
                     id: i,
                     lat: marker.lat,
                     lng: marker.long,
-                    iconPath: "../../assets/pin.svg",
-                    icon: "../../assets/pin.svg",
+                    iconPath: "res://ic_place_black_24dp",
+                    icon: "res://ic_place_black_24dp",
                     onTap: (marker) => {
                         this.showPropertyView(marker);
                     }
@@ -197,7 +197,6 @@ export class HomeComponent implements OnInit  {
             this.userLoc.latitude = res.lat;
             this.userService.updateUserLocation(this.userLoc);
             this.areaService.pullArea(res.lat, res.lng).subscribe((area) => {
-                console.log(res);
                 this.areaService.area = area;
                 this.showAreaView(res.lat, res.lng);
             }, (err) => {
