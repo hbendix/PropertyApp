@@ -22,6 +22,7 @@ export class MapViewService {
     }
 
     public setFilterBody (body) {
+        this.mapMarkers = [];
         this.isBeingFiltered = true;
         this.filterBody = body;
     }

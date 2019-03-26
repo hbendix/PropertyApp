@@ -12,6 +12,7 @@ import { HomeComponent } from "./components/home/home.component";
 import { AuthGuard } from "./guard/auth.guard";
 import { LoginComponent } from "./components/login/login.component";
 import {MyAccountComponent} from "~/app/components/my-account/my-account.component";
+import { SalesHistoryComponent } from "./components/property-view/sales-history/sales-history.component";
 
 const routes: Routes = [
     { path: "", redirectTo: "/home", pathMatch: "full" },
@@ -31,7 +32,8 @@ const routes: Routes = [
     { path: "shortlists", component: ShortlistsComponent, canActivate: [AuthGuard] },
     { path: "create", component: CreateAccountComponent },
     { path: "login", component: LoginComponent },
-    { path: "my-account", component: MyAccountComponent }
+    { path: "my-account", component: MyAccountComponent },
+    { path: "sale-history", component: SalesHistoryComponent }
 ];
 
 @NgModule({

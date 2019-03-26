@@ -96,7 +96,7 @@ export class HomeComponent implements OnInit  {
     }
 
     getMapMarkers (long, lat): void {        
-        this.displayMarkers(this.mapViewService.pullMapMarkers(long, lat, 2000)
+        this.displayMarkers(this.mapViewService.pullMapMarkers(long, lat, 1000)
             .subscribe((res) => {
                 this.displayMarkers(res);
             },
@@ -127,7 +127,6 @@ export class HomeComponent implements OnInit  {
 
     displayMarkers(response): void {
         let i = 0; 
-        console.log(response);
         for (const marker of response) {
             // if (this.mapViewService.mapMarkers.includes(marker.lat) )
             if (this.mapViewService.mapMarkers.length > 0) {
