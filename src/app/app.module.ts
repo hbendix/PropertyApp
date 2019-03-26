@@ -10,6 +10,8 @@ import { NativeScriptUISideDrawerModule } from "nativescript-ui-sidedrawer/angul
 import { NativescriptBottomNavigationModule} from "nativescript-bottom-navigation/angular";
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
 
+import { TNSTextToSpeech } from 'nativescript-texttospeech';
+
 import { AppComponent } from "./app.component";
 import { PropertyViewComponent } from "./components/property-view/property-view.component";
 import { FilterViewComponent } from "./components/filter-view/filter-view.component";
@@ -17,6 +19,9 @@ import { PropertySearchViewComponent } from "./components/property-search/proper
 import { AreaViewComponent } from "./components/area-view/area-view.component";
 import { ShortlistsComponent } from "./components/shortlists/shortlists.component";
 import { CreateAccountComponent } from "./components/create-account/create-account.component";
+
+import { from } from "rxjs";
+
 import { ModalDialogService } from "nativescript-angular/modal-dialog";
 import { TutorialDialogueComponent } from "./components/home/tutorial-dialogue/tutorial-dialogue.component";
 import { HomeComponent } from "./components/home/home.component";
@@ -24,6 +29,7 @@ import { LoginComponent } from "./components/login/login.component";
 import {AccessbilityService} from "~/app/services/accessbility.service";
 import {MyAccountComponent} from "~/app/components/my-account/my-account.component";
 import { SalesHistoryComponent } from "./components/property-view/sales-history/sales-history.component";
+
 
 @NgModule({
     bootstrap: [
@@ -58,8 +64,10 @@ import { SalesHistoryComponent } from "./components/property-view/sales-history/
     ],
     providers: [
         { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
+        TNSTextToSpeech,
         ModalDialogService,
         AccessbilityService
+
     ]
 })
 export class AppModule { }

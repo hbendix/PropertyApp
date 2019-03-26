@@ -15,6 +15,7 @@ import { Mapbox, MapStyle, MapboxViewApi, Viewport as MapboxViewport, MapboxView
 import { environment } from "~/environments/environment";
 import { NotificationService } from "~/app/services/notification.service";
 import { ShortlistService } from "~/app/services/shortlist.service";
+import { TNSTextToSpeech, SpeakOptions } from 'nativescript-texttospeech'
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import { DatePipe } from "@angular/common";
 @Component({
@@ -29,6 +30,7 @@ export class AreaViewComponent implements OnInit {
   private long: number;
   private lat: number;
   private prevLocation: String;
+  private ttsOptions: SpeakOptions;
 
   public area: Area;
   stats: any[];
@@ -50,9 +52,12 @@ export class AreaViewComponent implements OnInit {
     private routerExtensions: RouterExtensions,
     private auth: AuthService,
     private notificationService: NotificationService,
+    private tts: TNSTextToSpeech,
+    private shortlistService: ShortlistService,
     private shortlistService: ShortlistService,
     private changeDetectorRef: ChangeDetectorRef,
     private _ngZone: NgZone) {
+
     this.route.queryParams.subscribe(params => {
       console.log(params);
       this.long = params.long;
@@ -272,5 +277,15 @@ export class AreaViewComponent implements OnInit {
           this.notificationService.fireNotification(`Error refreshing comments ${ err.status } ${ err.statusText }`, false);
         }
       );
+  }
+  public sayComment (index) {
+    const note = <any>this.area.notes[index];
+    this.ttsOptions = {
+      text: note.content,
+      finishedCallback: (data) => {
+        console.log(data);
+      }
+    }
+    this.tts.speak(this.ttsOptions);
   }
 }

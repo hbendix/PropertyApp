@@ -13,8 +13,12 @@ import { Image } from 'tns-core-modules/ui/image';
 import { View } from 'tns-core-modules/ui/core/view';
 import { AuthService } from "~/app/services/auth.service";
 import { DatePipe } from "@angular/common";
+
+import { TNSTextToSpeech, SpeakOptions } from 'nativescript-texttospeech'
+
 import * as Utils from 'utils/utils'
 import { AreaService } from "~/app/services/area.service";
+
 registerElement('Fab', () => require('nativescript-floatingactionbutton').Fab);
 
 @Component({
@@ -28,7 +32,12 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input()
   private long: Number;
   private lat: Number;
+
+  private prevLocation: String;
+  private ttsOptions: SpeakOptions;
+
   private prevLocation: string;
+
 
   public property: PropertyView;
   public isBusy = true;
@@ -49,8 +58,11 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
     private routerExtensions: RouterExtensions,
     private notificationService: NotificationService,
     private shortlistService: ShortlistService,
+    private tts: TNSTextToSpeech,
+    private auth: AuthService,
     private auth: AuthService,
     private areaService: AreaService) {
+
     this.route.queryParams.subscribe(params => {
       this.long = params.long;
       this.lat = params.lat;
@@ -297,6 +309,39 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
           this.notificationService.fireNotification(`Error refreshing comments ${ err.status } ${ err.statusText }`, false);
         }
       );
+  }
+
+  public sayComment (index) {
+    const note = <any>this.property.notes[index];
+    this.ttsOptions = {
+      text: note.content,
+      finishedCallback: (data) => {
+        console.log(data);
+      }
+    }
+    this.tts.speak(this.ttsOptions);
+  }
+
+  public sayInfo () {
+    let theProperty = "Property listing" + this.property.fullAddress; 
+    let price = "The price for this property is " + this.property.price;
+    let bedroom = "It contains" + this.property.bedroomNumber + "bedrooms"
+    let bathroom = "number of bathrooms is not stated";
+    let parking = "number of parking spaces is not stated";
+    if(this.property.bathroomNumber >= 1) {
+      bathroom = this.property.bathroomNumber + "bathrooms"
+    }
+    if(this.property.parkingSpaces >= 1) {
+      bathroom = this.property.parkingSpaces + "parking spaces"
+    }
+    this.ttsOptions = {
+      text: theProperty + price + bedroom + bathroom + "and" + parking,
+      speakRate: 0.9,
+      finishedCallback: (data) => {
+        console.log(data);
+      }
+    }
+    this.tts.speak(this.ttsOptions);
   }
 
   onScroll(event: ScrollEventData, scrollView: ScrollView, topView: View) {

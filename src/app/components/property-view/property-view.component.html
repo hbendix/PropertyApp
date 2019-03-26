@@ -29,12 +29,17 @@
                             fontWeight="500"
                             fontSize="14"></Span>
                 </TextView>
-                <TextView       editable="false" 
-                                class="price-area"
-                                style="border-color: #707070;">
-                        <Span   text="{{property.price}}" 
-                                fontWeight="Bold"
-                                fontSize="36"></Span>
+
+                <Label   text="&#xf028;"
+                class="fas"
+                color="#4CAF50"
+                (tap)="sayInfo()"></Label>
+                <TextView   editable="false" 
+                            class="price-area"
+                            style="border-color: #707070;">
+                    <Span   text="{{property.price}}" 
+                            fontWeight="Bold"
+                            fontSize="36"></Span>
                 </TextView>
                 <GridLayout rows="*" 
                         columns="*,* ,* ,* ,* , *" margin="10">
@@ -152,6 +157,17 @@
                                 color="#4CAF50"
                                 *ngIf="!editingComment"
                                 (tap)="editingComment = !editingComment"></Label>
+                        <Label   text="&#xf028;" 
+                                class="fas" 
+                                textAlignment="left" 
+                                horizontalAlignment="left"
+                                row="0" 
+                                margin="2 0 0 10"
+                                col="0" 
+                                backgroundColor="white"
+                                color="#4CAF50"
+                                *ngIf="!editingComment"
+                                (tap)="sayComment(i)"></Label>
                         <Label   text="&#xf0c7;" 
                                 class="far" 
                                 textAlignment="right" 
