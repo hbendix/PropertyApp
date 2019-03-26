@@ -63,9 +63,9 @@
                                 <Label text="Area Statistics"  margin="0 0 0 10" color="#555" fontSize="20" col="1" row="0"></Label>
                                 <Label text="&#xf0da;" margin="4" color="#555" horizontalAlignment="center" fontSize="20" class="fas"col="2" row="0"></Label>
                         </GridLayout>
-                        <GridLayout rows="*" columns="auto, *, auto" class="listItem" margin="10 0 0 0">
+                        <GridLayout rows="*" columns="auto, *, auto" class="listItem" margin="10 0 0 0" (tap)="showSalesHistory()">
                                 <Label text="&#xf688;" margin="4" color="#3d5afe" horizontalAlignment="center" fontSize="20" class="fas"col="0" row="0"></Label>
-                                <Label text="Sales History"  margin="0 0 0 10" color="#555" fontSize="20" col="1" row="0"></Label>
+                                <Label text="Nearby Sales History"  margin="0 0 0 10" color="#555" fontSize="20" col="1" row="0"></Label>
                                 <Label text="&#xf0da;" margin="4" color="#555" horizontalAlignment="center" fontSize="20" class="fas"col="2" row="0"></Label>
                         </GridLayout>
                         <GridLayout rows="*" columns="auto, *, auto" class="listItem" margin="10 0 0 0"(tap)="goToLink()" *ngIf="property.lister_name && property.lister_url">
