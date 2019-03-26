@@ -107,7 +107,7 @@ export class HomeComponent implements OnInit  {
         // this.mapMarkers.push(response);
         // this.mapViewService.saveMapMarkers(response);
         // console.log('mapmarkers', this.mapViewService.getMapMarkers());
-        let i = 0;
+        let i = 0; 
         for (const marker of response) {
             i++;
             this.map.addMarkers([
@@ -115,8 +115,7 @@ export class HomeComponent implements OnInit  {
                     id: i,
                     lat: marker.lat,
                     lng: marker.long,
-                    iconPath: "res://ic_place_black_24dp",
-                    icon: "res://ic_place_black_24dp",
+                    icon: response.hasMultiple ? "res://ic_red_marker" : "res://ic_green_pin",
                     onTap: (marker) => {
                         this.showPropertyView(marker);
                     }
@@ -124,7 +123,7 @@ export class HomeComponent implements OnInit  {
             ]);
         }
     }
-
+ 
     getUserLocation(): UserLocation {
         if (this.userService.getUserLocation().latitude > 0) {
             this.userLoc.latitude = this.userService.getUserLocation().latitude;
