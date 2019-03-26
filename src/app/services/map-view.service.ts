@@ -10,7 +10,7 @@ import { FilterView } from "../models/filter";
 
 export class MapViewService {
 
-    mapMarkers = [];
+    public mapMarkers: any[] = [];
 
     public isBeingFiltered = false;
     public filterBody: FilterView;
@@ -22,16 +22,15 @@ export class MapViewService {
     }
 
     public setFilterBody (body) {
+        this.mapMarkers = [];
         this.isBeingFiltered = true;
         this.filterBody = body;
     }
 
     public pullMapMarkers(long: Number, lat: Number, radius: Number) {       
-        console.log(this.isBeingFiltered);
         const _url = `${environment.server.url}/markers?lat=${lat}&long=${long}&radius=${radius}`;
 
         if (this.isBeingFiltered) {
-            console.log(this.filterBody);
             return this.http.post(_url, { "filters": this.filterBody });
         } else {
             return this.http.post(_url, {});        

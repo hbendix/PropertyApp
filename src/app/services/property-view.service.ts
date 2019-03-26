@@ -4,15 +4,17 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AuthService } from "./auth.service";
 import { MapViewService } from "./map-view.service";
+import { SalesHistory } from "../models/salesHistory";
 
 @Injectable({
     providedIn: "root"
 })
 
-export class PropertyViewService {
+export class PropertyViewService { 
     
     public isViewingShortList = false;
     public toView: PropertyView;
+    saleHistory: SalesHistory[];
     
     constructor(private http: HttpClient,
         private auth: AuthService,
@@ -40,5 +42,19 @@ export class PropertyViewService {
 
     public getShortListProperty () {
         return this.toView;
+    }
+
+    public pullSalesHistory (lat: string, long: string) {
+        const _url = `${environment.server.url}/sale-history?lat=${ lat }&long=${ long }&radius=${ 20 }`;
+        
+        return this.http.get(_url);
+    }
+
+    public setSalesHistory (salesHistory) {
+        this.saleHistory = salesHistory;
+    }
+
+    public getSalesHistory(): any {
+        return this.saleHistory;
     }
 }

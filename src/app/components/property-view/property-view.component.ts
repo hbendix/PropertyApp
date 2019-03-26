@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from "@angular/core";
+import { Component, OnInit, Input, OnDestroy, AfterViewInit } from "@angular/core";
 import { PropertyViewService } from "../../services/property-view.service";
 import { PropertyView } from "../../models/property";
 import { RouterExtensions } from "nativescript-angular/router";
@@ -13,7 +13,12 @@ import { Image } from 'tns-core-modules/ui/image';
 import { View } from 'tns-core-modules/ui/core/view';
 import { AuthService } from "~/app/services/auth.service";
 import { DatePipe } from "@angular/common";
+
 import { TNSTextToSpeech, SpeakOptions } from 'nativescript-texttospeech'
+
+import * as Utils from 'utils/utils'
+import { AreaService } from "~/app/services/area.service";
+
 registerElement('Fab', () => require('nativescript-floatingactionbutton').Fab);
 
 @Component({
@@ -22,13 +27,17 @@ registerElement('Fab', () => require('nativescript-floatingactionbutton').Fab);
   styleUrls: ["./property-view.component.css"],
   moduleId: module.id
 })
-export class PropertyViewComponent implements OnInit, OnDestroy {
+export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input()
   private long: Number;
   private lat: Number;
+
   private prevLocation: String;
   private ttsOptions: SpeakOptions;
+
+  private prevLocation: string;
+
 
   public property: PropertyView;
   public isBusy = true;
@@ -42,6 +51,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
   isViewingShortlist = false;
   editingComment: boolean;
   isViewingSearchItem = false;
+  wasViewingArea = false;
 
   constructor(private propertyViewService: PropertyViewService,
     private route: ActivatedRoute,
@@ -49,26 +59,40 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private shortlistService: ShortlistService,
     private tts: TNSTextToSpeech,
-    private auth: AuthService) {
+    private auth: AuthService,
+    private auth: AuthService,
+    private areaService: AreaService) {
+
     this.route.queryParams.subscribe(params => {
       this.long = params.long;
       this.lat = params.lat;
       this.prevLocation = params.prevLocation;
+
+      if (params.from === '/area' || params.from === '/sale-history') {
+        this.wasViewingArea = true;
+      }
     });
+
+    console.log(this.prevLocation);
 
     if (this.prevLocation === '/shortlists') {
       this.isViewingShortlist = true;
     } else if (this.prevLocation === '/property-search') {
       this.isViewingSearchItem = true;
     }
+
     this.loadProperty();
   }
 
   ngOnInit() {
+  }
+  
+  ngAfterViewInit () {
     this.notificationService.loader.hide();
   }
 
   public onNavBtnTap(){
+    this.notificationService.loader.show();
     if ((this.isList) || (this.propertyList.length == 0)) {
       this.propertyViewService.isViewingShortList = false;    
       this.routerExtensions.navigate([this.prevLocation], {
@@ -78,14 +102,22 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
       });
     } else {
       this.isList = true;
+      this.notificationService.loader.hide();
     }
   }
 
   private loadProperty () {
-    if (this.propertyViewService.isViewingShortList || this.isViewingSearchItem) {
+    if (this.propertyViewService.isViewingShortList || this.isViewingSearchItem || this.wasViewingArea) {
       this.property = this.propertyViewService.toView;
       this.sortStats();
       this.isList = false;
+      this.long = <number><unknown>this.property.long;
+      this.lat = <number><unknown>this.property.lat;
+      if (this.wasViewingArea) {
+        this.prevLocation = this.property.prevLocation;
+        this.long = <number><unknown>this.property.long;
+        this.lat = <number><unknown>this.property.lat;
+      }
     } else {
       this.propertyViewService.getPropertyModel(this.long, this.lat)
         .subscribe((res) => {
@@ -130,11 +162,19 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onItemTap (args: ItemEventData) {
-    this.property = this.propertyList[args.index];
-    console.log(this.property);
+  public goToLink () {
+    Utils.openUrl(this.property.lister_url);
+  }
+
+  public onItemTap (index) {
+    this.notificationService.loader.show();
+    this.property = this.propertyList[index];
+
+    
+    console.log(index, this.property);
     this.sortStats();
     this.isList = false;
+    this.notificationService.loader.hide();
   }
 
   public saveProperty (property: PropertyView) {
@@ -317,6 +357,59 @@ export class PropertyViewComponent implements OnInit, OnDestroy {
             topView.translateY = Math.floor(offset);
         }
     }
+  }
+
+  viewAreaStats () {
+      this.notificationService.loader.show();
+      this.areaService.pullArea(<number><unknown>this.property.lat, <number><unknown>this.property.long).subscribe(
+      (res) => {
+        this.areaService.area = res;
+        this.property.prevLocation = this.prevLocation;
+        this.propertyViewService.setProperty(this.property);
+        this.routerExtensions.navigate(["/area"], {
+          transition: {
+              name: "fade"
+          },
+          queryParams: {
+              "prevLocation": "/property",        
+              "long": this.property.long,
+              "lat": this.property.lat
+          }
+      });
+      }, (err) => {
+        if (err.status === 404) {
+          this.notificationService.fireNotification(`No area statistics!`, false);
+        } else {
+          this.notificationService.fireNotification(`Error loading area ${ err.status } ${ err.statusText }`, false);
+        }
+        this.notificationService.loader.hide();
+      }
+    )
+  }
+
+  showSalesHistory () {
+    this.notificationService.loader.show();
+
+    this.propertyViewService.pullSalesHistory(this.lat.toString(), this.long.toString()).subscribe(
+      (res) => {
+        this.propertyViewService.setSalesHistory(res);
+        this.property.prevLocation = this.prevLocation;
+        this.property.long = this.long.toString();
+        this.property.lat = this.lat.toString();
+        this.propertyViewService.setProperty(this.property);
+        this.routerExtensions.navigate(["/sale-history"], {
+          transition: {
+              name: "fade"
+          },
+          queryParams: {
+              "prevLocation": "/property"
+          }
+      });
+      }, (err) => {
+        this.notificationService.fireNotification(`Error loading area ${ err.status } ${ err.statusText }`, false);
+        this.notificationService.loader.hide();
+      }
+    )
   }
 
   ngOnDestroy(): void {

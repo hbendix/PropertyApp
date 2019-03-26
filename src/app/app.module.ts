@@ -19,7 +19,17 @@ import { PropertySearchViewComponent } from "./components/property-search/proper
 import { AreaViewComponent } from "./components/area-view/area-view.component";
 import { ShortlistsComponent } from "./components/shortlists/shortlists.component";
 import { CreateAccountComponent } from "./components/create-account/create-account.component";
+
 import { from } from "rxjs";
+
+import { ModalDialogService } from "nativescript-angular/modal-dialog";
+import { TutorialDialogueComponent } from "./components/home/tutorial-dialogue/tutorial-dialogue.component";
+import { HomeComponent } from "./components/home/home.component";
+import { LoginComponent } from "./components/login/login.component";
+import {AccessbilityService} from "~/app/services/accessbility.service";
+import {MyAccountComponent} from "~/app/components/my-account/my-account.component";
+import { SalesHistoryComponent } from "./components/property-view/sales-history/sales-history.component";
+
 
 @NgModule({
     bootstrap: [
@@ -37,19 +47,27 @@ import { from } from "rxjs";
     ],
     declarations: [
         AppComponent,
+        HomeComponent,
         PropertyViewComponent,
         FilterViewComponent,
         PropertySearchViewComponent,
         AreaViewComponent,
         ShortlistsComponent,
-        CreateAccountComponent
+        CreateAccountComponent,
+        TutorialDialogueComponent,
+        LoginComponent,
+        MyAccountComponent,
+        SalesHistoryComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA
     ],
     providers: [
         { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
-        TNSTextToSpeech
+        TNSTextToSpeech,
+        ModalDialogService,
+        AccessbilityService
+
     ]
 })
 export class AppModule { }

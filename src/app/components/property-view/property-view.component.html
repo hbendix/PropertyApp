@@ -3,7 +3,7 @@
     <Label class="action-bar-title" text="Property"></Label>
 </ActionBar>
 <FAB (tap)="saveProperty(property)" rippleColor="#f1f1f1" row="1" class="fab-button"
-    *ngIf="!isList && isLoggedIn" horizontalAlignment="right">
+    *ngIf="!isList && isLoggedIn" horizontalAlignment="right" icon="res://ic_star_white_24dp">
 </FAB> 
 <GridLayout class="page"  *ngIf="!isList" >
     <ScrollView #scrollView (scroll)="onScroll($event, scrollView, topView)">
@@ -16,7 +16,7 @@
                         horizontalAlignment="right" 
                         marginTop="10"></Label>
             </StackLayout>
-            <StackLayout width="100%" backgroundColor="white" padding="10"class="border">
+            <StackLayout width="100%" backgroundColor="white" padding="10"class="border" height="92%">
                 
                 <TextView editable="false"style="background-color: transparent;
                         border-color: transparent;">
@@ -29,6 +29,7 @@
                             fontWeight="500"
                             fontSize="14"></Span>
                 </TextView>
+
                 <Label   text="&#xf028;"
                 class="fas"
                 color="#4CAF50"
@@ -40,12 +41,18 @@
                             fontWeight="Bold"
                             fontSize="36"></Span>
                 </TextView>
-                <Label text="STATS" margin="10"></Label>
-                    <Label  *ngFor="let stat of stats"
-                            text="{{stat.value}} {{ stat.name }}" 
-                            textAlignment="left"
-                            margin="10" 
-                            class="stats"></Label>
+                <GridLayout rows="*" 
+                        columns="*,* ,* ,* ,* , *" margin="10">
+                        <Label text="&#xf236;" color="#3d5afe" horizontalAlignment="right" fontSize="20" class="fas"col="0" row="0"></Label>
+                        <Label text="{{ property.bedroomNumber !== null ? property.bedroomNumber : 'N/A' }}" color="#555" col="1" margin="0 0 0 10" row="0" textWrap="true"></Label>
+
+                        <Label text="&#xf2cd;" color="#3d5afe" horizontalAlignment="right" fontSize="20" class="fas"col="2" row="0"></Label>
+                        <Label text="{{ property.bathroomNumber !== null ? property.bathroomNumber : 'N/A' }}" color="#555" col="3" margin="0 0 0 10" row="0" textWrap="true"></Label>
+
+                        <Label text="&#xf540;" color="#3d5afe" horizontalAlignment="right" fontSize="20" class="fas"col="4" row="0"></Label>
+                        <Label text="{{ property.parkingSpaces !== null ? property.parkingSpaces : 'N/A' }}" color="#555" col="5" margin="0 0 0 10" row="0" textWrap="true"></Label>
+                        
+                </GridLayout>
 
                 <Label text="TAGS" margin="10"></Label>
                 <Label  *ngFor="let tag of property.tags"
@@ -54,9 +61,28 @@
                         margin="10" 
                         class="stats"></Label>
                 
+                <Label text="MORE INFORMATION" margin="10"></Label>
+                <StackLayout margin="10">
+                        <GridLayout rows="*" columns="auto, *, auto" class="listItem" (tap)="viewAreaStats()">
+                                <Label text="&#xf1fe;" margin="4" color="#3d5afe" horizontalAlignment="center" fontSize="20" class="fas"col="0" row="0"></Label>
+                                <Label text="Area Statistics"  margin="0 0 0 10" color="#555" fontSize="20" col="1" row="0"></Label>
+                                <Label text="&#xf0da;" margin="4" color="#555" horizontalAlignment="center" fontSize="20" class="fas"col="2" row="0"></Label>
+                        </GridLayout>
+                        <GridLayout rows="*" columns="auto, *, auto" class="listItem" margin="10 0 0 0" (tap)="showSalesHistory()">
+                                <Label text="&#xf688;" margin="4" color="#3d5afe" horizontalAlignment="center" fontSize="20" class="fas"col="0" row="0"></Label>
+                                <Label text="Nearby Sales History"  margin="0 0 0 10" color="#555" fontSize="20" col="1" row="0"></Label>
+                                <Label text="&#xf0da;" margin="4" color="#555" horizontalAlignment="center" fontSize="20" class="fas"col="2" row="0"></Label>
+                        </GridLayout>
+                        <GridLayout rows="*" columns="auto, *, auto" class="listItem" margin="10 0 0 0"(tap)="goToLink()" *ngIf="property.lister_name && property.lister_url">
+                                <Label text="&#xf35d;" margin="4" color="#3d5afe" horizontalAlignment="center" fontSize="20" class="fas"col="0" row="0"></Label>
+                                <Label text="View listing by {{ property.lister_name }}"  margin="0 0 0 10" color="#555" fontSize="20" col="1" row="0"></Label>
+                                <Label text="&#xf0da;" margin="4" color="#555" horizontalAlignment="center" fontSize="20" class="fas"col="2" row="0"></Label>
+                        </GridLayout>
+                </StackLayout>
+                
                 <GridLayout columns="*, *" 
                             width="100%" 
-                            height="35"
+                            height="45"
                             (tap)="isEditing = !isEditing"
                             backgroundColor="white"
                             *ngIf="isViewingShortlist">
@@ -70,7 +96,7 @@
                             class="fas" 
                             textAlignment="right" 
                             row="0" 
-                            margin="10"
+                            margin="13 10 10 10"
                             col="1" 
                             backgroundColor="white"
                             *ngIf="!isEditing" 
@@ -80,7 +106,7 @@
                             class="fas" 
                             textAlignment="right" 
                             row="0" 
-                            margin="10"
+                            margin="13 10 10 10"
                             col="1" 
                             backgroundColor="white" 
                             *ngIf="isEditing"
@@ -113,13 +139,8 @@
                     </Label>
                     <TextView   editable="{{editingComment ? true : false}}" 
                                 class="comment" 
-                                [(ngModel)]="updatedComment"
-                                name="updatedComment-{{i}}"
+                                [(ngModel)]="comment.content"
                                 margin="3">
-                    <Span   text="{{comment.content}}" 
-                            fontWeight="300"
-                            fontSize="14" 
-                            color="black" ></Span>
                     </TextView>
                     <GridLayout columns="*, *" 
                             width="100%" 
@@ -157,7 +178,7 @@
                                 backgroundColor="white"
                                 color="#4CAF50"
                                 *ngIf="editingComment"
-                                (tap)="updateComment(i, updatedComment)"></Label>
+                                (tap)="updateComment(i, comment.content)"></Label>
 
                         <Label   text="&#xf2ed;" 
                                 class="far" 
@@ -172,7 +193,6 @@
                                 (tap)="deleteComment(i)"></Label>
                     </GridLayout>
                 </StackLayout>
-                 
                 <Label style="visibility:hidden;" margin="10 0 45 0"></Label>               
             </StackLayout>
         </StackLayout>
@@ -186,15 +206,43 @@
             <Span text="Found {{ propertyList.length }} properties at this marker!"
                 margin="1 10" fontSize="22" class="titleFont"></Span>
         </TextView>
-        <ListView class="list-group" [items]="propertyList" (itemTap)="onItemTap($event)"
-            style="height:100%;" verticalAlignment="center">
-            <ng-template let-item="item">
-                <FlexboxLayout flexDirection="row" class="list-group-item">
-                    <Image [src]="item.propertyThumbUrl" class="thumb img-circle"></Image>
-                    <Label [text]="item.fullAddress" class="list-group-item-heading paragraphText"
-                        style="width: 60%" textWrap="true"></Label>
-                </FlexboxLayout>
-            </ng-template>
-        </ListView>
+        <ScrollView row="1" backgroundColor="white">
+                <ListView class="list-group" [items]="propertyList" separatorColor="#f7f7f7" backgroundColor="white" height="100%">
+                        <ng-template let-item="item" let-i="index">
+                                <CardView class="cardStyle" margin="10" elevation="40" radius="15" ripple="true" (tap)="onItemTap(i)">
+                                        <GridLayout rows="*, *, *, *, *" columns="*, *">
+                                        <Image
+                                                src="{{item.propertyImageUrl}}"
+                                                stretch="aspectFit"
+                                                verticalAlignment="stretch"
+                                                col="0"
+                                                row="0"
+                                                rowSpan="2"
+                                                colSpan="2"
+                                        ></Image>
+                                        <StackLayout    col="0" 
+                                                        row="3"
+                                                        colSpan="2"
+                                                        backgroundColor="white" 
+                                                        class="list-group-item" >
+                                                <Label class="list-group-item-heading" [text]="item.fullAddress"></Label>
+                                        </StackLayout>
+                                        <Label  text="&#xf0a4;" 
+                                                class="far" 
+                                                textAlignment="right" 
+                                                horizontalAlignment="right"
+                                                row="4" 
+                                                margin="2"
+                                                padding="10"
+                                                col="1" 
+                                                colSpan="2"
+                                                fontSize="16"
+                                                color="#4CAF50"
+                                                backgroundColor="white"></Label>
+                                        </GridLayout>
+                                </CardView>
+                        </ng-template> 
+                </ListView>
+        </ScrollView>
     </StackLayout>
 </StackLayout>

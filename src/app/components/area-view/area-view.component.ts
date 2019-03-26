@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ChangeDetectorRef, NgZone } from "@angular/core";
 import { PropertyViewService } from "../../services/property-view.service";
 import { PropertyView } from "../../models/property";
 import { RouterExtensions } from "nativescript-angular/router";
@@ -17,7 +17,7 @@ import { NotificationService } from "~/app/services/notification.service";
 import { ShortlistService } from "~/app/services/shortlist.service";
 import { TNSTextToSpeech, SpeakOptions } from 'nativescript-texttospeech'
 import * as dialogs from "tns-core-modules/ui/dialogs";
-
+import { DatePipe } from "@angular/common";
 @Component({
   selector: "ns-area-view",
   templateUrl: "./area-view.component.html",
@@ -45,6 +45,7 @@ export class AreaViewComponent implements OnInit {
   loaded = false;
   isViewingShortlist: boolean;
   editingComment: boolean;
+  pipe = new DatePipe('en-UK'); // Use your own locale
 
   constructor(private areaService: AreaService,
     private route: ActivatedRoute,
@@ -52,7 +53,11 @@ export class AreaViewComponent implements OnInit {
     private auth: AuthService,
     private notificationService: NotificationService,
     private tts: TNSTextToSpeech,
-    private shortlistService: ShortlistService) {
+    private shortlistService: ShortlistService,
+    private shortlistService: ShortlistService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private _ngZone: NgZone) {
+
     this.route.queryParams.subscribe(params => {
       console.log(params);
       this.long = params.long;
@@ -69,11 +74,14 @@ export class AreaViewComponent implements OnInit {
   }
   
   ngOnInit() { 
-    this.loadArea();
-    setTimeout(()=>{
-      this.notificationService.loader.hide();
-      this.loaded = true;
-    }, 100)
+    
+    this._ngZone.run(() => {
+      this.loadArea();
+      setTimeout(()=>{
+        this.notificationService.loader.hide();
+        this.loaded = true;
+      }, 100);
+    });
   }
 
   onMapReady(args: any) {
@@ -83,6 +91,9 @@ export class AreaViewComponent implements OnInit {
   private loadArea () {
     this.area = <any>this.areaService.getArea();
     console.log(this.area);
+    if (!this.area.notes) {
+      this.area.notes = [];
+    }
     this.area.postcode = this.area.postcode.split(" ")[0];
   }
 
@@ -126,6 +137,9 @@ export class AreaViewComponent implements OnInit {
     this.routerExtensions.navigate([this.prevLocation], {
       transition: {
           name: "fade"
+      },
+      queryParams: {
+        "from": "/area",   
       }
     });
   }
@@ -206,15 +220,15 @@ export class AreaViewComponent implements OnInit {
   }
 
   public getDatesForComment (index) {
-    // const note = <any>this.area.notes[index];
+    const note = <any>this.area.notes[index];
 
-    // // const cD = this.pipe.transform(note.created, 'dd/MM/yy HH:mm');
-    // // const eD = this.pipe.transform(note.updated, 'dd/MM/yy HH:mm');
-    // if (cD === eD) {
-    //   return cD;
-    // } else {
-    //   return `${ cD } - edited ${ eD }`
-    // }
+    const cD = this.pipe.transform(note.created, 'dd/MM/yy HH:mm');
+    const eD = this.pipe.transform(note.updated, 'dd/MM/yy HH:mm');
+    if (cD === eD) {
+      return cD;
+    } else {
+      return `${ cD } - edited ${ eD }`
+    }
   }
 
   public updateComment (index, newComment) {
@@ -255,9 +269,10 @@ export class AreaViewComponent implements OnInit {
       .subscribe(
         (res) => {
           console.log(res); 
+          this.area.notes = [];
           this.area.notes = <any>res;
-          console.log(this.area);
-          console.log(this.area.notes);
+          this.changeDetectorRef.markForCheck(); 
+          this.changeDetectorRef.detectChanges(); 
         }, (err) => {
           this.notificationService.fireNotification(`Error refreshing comments ${ err.status } ${ err.statusText }`, false);
         }

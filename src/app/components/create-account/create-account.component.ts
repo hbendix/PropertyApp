@@ -41,7 +41,7 @@ import { NotificationService } from "~/app/services/notification.service";
     public create () {
         if ((this.createForm.valid) && (this.password.value === this.confirmPassword.value)) {
             let _user = this.createForm.value;
-            this.user = new User (_user.username, _user.password);
+            // this.user = new User (_user.username, _user.password);
             this.userService.createUser(this.user)
             .subscribe(
                 (res) => {

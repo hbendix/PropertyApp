@@ -4,7 +4,7 @@
 </ActionBar>
 
 <FAB (tap)="saveArea(area)" rippleColor="#f1f1f1" row="1" class="fab-button"
-    *ngIf="isLoggedIn" horizontalAlignment="right">
+    *ngIf="isLoggedIn" horizontalAlignment="right" icon="res://ic_star_white_24dp">
 </FAB> 
 <GridLayout class="page"  *ngIf="!isList" >
     <ScrollView #scrollView (scroll)="onScroll($event, scrollView, topView)">
@@ -255,7 +255,7 @@
                 
                 <GridLayout columns="*, *" 
                             width="100%" 
-                            height="35"
+                            height="45"
                             (tap)="isEditing = !isEditing"
                             backgroundColor="white"
                             *ngIf="isViewingShortlist">
@@ -269,7 +269,7 @@
                             class="fas" 
                             textAlignment="right" 
                             row="0" 
-                            margin="10"
+                            margin="13 10 10 10"
                             col="1" 
                             backgroundColor="white"
                             *ngIf="!isEditing" 
@@ -279,7 +279,7 @@
                             class="fas" 
                             textAlignment="right" 
                             row="0" 
-                            margin="10"
+                            margin="13 10 10 10"
                             col="1" 
                             backgroundColor="white" 
                             *ngIf="isEditing"
@@ -310,14 +310,9 @@
                             color="#707070">
                     </Label>
                     <TextView   editable="{{editingComment ? true : false}}" 
-                                class="comment" 
-                                [(ngModel)]="updatedComment"
-                                name="updatedComment-{{i}}"
+                                class="comment"
+                                [(ngModel)]="comment.content"
                                 margin="3">
-                    <Span   text="{{comment.content}}" 
-                            fontWeight="300"
-                            fontSize="14" 
-                            color="black" ></Span>
                     </TextView>
                     <GridLayout columns="*, *" 
                             width="100%" 
@@ -355,7 +350,7 @@
                                 backgroundColor="white"
                                 color="#4CAF50"
                                 *ngIf="editingComment"
-                                (tap)="updateComment(i, updatedComment)"></Label>
+                                (tap)="updateComment(i, comment.content)"></Label>
 
                         <Label   text="&#xf2ed;" 
                                 class="far" 

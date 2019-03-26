@@ -3,17 +3,35 @@
        <Label class="action-bar-title" text="Search Properties"></Label>
 </ActionBar>
 <StackLayout orientation="vertical" [formGroup]="searchForm" margin="10" *ngIf="!viewingList || !loading">
-       <Label text="Search for properties" horizontalAlignment="center" class="join-header"></Label>
-       <TextField formControlName="postcode" hint="Postcode"></TextField>
-       <Label text="Postcode required " horizontalAlignment="left" class="required" *ngIf="!isValid"></Label>
-       <TextField formControlName="minPrice" hint="Min Price" keyboardType="number"></TextField>
-       <TextField formControlName="maxPrice" hint="Max Price" keyboardType="number"></TextField>
-       <TextField formControlName="houseType" hint="House Type"></TextField>
-       <TextField formControlName="bedCount" hint="Bedroom Count" keyboardType="number"></TextField>
-       <Button text="Search" (tap)="searchProperties()"></Button>
-</StackLayout>
-<StackLayout orientation="vertical" margin="10" *ngIf="loading">
-    <ActivityIndicator [busy]="isBusy" class="activity-indicator" margin="15 0 0 0"></ActivityIndicator>       
+       <Label text="Search all Properties" horizontalAlignment="center" class="join-header"></Label>
+       <TextField formControlName="postcode" hint="Postcode*"></TextField>       
+       <Label *ngIf="!isValid" text="{{errorMsg}} " class="required"></Label>
+       <GridLayout columns="*, *" rows="20, 40" width="100%" height="80" margin="10 0 0 0">
+            <Label text="Price " row="0" col="0" colSpan="1" horizontalAlignment="left" class="sub-header"></Label>
+            <Button text="{{minPrice !== null ? '£' + minPrice : 'Min'}} &#xf0d7;" class="fas" col="0" row="1" (tap)="showPriceDialogue(false)"></Button>
+            <Button text="{{maxPrice !== null ? '£' + maxPrice : 'Max'}} &#xf0d7;" class="fas" col="1" row="1" (tap)="showPriceDialogue(true)"></Button>
+       </GridLayout>
+       <GridLayout columns="*, *" rows="20, 40" width="100%" height="80">
+            <Label text="Bedrooms " row="0" col="0" colSpan="1" horizontalAlignment="left" class="sub-header"></Label>
+            <Button text="{{minBed !== null ? minBed : 'Min'}} &#xf0d7;" class="fas" col="0" row="1" (tap)="showCountDialogue('Beds', false)"></Button>
+            <Button text="{{maxBed !== null ? maxBed : 'Max'}} &#xf0d7;" class="fas" col="1" row="1" (tap)="showCountDialogue('Beds', true)"></Button>
+       </GridLayout>
+       <GridLayout columns="*, *" rows="20, 40" width="100%" height="80">
+            <Label text="Bathrooms " row="0" col="0" colSpan="1" horizontalAlignment="left" class="sub-header"></Label>
+            <Button text="{{minBath !== null ? minBath : 'Min'}} &#xf0d7;" class="fas" col="0" row="1" (tap)="showCountDialogue('Baths', false)"></Button>
+            <Button text="{{maxBath !== null ? maxBath : 'Max'}} &#xf0d7;" class="fas" col="1" row="1" (tap)="showCountDialogue('Baths', true)"></Button>
+       </GridLayout>
+       <GridLayout columns="*, *" rows="20, 40" width="100%" height="80">
+            <Label text="Rooms " row="0" col="0" colSpan="1" horizontalAlignment="left" class="sub-header"></Label>
+            <Button text="{{minRoom !== null ? minRoom : 'Min'}} &#xf0d7;" class="fas" col="0" row="1" (tap)="showCountDialogue('Rooms', false)"></Button>
+            <Button text="{{maxRoom !== null ? maxRoom : 'Max'}} &#xf0d7;" class="fas" col="1" row="1" (tap)="showCountDialogue('Rooms', true)"></Button>
+       </GridLayout>
+       <GridLayout columns="*, *" rows="20, 40" width="100%" height="80">
+              <Label text="Radius " row="0" col="0" colSpan="1" horizontalAlignment="left" class="sub-header"></Label>
+              <Button text="{{radius !== null ? radius : 10}}KM &#xf0d7;" class="fas" col="0" row="1" colSpan="2" (tap)="showRadiusDialogue()"></Button>
+       </GridLayout>
+
+       <Button text="Search" class="submitBtn" (tap)="searchProperties()" ripple="true"></Button>
 </StackLayout>
 <ScrollView row="1" backgroundColor="white"  *ngIf="viewingList && !loading">
        <ListView class="list-group" [items]="properties" separatorColor="#f7f7f7" backgroundColor="white">

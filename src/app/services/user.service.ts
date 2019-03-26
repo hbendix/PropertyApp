@@ -5,13 +5,15 @@ import { ShortListItem } from '../models/shortlistItem';
 import { HttpClient } from '@angular/common/http';
 import { environment } from "../../environments/environment";
 import * as appSettings from "tns-core-modules/application-settings";
+import { AuthService } from './auth.service';
 
 @Injectable({
     providedIn: "root"
 })
 export class UserService {    
 
-    constructor (private http: HttpClient) {}
+    constructor (private http: HttpClient,
+        private auth: AuthService) {}
 
     userLoc = new UserLocation(0,0);
 
@@ -34,5 +36,12 @@ export class UserService {
 
         return this.http.post(url, user);
     }  
+
+    public updateUser (user: User): any {
+        const _url = `${ environment.server.url }/auth/update?username=${ this.auth.getLoggedInUser() }&secret_token=${ this.auth.getUserToken() }`;
+        const body = { "user": user }
+
+        return this.http.post(_url, body);
+    }
 
 }

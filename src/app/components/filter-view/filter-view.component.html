@@ -25,5 +25,5 @@
             <Button text="{{minRoom !== null ? minRoom : 'Min'}} &#xf0d7;" class="fas" col="0" row="1" (tap)="showCountDialogue('Rooms', false)"></Button>
             <Button text="{{maxRoom !== null ? maxRoom : 'Max'}} &#xf0d7;" class="fas" col="1" row="1" (tap)="showCountDialogue('Rooms', true)"></Button>
         </GridLayout>
-        <Button text="Apply filter to the map" (tap)="filterMap()"></Button>
+        <Button text="Apply filter to the map" class="submitBtn" (tap)="filterMap()"></Button>
 </StackLayout>

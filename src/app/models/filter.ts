@@ -59,4 +59,29 @@ export class DropDownData {
     static getCounts () {
         return [ "1", "2", "3", "4", "5", "6" ]
     } 
+
+    static getRadius () {
+        return [
+            "5 KM",
+            "10 KM",
+            "15 KM",
+            "20 KM",
+            "25 KM",
+            "30 KM",
+            "35 KM",
+            "40 KM",
+            "45 KM",
+            "45 KM",
+            "55 KM",
+            "60 KM",
+            "65 KM",
+            "70 KM",
+            "75 KM",
+            "80 KM",
+            "85 KM",
+            "90 KM",
+            "95 KM",
+            "99 KM",
+        ]
+    }
 }

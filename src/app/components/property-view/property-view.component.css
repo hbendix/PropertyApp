@@ -87,9 +87,8 @@
     background-color: #3d5afe;
     color:white;
     padding: 20px;
-    margin: 20px 0px 20px 20px;
-    border-bottom-left-radius: 40px;
-    border-top-left-radius: 40px;
+    margin: 20px;
+    border-radius: 20px;
 }
 
 .border{
@@ -117,4 +116,24 @@
     padding: 20px;
     border-radius: 20px;
     border-width: 1;
+}
+
+.btn {
+    border-color: #ff8a50;
+    background-color: #ff8a50;
+    border-radius: 20px;
+    border-width: 1;
+    color: white;
+}
+
+.sub-header {
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.listItem {
+    border-color: #555;
+    border-width: 1;
+    border-radius: 20px;
+    padding: 5;
 }
