@@ -334,6 +334,17 @@
                                 color="#4CAF50"
                                 *ngIf="!editingComment"
                                 (tap)="editingComment = !editingComment"></Label>
+                        <Label   text="&#xf028;" 
+                                class="fas" 
+                                textAlignment="left" 
+                                horizontalAlignment="left"
+                                row="0" 
+                                margin="2 0 0 10"
+                                col="0" 
+                                backgroundColor="white"
+                                color="#4CAF50"
+                                *ngIf="!editingComment"
+                                (tap)="sayComment(i)"></Label>
                         <Label   text="&#xf0c7;" 
                                 class="far" 
                                 textAlignment="right" 
