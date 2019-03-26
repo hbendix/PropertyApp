@@ -33,11 +33,8 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
   private long: Number;
   private lat: Number;
 
-  private prevLocation: String;
-  private ttsOptions: SpeakOptions;
-
   private prevLocation: string;
-
+  private ttsOptions: SpeakOptions;
 
   public property: PropertyView;
   public isBusy = true;
@@ -59,7 +56,6 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
     private notificationService: NotificationService,
     private shortlistService: ShortlistService,
     private tts: TNSTextToSpeech,
-    private auth: AuthService,
     private auth: AuthService,
     private areaService: AreaService) {
 

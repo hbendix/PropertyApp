@@ -54,7 +54,6 @@ export class AreaViewComponent implements OnInit {
     private notificationService: NotificationService,
     private tts: TNSTextToSpeech,
     private shortlistService: ShortlistService,
-    private shortlistService: ShortlistService,
     private changeDetectorRef: ChangeDetectorRef,
     private _ngZone: NgZone) {
 
