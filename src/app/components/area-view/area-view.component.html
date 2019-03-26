@@ -4,7 +4,7 @@
 </ActionBar>
 
 <FAB (tap)="saveArea(area)" rippleColor="#f1f1f1" row="1" class="fab-button"
-    *ngIf="isLoggedIn" horizontalAlignment="right">
+    *ngIf="isLoggedIn" horizontalAlignment="right" icon="res://ic_star_white_24dp">
 </FAB> 
 <GridLayout class="page"  *ngIf="!isList" >
     <ScrollView #scrollView (scroll)="onScroll($event, scrollView, topView)">

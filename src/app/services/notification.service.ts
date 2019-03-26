@@ -1,5 +1,5 @@
 import { SnackBar, SnackBarOptions } from "nativescript-snackbar";
-import { Injectable } from "@angular/core";
+import { Injectable, OnInit } from "@angular/core";
 import { LoadingIndicator } from 'nativescript-loading-indicator';
 
 @Injectable({
@@ -10,7 +10,6 @@ export class NotificationService {
 
     snackbar = new SnackBar();
     public loader = new LoadingIndicator();
-
     /**
      * displays a snackbar at the bottom of the screen
      * @param message message to be displayed

@@ -3,7 +3,7 @@
     <Label class="action-bar-title" text="Property"></Label>
 </ActionBar>
 <FAB (tap)="saveProperty(property)" rippleColor="#f1f1f1" row="1" class="fab-button"
-    *ngIf="!isList && isLoggedIn" horizontalAlignment="right">
+    *ngIf="!isList && isLoggedIn" horizontalAlignment="right" icon="res://ic_star_white_24dp">
 </FAB> 
 <GridLayout class="page"  *ngIf="!isList" >
     <ScrollView #scrollView (scroll)="onScroll($event, scrollView, topView)">
@@ -29,12 +29,12 @@
                             fontWeight="500"
                             fontSize="14"></Span>
                 </TextView>
-                <TextView   editable="false" 
-                            class="price-area"
-                            style="border-color: #707070;">
-                    <Span   text="{{property.price}}" 
-                            fontWeight="Bold"
-                            fontSize="36"></Span>
+                <TextView       editable="false" 
+                                class="price-area"
+                                style="border-color: #707070;">
+                        <Span   text="{{property.price}}" 
+                                fontWeight="Bold"
+                                fontSize="36"></Span>
                 </TextView>
                 <GridLayout rows="*" 
                         columns="*,* ,* ,* ,* , *" margin="10">
@@ -56,9 +56,28 @@
                         margin="10" 
                         class="stats"></Label>
                 
+                <Label text="MORE INFORMATION" margin="10"></Label>
+                <StackLayout margin="10">
+                        <GridLayout rows="*" columns="auto, *, auto" class="listItem" (tap)="viewAreaStats()">
+                                <Label text="&#xf1fe;" margin="4" color="#3d5afe" horizontalAlignment="center" fontSize="20" class="fas"col="0" row="0"></Label>
+                                <Label text="Area Statistics"  margin="0 0 0 10" color="#555" fontSize="20" col="1" row="0"></Label>
+                                <Label text="&#xf0da;" margin="4" color="#555" horizontalAlignment="center" fontSize="20" class="fas"col="2" row="0"></Label>
+                        </GridLayout>
+                        <GridLayout rows="*" columns="auto, *, auto" class="listItem" margin="10 0 0 0">
+                                <Label text="&#xf688;" margin="4" color="#3d5afe" horizontalAlignment="center" fontSize="20" class="fas"col="0" row="0"></Label>
+                                <Label text="Sales History"  margin="0 0 0 10" color="#555" fontSize="20" col="1" row="0"></Label>
+                                <Label text="&#xf0da;" margin="4" color="#555" horizontalAlignment="center" fontSize="20" class="fas"col="2" row="0"></Label>
+                        </GridLayout>
+                        <GridLayout rows="*" columns="auto, *, auto" class="listItem" margin="10 0 0 0"(tap)="goToLink()" *ngIf="property.lister_name && property.lister_url">
+                                <Label text="&#xf35d;" margin="4" color="#3d5afe" horizontalAlignment="center" fontSize="20" class="fas"col="0" row="0"></Label>
+                                <Label text="View listing by {{ property.lister_name }}"  margin="0 0 0 10" color="#555" fontSize="20" col="1" row="0"></Label>
+                                <Label text="&#xf0da;" margin="4" color="#555" horizontalAlignment="center" fontSize="20" class="fas"col="2" row="0"></Label>
+                        </GridLayout>
+                </StackLayout>
+                
                 <GridLayout columns="*, *" 
                             width="100%" 
-                            height="35"
+                            height="45"
                             (tap)="isEditing = !isEditing"
                             backgroundColor="white"
                             *ngIf="isViewingShortlist">
@@ -72,7 +91,7 @@
                             class="fas" 
                             textAlignment="right" 
                             row="0" 
-                            margin="10"
+                            margin="13 10 10 10"
                             col="1" 
                             backgroundColor="white"
                             *ngIf="!isEditing" 
@@ -163,7 +182,6 @@
                                 (tap)="deleteComment(i)"></Label>
                     </GridLayout>
                 </StackLayout>
-                 
                 <Label style="visibility:hidden;" margin="10 0 45 0"></Label>               
             </StackLayout>
         </StackLayout>
