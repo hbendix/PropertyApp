@@ -123,6 +123,9 @@ export class AreaViewComponent implements OnInit {
     this.routerExtensions.navigate([this.prevLocation], {
       transition: {
           name: "fade"
+      },
+      queryParams: {
+        "from": "/area",   
       }
     });
   }

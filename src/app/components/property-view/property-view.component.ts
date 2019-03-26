@@ -28,7 +28,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input()
   private long: Number;
   private lat: Number;
-  private prevLocation: String;
+  private prevLocation: string;
 
   public property: PropertyView;
   public isBusy = true;
@@ -55,15 +55,20 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
       this.long = params.long;
       this.lat = params.lat;
       this.prevLocation = params.prevLocation;
+
+      if (params.from === '/area') {
+        this.wasViewingArea = true;
+      }
     });
+
+    console.log(this.prevLocation);
 
     if (this.prevLocation === '/shortlists') {
       this.isViewingShortlist = true;
     } else if (this.prevLocation === '/property-search') {
       this.isViewingSearchItem = true;
-    } else if (this.prevLocation === '/area') {
-      this.wasViewingArea = true;
     }
+
     this.loadProperty();
   }
 
@@ -94,6 +99,9 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
       this.property = this.propertyViewService.toView;
       this.sortStats();
       this.isList = false;
+      if (this.wasViewingArea) {
+        this.prevLocation = this.property.prevLocation;
+      }
     } else {
       this.propertyViewService.getPropertyModel(this.long, this.lat)
         .subscribe((res) => {
@@ -307,6 +315,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
       this.areaService.pullArea(<number><unknown>this.property.lat, <number><unknown>this.property.long).subscribe(
       (res) => {
         this.areaService.area = res;
+        this.property.prevLocation = this.prevLocation;
         this.propertyViewService.setProperty(this.property);
         this.routerExtensions.navigate(["/area"], {
           transition: {

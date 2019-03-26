@@ -16,6 +16,7 @@ export class PropertyView {
     notes: [];
     lister_url: string;
     lister_name: string;
+    prevLocation: string;
 
     constructor (fullAddress, 
         propertyType, 
