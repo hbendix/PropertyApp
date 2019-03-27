@@ -36,7 +36,7 @@
 <ScrollView row="1" backgroundColor="white"  *ngIf="viewingList && !loading">
        <ListView class="list-group" [items]="properties" separatorColor="#f7f7f7" backgroundColor="white">
               <ng-template let-shortlist="item">
-                     <CardView class="cardStyle" margin="10" elevation="40" radius="15" ripple="true" >
+                     <CardView class="cardStyle" margin="10" elevation="40" radius="15" ripple="true"                      (tap)="itemSelected(shortlist)">
                      <GridLayout rows="*, *, *, *, *" columns="*, *">
                             <Image
                             src="{{shortlist.propertyImageUrl}}"
@@ -47,24 +47,14 @@
                             rowSpan="2"
                             colSpan="2"
                             ></Image>
-                            <StackLayout    col="0" 
+                            <StackLayout  col="0" 
                                           row="3"
                                           colSpan="2"
                                           backgroundColor="white" 
-                                          class="list-group-item" 
-                                          *ngIf="shortlist.propertyName !== undefined">
-                            <Label class="list-group-item-heading" [text]="shortlist.propertyName"></Label>
-                            <Label class="list-group-item-text" [text]="shortlist.fullAddress"></Label>
+                                          class="list-group-item" >
+                            <Label class="list-group-item-heading" textWrap="true" [text]="shortlist.fullAddress"></Label>
                             </StackLayout>
-                            <StackLayout    col="0" 
-                                          row="3"
-                                          colSpan="2"
-                                          backgroundColor="white" 
-                                          class="list-group-item" 
-                                          *ngIf="shortlist.propertyName === undefined">
-                            <Label class="list-group-item-heading" [text]="shortlist.fullAddress"></Label>
-                            </StackLayout>
-                            <Label  text="&#xf0a4;" 
+                            <!-- <Label  text="&#xf0a4;" 
                                    class="far" 
                                    textAlignment="right" 
                                    horizontalAlignment="right"
@@ -73,11 +63,10 @@
                                    padding="10"
                                    col="1" 
                                    colSpan="2" 
-                                   (tap)="itemSelected(shortlist)" 
                                    fontSize="22"
                                    color="#4CAF50"
-                                   backgroundColor="white"></Label>
-                     </GridLayout>
+                                   backgroundColor="white"></Label> -->
+                            </GridLayout>
                      </CardView>
               </ng-template> 
        </ListView>

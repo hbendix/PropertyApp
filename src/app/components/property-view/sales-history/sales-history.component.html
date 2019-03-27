@@ -9,13 +9,22 @@
                         <CardView class="cardStyle" margin="10" elevation="40" radius="15" ripple="true" >
                                 <GridLayout rows="*, *, *" columns="*, *" margin="10">
                                         <Label text="{{item.fullAddress}}" textWrap="true" col="0" colSpan="2"></Label>
-                                        <Label text="{{item.propertyType}}" textWrap="true" col="0" row="1" colSpan="2"></Label>
+                                        <Label text="{{item.propertyType}}" textWrap="true" row="1" col="0"></Label>
+                                        <Label  text="View Breakdown Chart" 
+                                                color="#3d5afe" 
+                                                *ngIf="item.saleHistory.length > 1" 
+                                                textWrap="true" 
+                                                horizontalAlignment="right" 
+                                                row="1" 
+                                                col="1"
+                                                (tap)="showModal(item)"></Label>
+                                        <!-- <Button text="View Breakdown Chart" row="3"  colSpan="2"></Button>                                      -->
                                         <StackLayout row="3" colSpan="2" margin="10">
                                                 <StackLayout *ngFor="let history of item.saleHistory; trackBy: trackByDate" margin="5 0 5 0">
                                                         <Label text="{{history.date}}" class="date" textWrap="true" col="0" colSpan="2"></Label>
                                                         <Label text="£{{history.price}}" class="price" textWrap="true" col="0" row="1" colSpan="2"></Label>
                                                 </StackLayout>
-                                        </StackLayout>
+                                        </StackLayout>   
                                 </GridLayout>
                         </CardView>
                 </ng-template> 

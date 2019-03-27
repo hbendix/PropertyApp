@@ -11,7 +11,7 @@
                                 <ng-template let-shortlist="item">
                                         <CardView class="cardStyle" margin="10" elevation="40" radius="15" ripple="true" >
                                                 <GridLayout rows="*, *, *, *, *" columns="*, *">
-                                                <Image
+                                                <Image  (tap)="itemSelected(shortlist._id)" 
                                                         src="{{shortlist.propertyImageUrl}}"
                                                         stretch="aspectFit"
                                                         verticalAlignment="stretch"
@@ -20,7 +20,8 @@
                                                         rowSpan="2"
                                                         colSpan="2"
                                                 ></Image>
-                                                <StackLayout    col="0" 
+                                                <StackLayout    (tap)="itemSelected(shortlist._id)" 
+                                                                col="0" 
                                                                 row="3"
                                                                 colSpan="2"
                                                                 backgroundColor="white" 
@@ -34,7 +35,7 @@
                                                                 colSpan="2"
                                                                 backgroundColor="white" 
                                                                 class="list-group-item" 
-                                                                *ngIf="shortlist.propertyName === undefined">
+                                                                *ngIf="shortlist.propertyName === undefined || shortlist.propertyName === ''">
                                                         <Label class="list-group-item-heading" [text]="shortlist.fullAddress"></Label>
                                                 </StackLayout>
                                                 <Label  text="&#xf2ed;" 
@@ -49,7 +50,7 @@
                                                         color="#F44336"
                                                         (tap)="deleteShortlist(shortlist._id)"
                                                         backgroundColor="white"></Label>
-                                                <Label  text="&#xf0a4;" 
+                                                <!-- <Label  text="&#xf0a4;" 
                                                         class="far" 
                                                         textAlignment="right" 
                                                         horizontalAlignment="right"
@@ -57,10 +58,9 @@
                                                         margin="2"
                                                         padding="10"
                                                         col="1" 
-                                                        (tap)="itemSelected(shortlist._id)" 
                                                         fontSize="22"
                                                         color="#4CAF50"
-                                                        backgroundColor="white"></Label>
+                                                        backgroundColor="white"></Label> -->
                                                 </GridLayout>
                                         </CardView>
                                 </ng-template> 
@@ -75,6 +75,7 @@
                                         <CardView class="cardStyle" margin="10" elevation="40" radius="15" ripple="true" >
                                                 <GridLayout rows="*, *, *" columns="*, *">
                                                 <StackLayout    col="0" 
+                                                                (tap)="areaSelected(area)" 
                                                                 row="0"
                                                                 colSpan="2"
                                                                 backgroundColor="white" 
@@ -94,7 +95,7 @@
                                                         color="#F44336"
                                                         (tap)="deleteArea(area)"
                                                         backgroundColor="white"></Label>
-                                                <Label  text="&#xf0a4;" 
+                                                <!-- <Label  text="&#xf0a4;" 
                                                         class="far" 
                                                         textAlignment="right" 
                                                         horizontalAlignment="right"
@@ -102,10 +103,10 @@
                                                         margin="2"
                                                         padding="10"
                                                         col="1" 
-                                                        (tap)="areaSelected(area)" 
+                                                        
                                                         fontSize="22"
                                                         color="#4CAF50"
-                                                        backgroundColor="white"></Label>
+                                                        backgroundColor="white"></Label> -->
                                                 </GridLayout>
                                         </CardView>
                                 </ng-template> 

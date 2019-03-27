@@ -5,10 +5,12 @@ import { RouteReuseStrategy } from "@angular/router";
 import { CustomReuseStrategy } from "./custom-resuse-strategy";
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { NativeScriptCommonModule } from "nativescript-angular/common";
 import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 import { NativeScriptUISideDrawerModule } from "nativescript-ui-sidedrawer/angular";
 import { NativescriptBottomNavigationModule} from "nativescript-bottom-navigation/angular";
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
+import { NativeScriptUIChartModule } from "nativescript-ui-chart/angular";
 
 import { TNSTextToSpeech } from 'nativescript-texttospeech';
 
@@ -29,6 +31,7 @@ import { LoginComponent } from "./components/login/login.component";
 import {AccessbilityService} from "~/app/services/accessbility.service";
 import {MyAccountComponent} from "~/app/components/my-account/my-account.component";
 import { SalesHistoryComponent } from "./components/property-view/sales-history/sales-history.component";
+import { ChartDialogueComponent } from "./components/property-view/sales-history/chart-dialogue/chart-dialogue.component";
 
 
 @NgModule({
@@ -40,10 +43,12 @@ import { SalesHistoryComponent } from "./components/property-view/sales-history/
         HttpClientModule,
         FormsModule, 
         ReactiveFormsModule,
+        NativeScriptCommonModule,
         NativeScriptModule,
         NativeScriptUISideDrawerModule,
         NativescriptBottomNavigationModule,
-        NativeScriptFormsModule
+        NativeScriptFormsModule,
+        NativeScriptUIChartModule
     ],
     declarations: [
         AppComponent,
@@ -55,6 +60,7 @@ import { SalesHistoryComponent } from "./components/property-view/sales-history/
         ShortlistsComponent,
         CreateAccountComponent,
         TutorialDialogueComponent,
+        ChartDialogueComponent,
         LoginComponent,
         MyAccountComponent,
         SalesHistoryComponent
