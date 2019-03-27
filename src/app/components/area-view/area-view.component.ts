@@ -287,4 +287,32 @@ export class AreaViewComponent implements OnInit {
     }
     this.tts.speak(this.ttsOptions);
   }
+  public sayInfo () {
+    let theArea = "Area " + this.area.postcode ; 
+    let price = " average price for this location is unavailable. "; 
+    let sfbAvailability = " Access to super fast broadband is at " + this.area.broadband.super_fast + "%";
+    let speeds = " With average download speeds of " + this.area.broadband.avg_download + " and average upload speeds of " + this.area.broadband.avg_upload + " . ";
+    let gas = "estimated area gas consumption for the year stands at " + this.area.gas.consumption + ", across " + this.area.gas.meter_count + " meters. ";
+    let electricity = "estimated area electricity consumption for the year stands at " + this.area.electricity.consumption + " across " + this.area.electricity.meter_count + " meters. ";
+    if(this.area.electricity.consumption === undefined) {
+      electricity = "No electricity information is available at this location. ";
+    }
+    if(this.area.gas.consumption === undefined) {
+      gas = "No gas information is available at this location. ";
+    }
+    if(this.area.avgPrice >= 1) {
+      price = " The average price paid in this location is £" + this.area.avgPrice + " .";
+    }
+    if(this.area.broadband.avg_download === undefined) {
+      speeds = " average broadband speeds for this location are unavailable. "
+    }
+    this.ttsOptions = {
+      text: theArea + price + sfbAvailability + speeds + gas + electricity,
+      speakRate: 0.9,
+      finishedCallback: (data) => {
+        console.log(data);
+      }
+    }
+    this.tts.speak(this.ttsOptions);
+  }
 }

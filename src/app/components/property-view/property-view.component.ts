@@ -319,11 +319,11 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public sayInfo () {
-    let theProperty = "Property listing" + this.property.fullAddress; 
+    let theProperty = "Property listing " + this.property.fullAddress + ". "; 
     let price = "The price for this property is " + this.property.price;
-    let bedroom = "It contains" + this.property.bedroomNumber + "bedrooms"
-    let bathroom = "number of bathrooms is not stated";
-    let parking = "number of parking spaces is not stated";
+    let bedroom = " It contains" + this.property.bedroomNumber + "bedrooms, "
+    let bathroom = "number of bathrooms is not stated. ";
+    let parking = "number of parking spaces is not stated. ";
     if(this.property.bathroomNumber >= 1) {
       bathroom = this.property.bathroomNumber + "bathrooms"
     }

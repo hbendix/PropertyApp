@@ -30,6 +30,10 @@
                 <Label text="{{area.postcode}}" color="gray" textAlignment="center" style="z-index:999" fontSize="45" marginTop="40"></Label>
             </StackLayout>
             <StackLayout width="100%" backgroundColor="white" padding="10"class="border">
+                <Label  text="&#xf028;"
+                        class="fas"
+                        color="#4CAF50"
+                        (tap)="sayInfo()"></Label>
                 <Label text="AVERAGE HOUSE PRICE" margin="10" *ngIf="area.avgPrice !== null"></Label>
                 <TextView   editable="false" 
                             class="price-area"
