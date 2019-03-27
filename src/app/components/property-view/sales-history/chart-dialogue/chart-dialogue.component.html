@@ -1,0 +1,21 @@
+<ScrollView margin="10">
+    <GridLayout rows="*" height="1000px" *ngIf="data">
+        <RadCartesianChart row="0">
+            <CategoricalAxis    tkCartesianHorizontalAxis
+                                labelFitMode="Rotate"
+                                labelRotationAngle=""
+                                showLabels="false"
+                                centerAxisLabelsEnabled></CategoricalAxis>
+            <LinearAxis tkCartesianVerticalAxis></LinearAxis>
+            <LineSeries tkCartesianSeries 
+                        showLabels="false"
+                        categoryProperty="date" 
+                        valueProperty="price"
+                        [items]="data"
+                        [majorStep]="majorStep"></LineSeries>
+            <Palette tkCartesianPalette seriesName="Line">
+                <PaletteEntry tkCartesianPaletteEntry strokeColor="#ff5722" strokeWidth="3"></PaletteEntry>
+            </Palette>
+        </RadCartesianChart>
+    </GridLayout>
+</ScrollView>
