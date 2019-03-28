@@ -41,7 +41,12 @@
                             style="border-color: #707070;">
                     <Span   text="£{{area.avgPrice}}" 
                             fontWeight="Bold"
-                            fontSize="36"></Span>
+                            fontSize="36"
+                            *ngIf="area.avgPrice !== 'NaN'"></Span>
+                    <Span   text="No Data Found"
+                            fontWeight="Bold"
+                            fontSize="36"
+                            *ngIf="area.avgPrice === 'NaN'"></Span>
                 </TextView>
 
                 <TextView editable="false"style="background-color: transparent;
