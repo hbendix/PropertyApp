@@ -58,7 +58,9 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
     private tts: TNSTextToSpeech,
     private auth: AuthService,
     private areaService: AreaService) {
+  }
 
+  ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.long = params.long;
       this.lat = params.lat;
@@ -78,9 +80,6 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     this.loadProperty();
-  }
-
-  ngOnInit() {
   }
   
   ngAfterViewInit () {
