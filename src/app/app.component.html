@@ -7,8 +7,8 @@ http://docs.telerik.com/devtools/nativescript-ui/Controls/NativeScript/SideDrawe
     <GridLayout tkDrawerContent rows="auto, *" class="sidedrawer sidedrawer-left">
         <StackLayout row="0" class="sidedrawer-header" verticalAlignment="bottom">
             <!-- <Label class="sidedrawer-header-image fa" text="&#xf2bd;"></Label> -->
-            <Label class="ab sidedrawer-header-brand" text="HABITAPP"></Label>
-            <Label [style.font-family]="globalFont" class="ab footnote" text="Welcome back, {{username !== '' ? username : ''}}" [ngClass]="{'hidden': !isLoggedIn}"></Label>
+            <Image height="70" class="m-b-8" src="~/assets/logo.png"></Image>
+            <Label [style.font-family]="globalFont" class="ab footnote m-b-8" text="Welcome back, {{username !== '' ? username : ''}}" [ngClass]="{'hidden': !isLoggedIn}"></Label>
         </StackLayout>
     
         <ScrollView row="1">

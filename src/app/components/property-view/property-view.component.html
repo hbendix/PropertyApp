@@ -39,13 +39,13 @@
                 </TextView>
                 <GridLayout rows="*" 
                         columns="*,* ,* ,* ,* , *" margin="10">
-                        <Label text="&#xf236;" color="#3d5afe" horizontalAlignment="right" class="fas"col="0" row="0"></Label>
+                        <Label text="&#xf236;" color="#083863" horizontalAlignment="right" class="fas"col="0" row="0"></Label>
                         <Label text="{{ property.bedroomNumber !== null ? property.bedroomNumber : 'N/A' }}" color="#555" col="1" margin="0 0 0 10" row="0" textWrap="true"></Label>
 
-                        <Label text="&#xf2cd;" color="#3d5afe" horizontalAlignment="right" class="fas"col="2" row="0"></Label>
+                        <Label text="&#xf2cd;" color="#083863" horizontalAlignment="right" class="fas"col="2" row="0"></Label>
                         <Label text="{{ property.bathroomNumber !== null ? property.bathroomNumber : 'N/A' }}" color="#555" col="3" margin="0 0 0 10" row="0" textWrap="true"></Label>
 
-                        <Label text="&#xf540;" color="#3d5afe" horizontalAlignment="right" class="fas"col="4" row="0"></Label>
+                        <Label text="&#xf540;" color="#083863" horizontalAlignment="right" class="fas"col="4" row="0"></Label>
                         <Label text="{{ property.parkingSpaces !== null ? property.parkingSpaces : 'N/A' }}" color="#555" col="5" margin="0 0 0 10" row="0" textWrap="true"></Label>
                         
                 </GridLayout>
@@ -59,17 +59,17 @@
                 <Label text="MORE INFORMATION" margin="10"></Label>
                 <StackLayout margin="10">
                         <GridLayout rows="*" columns="auto, *, auto" class="listItem" (tap)="viewAreaStats()">
-                                <Label text="&#xf1fe;" margin="4" color="#3d5afe" horizontalAlignment="center" class="fas"col="0" row="0"></Label>
+                                <Label text="&#xf1fe;" margin="4" color="#083863" horizontalAlignment="center" class="fas"col="0" row="0"></Label>
                                 <Label text="Area Statistics"  margin="0 0 0 10" color="#555" col="1" row="0"></Label>
                                 <Label text="&#xf0da;" margin="4" color="#555" horizontalAlignment="center" class="fas"col="2" row="0"></Label>
                         </GridLayout>
                         <GridLayout rows="*" columns="auto, *, auto" class="listItem" margin="10 0 0 0" (tap)="showSalesHistory()">
-                                <Label text="&#xf688;" margin="4" color="#3d5afe" horizontalAlignment="center" class="fas"col="0" row="0"></Label>
+                                <Label text="&#xf688;" margin="4" color="#083863" horizontalAlignment="center" class="fas"col="0" row="0"></Label>
                                 <Label text="Nearby Sales History"  margin="0 0 0 10" color="#555" col="1" row="0"></Label>
                                 <Label text="&#xf0da;" margin="4" color="#555" horizontalAlignment="center" class="fas"col="2" row="0"></Label>
                         </GridLayout>
                         <GridLayout rows="*" columns="auto, *, auto" class="listItem" margin="10 0 0 0"(tap)="goToLink()" *ngIf="property.lister_name && property.lister_url">
-                                <Label text="&#xf35d;" margin="4" color="#3d5afe" horizontalAlignment="center" class="fas"col="0" row="0"></Label>
+                                <Label text="&#xf35d;" margin="4" color="#083863" horizontalAlignment="center" class="fas"col="0" row="0"></Label>
                                 <Label text="View listing by {{ property.lister_name }}"  margin="0 0 0 10" color="#555" col="1" row="0"></Label>
                                 <Label text="&#xf0da;" margin="4" color="#555" horizontalAlignment="center" class="fas"col="2" row="0"></Label>
                         </GridLayout>
