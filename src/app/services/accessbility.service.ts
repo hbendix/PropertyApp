@@ -38,7 +38,7 @@ export class AccessbilityService implements OnInit {
   SetGlobalFont(font: string) {
     this.globalFont = font;
     localStorage.setItem("globalFont", this.globalFont);
-    const cssToAdd = "Label, Span, paragraphText, fa, far, fab, fas { font-family: " + this.globalFont + "; }";
+    const cssToAdd = "Label, Span, paragraphText, fa, far, fab, fas { font-family: " + this.globalFont + " !important; }";
     this.hasCssChanged.next(cssToAdd);
   }
 
