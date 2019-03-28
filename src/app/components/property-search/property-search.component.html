@@ -6,17 +6,17 @@
        <Label text="Search all Properties" horizontalAlignment="center" class="join-header"></Label>
        <TextField formControlName="postcode" hint="Postcode*"></TextField>       
        <Label *ngIf="!isValid" text="{{errorMsg}} " class="required"></Label>
-       <GridLayout columns="*, *" rows="20, 40" width="100%" height="80" margin="10 0 0 0">
+       <GridLayout columns="*, *" rows="20, 40" width="100%" height="60" margin="10 0 0 0">
             <Label text="Price " row="0" col="0" colSpan="1" horizontalAlignment="left" class="sub-header"></Label>
             <Button text="{{minPrice !== null ? '£' + minPrice : 'Min'}} &#xf0d7;" class="fas" col="0" row="1" (tap)="showPriceDialogue(false)"></Button>
             <Button text="{{maxPrice !== null ? '£' + maxPrice : 'Max'}} &#xf0d7;" class="fas" col="1" row="1" (tap)="showPriceDialogue(true)"></Button>
        </GridLayout>
-       <GridLayout columns="*, *" rows="20, 40" width="100%" height="80">
+       <GridLayout columns="*, *" rows="20, 40" width="100%" height="60">
             <Label text="Bedrooms " row="0" col="0" colSpan="1" horizontalAlignment="left" class="sub-header"></Label>
             <Button text="{{minBed !== null ? minBed : 'Min'}} &#xf0d7;" class="fas" col="0" row="1" (tap)="showCountDialogue('Beds', false)"></Button>
             <Button text="{{maxBed !== null ? maxBed : 'Max'}} &#xf0d7;" class="fas" col="1" row="1" (tap)="showCountDialogue('Beds', true)"></Button>
        </GridLayout>
-       <GridLayout columns="*, *" rows="20, 40" width="100%" height="80">
+       <GridLayout columns="*, *" rows="20, 40" width="100%" height="60">
             <Label text="Bathrooms " row="0" col="0" colSpan="1" horizontalAlignment="left" class="sub-header"></Label>
             <Button text="{{minBath !== null ? minBath : 'Min'}} &#xf0d7;" class="fas" col="0" row="1" (tap)="showCountDialogue('Baths', false)"></Button>
             <Button text="{{maxBath !== null ? maxBath : 'Max'}} &#xf0d7;" class="fas" col="1" row="1" (tap)="showCountDialogue('Baths', true)"></Button>
@@ -40,7 +40,7 @@
                      <GridLayout rows="*, *, *, *, *" columns="*, *">
                             <Image
                             src="{{shortlist.propertyImageUrl}}"
-                            stretch="aspectFit"
+                            stretch="aspectFit" 
                             verticalAlignment="stretch"
                             col="0"
                             row="0"

@@ -16,8 +16,8 @@ export class ChartDialogueComponent implements OnInit {
 
     ngOnInit() {
         let dividedBy = 0;
-        if (this.toBeCalc.length > 9) {
-            dividedBy = this.toBeCalc.length / 9;
+        if (this.toBeCalc.length > 7) {
+            dividedBy = this.toBeCalc.length / 7;
             dividedBy = Math.floor(dividedBy);
             for (let i  = 0; i < this.toBeCalc.length; i++) {
                 if (i === 0) {
