@@ -95,19 +95,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     onAreaTap() {
         this.notificationService.loader.show();
-        const userLoc = this.userService.getUserLocation();
-        this.userLoc.longitude =  userLoc.longitude;
-        this.userLoc.latitude = userLoc.latitude;
-
-        if (this.userLoc.longitude === 0 && this.userLoc.latitude === 0) {
-            this.map.getCenter().then((res) => {
-                this.userLoc.longitude =  res.lng;
-                this.userLoc.latitude = res.lat;
-                this.getArea();
-            });
-        } else {
+        this.map.getCenter().then((res) => {
+            this.userLoc.longitude =  res.lng;
+            this.userLoc.latitude = res.lat;
             this.getArea();
-        }
+        });
     }
 
     getArea() {
