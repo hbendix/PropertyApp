@@ -33,7 +33,6 @@ export class FilterView {
 export class DropDownData {
     static getPriceRange () {
         return [
-            "£50,000",
             "£100,000",
             "£200,000",
             "£300,000",
@@ -52,7 +51,6 @@ export class DropDownData {
             "£7,000,000",
             "£8,000,000",
             "£9,000,000",
-            "£10,000,000",
         ]
     }
 
