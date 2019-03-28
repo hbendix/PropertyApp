@@ -154,13 +154,13 @@ export class PropertySearchViewComponent implements OnInit {
         r = r.replace(/[^a-zA-Z0-9]/g, '');
         let value = <number><unknown>r;
         if (isMax) {
-          if (value <= this.minPrice) {
+          if (value < this.minPrice) {
             this.notificationService.fireNotification('Max value cannot be less than Min value!', false);
           } else {
             this.maxPrice = value;
           }
         } else {
-          if (value >= this.maxPrice && this.maxPrice !== null) {
+          if (value > this.maxPrice && this.maxPrice !== null) {
             this.notificationService.fireNotification('Min value cannot be greater than Max value!', false);
           } else {
             this.minPrice = value;
@@ -189,13 +189,13 @@ export class PropertySearchViewComponent implements OnInit {
         switch (type) {
           case "Beds":
             if (isMax) {
-              if (value <= this.minBed) {
+              if (value < this.minBed) {
                 this.notificationService.fireNotification('Max value cannot be less than Min value!', false);
               } else {
                 this.maxBed = value;
               }
             } else {
-              if (value >= this.maxBed && this.maxBed !== null) {
+              if (value > this.maxBed && this.maxBed !== null) {
                 this.notificationService.fireNotification('Min value cannot be greater than Max value!', false);
               } else {
                 this.minBed = value;
@@ -204,13 +204,13 @@ export class PropertySearchViewComponent implements OnInit {
             break;
           case "Baths":
             if (isMax) {
-              if (value <= this.minBath) {
+              if (value < this.minBath) {
                 this.notificationService.fireNotification('Max value cannot be less than Min value!', false);
               } else {
                 this.maxBath = value;
               }
             } else {
-              if (value >= this.maxBath && this.maxBath !== null) {
+              if (value > this.maxBath && this.maxBath !== null) {
                 this.notificationService.fireNotification('Min value cannot be greater than Max value!', false);
               } else {
                 this.minBath = value;
@@ -219,13 +219,13 @@ export class PropertySearchViewComponent implements OnInit {
             break;
           case "Rooms":
             if (isMax) {
-              if (value <= this.minRoom) {
+              if (value < this.minRoom) {
                 this.notificationService.fireNotification('Max value cannot be less than Min value!', false);
               } else {
                 this.maxRoom = value;
               }
             } else {
-              if (value >= this.maxRoom && this.maxRoom !== null) {
+              if (value > this.maxRoom && this.maxRoom !== null) {
                 this.notificationService.fireNotification('Min value cannot be greater than Max value!', false);
               } else {
                 this.minRoom = value;
