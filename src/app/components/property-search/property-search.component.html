@@ -34,9 +34,11 @@
        <Button text="Search" class="submitBtn" (tap)="searchProperties()" ripple="true"></Button>
 </StackLayout>
 <ScrollView row="1" backgroundColor="white"  *ngIf="viewingList && !loading">
+       <Label text="No Properties found!" *ngIf="properties.length === 0" horizontalAlignment="center" class="join-header" margin="10"></Label>
        <ListView class="list-group" [items]="properties" separatorColor="#f7f7f7" backgroundColor="white">
               <ng-template let-shortlist="item">
-                     <CardView class="cardStyle" margin="10" elevation="40" radius="15" ripple="true"                      (tap)="itemSelected(shortlist)">
+                     <CardView class="cardStyle" margin="10" elevation="40" radius="15" ripple="true"                      
+                                   (tap)="itemSelected(shortlist)">
                      <GridLayout rows="*, *, *, *, *" columns="*, *">
                             <Image
                             src="{{shortlist.propertyImageUrl}}"

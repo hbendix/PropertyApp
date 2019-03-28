@@ -109,6 +109,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             this.showAreaView(this.userLoc.latitude, this.userLoc.longitude);
         }, (err) => {
             this.notificationService.loader.hide();
+            console.log(err);
             if (err.status === 404) {
                 this.notificationService.fireNotification(`No area data found!`, false);
             } else {
