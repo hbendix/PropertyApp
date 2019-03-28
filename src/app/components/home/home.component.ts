@@ -98,10 +98,23 @@ export class HomeComponent implements OnInit, OnDestroy {
         const userLoc = this.userService.getUserLocation();
         this.userLoc.longitude =  userLoc.longitude;
         this.userLoc.latitude = userLoc.latitude;
+
+        if (this.userLoc.longitude === 0 && this.userLoc.latitude === 0) {
+            this.map.getCenter().then((res) => {
+                this.userLoc.longitude =  res.lng;
+                this.userLoc.latitude = res.lat;
+                this.getArea();
+            });
+        } else {
+            this.getArea();
+        }
+    }
+
+    getArea() {
         this.userService.updateUserLocation(this.userLoc);
-        this.areaService.pullArea(userLoc.latitude, userLoc.longitude).subscribe((area) => {
+        this.areaService.pullArea(this.userLoc.latitude, this.userLoc.longitude).subscribe((area) => {
             this.areaService.area = area;
-            this.showAreaView(userLoc.latitude, userLoc.longitude);
+            this.showAreaView(this.userLoc.latitude, this.userLoc.longitude);
         }, (err) => {
             this.notificationService.loader.hide();
             if (err.status === 404) {
@@ -109,7 +122,6 @@ export class HomeComponent implements OnInit, OnDestroy {
             } else {
                 this.notificationService.fireNotification(`Error loading Area: ${ err.status } ${ err.statusText }`, false);
             }
-
         });
     }
 

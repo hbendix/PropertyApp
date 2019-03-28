@@ -13,8 +13,8 @@ $blue-50: rgba($blue-dark, 0.5) !default;
 $blue-20: rgba($blue-dark, 0.2) !default;
 $blue-10: rgba($blue-dark, 0.1) !default;
 
-$accent-dark: #3A53FF !default;
-$accent-light: #4781FE !default;
+$accent-dark: #083863 !default;
+$accent-light: #a1b5f0 !default;
 
 $success-dark: #06CE6A !default;
 $success-light: #00E676 !default;
@@ -51,7 +51,7 @@ $error: $error-light;
 // SideDrawer
 $item-color-android : #737373;
 $item-active-background: #F8F8F8;
-$item-active-color: $accent;
+$item-active-color: $accent-dark;
 $item-active-icon-color: $item-active-color;
 $item-color-ios: $blue-dark;
 $item-color-android: $blue-dark;
@@ -61,12 +61,12 @@ $side-drawer-header-brand: #737373;
 $side-drawer-background: #FFFFFF;
 
 // ActionBar
-$ab-background: $accent;
+$ab-background: $accent-dark;
 $ab-color: $white;
 
 // Buttons
 $btn-color-inverse: $white;
-$btn-color: $accent;
+$btn-color: #083863;
 $btn-color-secondary: darken($btn-color, 10%);
 $btn-color-outline-highlighted: lighten($btn-color, 10%);
 

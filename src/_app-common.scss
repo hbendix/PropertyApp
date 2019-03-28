@@ -93,10 +93,9 @@ $sidedrawer-list-icon-size: 20;
     
     .sidedrawer-header {
         position: relative;
-        height: $sidedrawer-header-image-size;
-        background-color: $ab-background;
+        height: 120;
+        background-color: #0e2f4c;
         horizontal-align:center;
-        margin-bottom: 10;
 
         .sidedrawer-header-brand {
             color: $ab-color;
