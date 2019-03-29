@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
                 this.routerExtensions.navigate(["/home"], { clearHistory: true });
             }, (err) => {
                 this.processing = false;
-                this.notificationService.fireNotification("Unfortunately we could not find your account.", false);
+                this.notificationService.fireNotification("Invalid login.", false);
             }
         )
     }

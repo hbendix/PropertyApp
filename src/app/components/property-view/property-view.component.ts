@@ -49,6 +49,8 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
   editingComment: boolean;
   isViewingSearchItem = false;
   wasViewingArea = false;
+  newComment: string;
+  showHidden: boolean;
 
   constructor(private propertyViewService: PropertyViewService,
     private route: ActivatedRoute,
@@ -239,6 +241,7 @@ export class PropertyViewComponent implements OnInit, OnDestroy, AfterViewInit {
         (res) => {
           this.notificationService.fireNotification('Comment added. 📝', true);
           this.isEditing = false;
+          this.newComment = "";
           this.refreshComments();
       }, (err) => {
             this.notificationService.fireNotification(`Error adding a comment ${ err.status } ${ err.statusText }`, false);

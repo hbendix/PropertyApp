@@ -163,6 +163,7 @@
                         *ngIf="isEditing && isViewingShortlist"
                         (tap)="addComment(newComment)"
                         color="#ff5722"></Label>
+
                 <StackLayout    *ngFor="let comment of property.notes; let i = index;"
                                 margin="0 0 10 0" >
                     <Label  text="{{ getDatesForComment(i)}}" 
